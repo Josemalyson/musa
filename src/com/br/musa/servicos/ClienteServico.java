@@ -16,4 +16,9 @@ public class ClienteServico {
 	public List<Cliente> listarTodosClientes(){
 		return clienteRepositorio.listar();
 	}
+
+
+	public void salvar(Cliente cliente) {
+		clienteRepositorio.salvar(cliente);
+	}
 }

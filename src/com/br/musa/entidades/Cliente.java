@@ -34,7 +34,7 @@ public class Cliente extends GenericEntity {
 	private String nome;
 
 	@Column(name = "NU_CPF")
-	private Long cpf;
+	private String cpf;
 
 	@Column(name = "NU_RG")
 	private String rg;
@@ -77,11 +77,11 @@ public class Cliente extends GenericEntity {
 		this.nome = nome;
 	}
 
-	public Long getCpf() {
+	public String getCpf() {
 		return cpf;
 	}
 
-	public void setCpf(Long cpf) {
+	public void setCpf(String cpf) {
 		this.cpf = cpf;
 	}
 
@@ -129,7 +129,7 @@ public class Cliente extends GenericEntity {
 		return serialVersionUID;
 	}
 
-	public Cliente(Long id, String nome, Long cpf, String rg,
+	public Cliente(Long id, String nome, String cpf, String rg,
 			Date dtNascimento, Boolean flExcluido, List<Contato> contatoList,
 			List<Pedido> pedidoList) {
 		super();
