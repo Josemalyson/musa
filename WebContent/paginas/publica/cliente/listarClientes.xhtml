@@ -15,26 +15,37 @@
 						tableStyleClass="table" var="cliente"
 						value="#{clienteControlador.clientesList}"
 						emptyMessage="Nenhum cliente encontrado." paginator="true"
-						paginatorAlwaysVisible="true" pageLinks="10" rows="15"
-						rowsPerPageTemplate="15,30,50" paginatorPosition="bottom">
+						paginatorAlwaysVisible="true" pageLinks="10" rows="10"
+						rowsPerPageTemplate="10,30,50" paginatorPosition="bottom">
 						
 						<p:column headerText="Código" styleClass="text-center">
 							<h:outputText value="#{cliente.id}"/>
 						</p:column>
+												
 						<p:column headerText="Nome" styleClass="text-center">
 							<h:outputText value="#{cliente.nome}"/>
 						</p:column>
+						
 						<p:column headerText="CPF" styleClass="text-center">
 							<h:outputText value="#{clienteControlador.adiconarMascaraCpf(cliente)}"/>
 						</p:column>
+						
 						<p:column headerText="RG" styleClass="text-center">
 							<h:outputText value="#{clienteControlador.adiconarMascaraRg(cliente)}"/>
 						</p:column>
+						
 						<p:column headerText="Data de Nascimento" styleClass="text-center">
 							<h:outputText value="#{cliente.dtNascimento}">
 								<f:convertDateTime pattern="dd/MM/yyyy" />
 							</h:outputText>
 						</p:column>
+						
+						<p:column headerText="Opções" styleClass="text-center">
+							<p:commandButton value="" icon="ui-icon-pencil"  title="Editar"/>
+							<p:commandButton value="" icon="ui-icon-trash" title="Excluir"/>
+						</p:column>
+						
+						
 				</p:dataTable>
 			</div>
 			
