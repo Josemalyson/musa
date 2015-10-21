@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE HTML>
+<ui:composition  xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	template="/WEB-INF/template/template.xhtml">
+
+	<ui:define name="conteudo">
+		<h:form prependId="false" id="listarClientes">
+		
+			<p:dataTable widgetVar="tabelaComponente"
+				id="dataTableGerenciarPauta" styleClass="no-margin"
+				tableStyleClass="table table-striped table-hover" var="cliente"
+				value="#{clienteControlador.clientesList}"
+				emptyMessage="Nenhum cliente encontrado." paginator="true"
+				paginatorAlwaysVisible="true" pageLinks="10" rows="15"
+				rowsPerPageTemplate="15,30,50" paginatorPosition="bottom">
+				
+				<p:column headerText="Código" styleClass="text-center">
+					<h:outputText value="#{cliente.id}"/>
+				</p:column>
+				<p:column headerText="Nome" styleClass="text-center">
+					<h:outputText value="#{cliente.nome}"/>
+				</p:column>
+				<p:column headerText="CPF" styleClass="text-center">
+					<h:outputText value="#{cliente.cpf}"/>
+				</p:column>
+				<p:column headerText="RG" styleClass="text-center">
+					<h:outputText value="#{cliente.rg}"/>
+				</p:column>
+				<p:column headerText="Data de Nascimento" styleClass="text-center">
+					<h:outputText value="#{cliente.dtNascimento}">
+						<f:convertDateTime pattern="dd/MM/yyyy" />
+					</h:outputText>
+				</p:column>
+			</p:dataTable>
+			
+			<br />
+			
+			<p:commandButton value="Incluir" oncomplete="PF('incluirCliente').show();"/>
+			
+			<p:dialog 
+			header="Incluir Cliente"
+			modal="true" 
+			widgetVar="incluirCliente"
+			id="incluirCliente" 
+			closable="true"
+			draggable="false" 
+			resizable="false"
+			dynamic="fals"/>
+			
+		</h:form>
+	</ui:define>
+</ui:composition>
