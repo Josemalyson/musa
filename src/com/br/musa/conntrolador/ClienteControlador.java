@@ -75,7 +75,7 @@ public class ClienteControlador extends CoreControlador {
 			clienteServico.excluir(cliente);
 			adicionarMensagem(MsgConstantes.MSG_ALTERACAO_SUCESSO);
 			listarTodosOsClientes();
-			RequestContext.getCurrentInstance().update("@form");
+			RequestContext.getCurrentInstance().update("tabelaCliente");
 		}else {
 			adicionarErro(MsgConstantes.MSG_ERRO);
 		}
