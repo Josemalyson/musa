@@ -10,9 +10,10 @@
 	<ui:define name="conteudo">
 		<h:form prependId="false" id="listarClientes">
 		<div class="table-responsive">
-				<p:dataTable widgetVar="tabelaCliente"
+				<p:dataTable widgetVar="tabelaCliente" 
 						id="tabelaCliente" styleClass="no-margin"
-						tableStyleClass="table" var="cliente"
+						style="table table-bordered"
+						var="cliente"
 						value="#{clienteControlador.clientesList}"
 						emptyMessage="Nenhum cliente encontrado." paginator="true"
 						paginatorAlwaysVisible="true" pageLinks="10" rows="10"
@@ -42,7 +43,9 @@
 						
 						<p:column headerText="Opções" styleClass="text-center">
 							<p:commandButton value="" icon="ui-icon-pencil"  title="Editar"/>
-							<p:commandButton value="" icon="ui-icon-trash" title="Excluir"/>
+							<p:commandButton value="" icon="ui-icon-trash" 
+											 title="Excluir" oncomplete="PF('confirmarExclusaoCliente').show();"
+											 actionListener="#{clienteControlador.setCliente(cliente)}"/>
 						</p:column>
 						
 						
@@ -51,7 +54,7 @@
 			
 			<br />
 			
-			<p:commandButton value="Incluir" oncomplete="PF('incluirCliente').show();"/>
+			<p:commandButton value="Incluir" oncomplete="PF('incluirCliente').show();" styleClass="bt btn primary"/>
 			
 			<p:dialog 
 			header="Incluir Cliente"
@@ -59,40 +62,40 @@
 			widgetVar="incluirCliente"
 			id="incluirCliente" 
 			closable="true"
-			draggable="false" 
-			resizable="false"
-			width="800px"
-			height="400px">
+			draggable="false"
+			width="700" 
+			resizable="false">
 			
 			<br />
 			
 				<p:fieldset legend="Cadastro de Clientes">
-						<div class="form-group">
+						
+						<div class="form-group row ">
 								<label class="col-sm-2 control-label">Nome:</label>
 							<div class="col-sm-10">
 								<p:inputText id="nome" styleClass="form-control" value="#{clienteControlador.cliente.nome}"></p:inputText>
 							</div>
 						</div>
 				
-						<div class="form-group">
+						<div class="form-group row">
 								<label class="col-sm-2 control-label">CPF:</label>
-							<div class="col-sm-10">
+							<div class="col-sm-4">
 								<p:inputMask styleClass="form-control" mask="?999.999.999-99" id="cpf"
 									value="#{clienteControlador.cliente.cpf}" maxlength="14"/>
 							</div>
 						</div>
 						
-						<div class="form-group">
+						<div class="form-group row">
 								<label class="col-sm-2 control-label">RG:</label>
-							<div class="col-sm-10">
+							<div class="col-sm-4">
 								<p:inputMask styleClass="form-control" mask="?999.999-9" id="rg"
 									value="#{clienteControlador.cliente.rg}" maxlength="9"/>
 							</div>
 						</div>
 						
-						<div class="form-group">
+						<div class="form-group row">
 								<label class="col-sm-2 control-label">Data de Nascimento:</label>
-							<div class="col-sm-10">
+							<div class="col-sm-4">
 								<p:calendar locale="pt_BR" navigator="true" pattern="dd/MM/yyyy"
 									value="#{clienteControlador.cliente.dtNascimento}"	id="dtNascimento"/>
 							</div>
@@ -100,18 +103,36 @@
 				</p:fieldset>
 				
 				<br />
-				<br />
 				
-					<div class="form-inline">
+					<div class="form-inline text-center">
 						<div class="form-group">
-							<p:commandButton value="Salvar" styleClass="btn btn-success btn-sm" 
-								actionListener="#{clienteControlador.salvarCliente()}" onclick="PF('incluirCliente').hide();"/>
-							<p:commandButton  value="Cancelar" styleClass="btn btn-danger btn-sm"/>
+							<p:commandButton value="Salvar" styleClass="btn btn-success" 
+								actionListener="#{clienteControlador.salvarCliente()}" oncomplete="PF('incluirCliente').hide();"/>
+							<p:commandButton  value="Cancelar" styleClass="btn btn-danger" oncomplete="PF('incluirCliente').hide();"/>
 						</div>
 					</div>
 					
 			</p:dialog>
 			
+			<p:confirmDialog 
+							widgetVar="confirmarExclusaoCliente"
+							id="confirmarExclusaoCliente"
+							message="Confirmar Exclusão deste item?"
+							closable="false">
+							
+							<p:commandButton id="btnConfirmaExclusaoCliente"
+											 value="Confirmar"
+											 styleClass="btn btn-success"
+											 onclick="PF('confirmarExclusaoCliente').hide();"
+											 actionListener="#{clienteControlador.excluir()}"/>
+					
+							<p:commandButton id="btnCancelaExclusaoCliente"
+											 value="Cancelar"
+											 styleClass="btn btn-danger"
+											 onclick="PF('confirmarExclusaoCliente').hide();"
+											 oncomplete="PF('confirmarExclusaoCliente').hide(); PF('incluirCliente').hide();"/>
+				
+			</p:confirmDialog>
 			
 		</h:form>
 	</ui:define>

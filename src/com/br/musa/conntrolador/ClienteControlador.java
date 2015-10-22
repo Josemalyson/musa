@@ -10,9 +10,11 @@ import javax.inject.Inject;
 
 import org.primefaces.context.RequestContext;
 
+import com.br.musa.constantes.MsgConstantes;
 import com.br.musa.entidades.Cliente;
 import com.br.musa.servicos.ClienteServico;
 import com.br.musa.util.MascaraUtil;
+import com.br.musa.util.ObjetoUtil;
 
 @ManagedBean
 @ViewScoped
@@ -59,12 +61,32 @@ public class ClienteControlador extends CoreControlador {
 		}
 	}
 
+	
+	public void editar(Cliente cliente){
+		clienteServico.salvar(cliente);
+		adicionarMensagem(MsgConstantes.MSG_ALTERACAO_SUCESSO);
+		listarTodosOsClientes();
+		RequestContext.getCurrentInstance().update("listarClientes");
+	}
+
+	public void excluir(){
+	
+		if (ObjetoUtil.notBlank(cliente)) {
+			clienteServico.excluir(cliente);
+			adicionarMensagem(MsgConstantes.MSG_ALTERACAO_SUCESSO);
+			listarTodosOsClientes();
+			RequestContext.getCurrentInstance().update("@form");
+		}else {
+			adicionarErro(MsgConstantes.MSG_ERRO);
+		}
+		
+	}
 
 	public void salvarCliente(){
 		cliente.setCpf(MascaraUtil.removerMascara(cliente.getCpf()));
 		cliente.setRg(MascaraUtil.removerMascara(cliente.getRg()));
 		clienteServico.salvar(cliente);
-		adicionarMensagem("Cliente Adicionado com Sucesso");
+		adicionarMensagem(MsgConstantes.MSG_SUCESSO);
 		cliente = new Cliente();
 		listarTodosOsClientes();
 		RequestContext.getCurrentInstance().update("tabelaCliente");

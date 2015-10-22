@@ -21,4 +21,9 @@ public class ClienteServico {
 	public void salvar(Cliente cliente) {
 		clienteRepositorio.salvar(cliente);
 	}
+
+
+	public void excluir(Cliente cliente) {
+		clienteRepositorio.excluir(cliente);
+	}
 }
