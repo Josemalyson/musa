@@ -38,7 +38,7 @@
 						<p:ajax event="rowEdit" listener="#{clienteControlador.onRowEdit}" />
  					    <p:ajax event="rowEditCancel" listener="#{clienteControlador.onRowCancel}" />
  
-						<p:column headerText="Código" styleClass="text-center" filterBy="#{cliente.id}" ooterText="contains" filterMatchMode="contains">
+						<p:column headerText="Código" styleClass="text-center" >
 				             <h:outputText value="#{cliente.id}" />
 						</p:column>
 												
@@ -49,7 +49,7 @@
            					</p:cellEditor>
 						</p:column>
 						
-						<p:column headerText="CPF" styleClass="text-center">
+						<p:column headerText="CPF" styleClass="text-center" filterBy="#{cliente.cpf}" ooterText="contains" filterMatchMode="contains">
 							<p:cellEditor>
 				               <f:facet name="output"><h:outputText value="#{clienteControlador.adiconarMascaraCpf(cliente)}" /></f:facet>
 				               <f:facet name="input"><p:inputText id="cpf" value="#{cliente.cpf}" maxlength="11"/></f:facet>
