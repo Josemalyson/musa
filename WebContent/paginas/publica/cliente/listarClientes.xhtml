@@ -32,7 +32,8 @@
 						rows="10"
 						editable="true"
 						rowsPerPageTemplate="10,30,50" 
-						paginatorPosition="bottom">
+						paginatorPosition="bottom"
+						filteredValue="#{clienteControlador.clientesListFiltrados}">
 						
 						<p:ajax event="rowEdit" listener="#{clienteControlador.onRowEdit}" />
  					    <p:ajax event="rowEditCancel" listener="#{clienteControlador.onRowCancel}" />

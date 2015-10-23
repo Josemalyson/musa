@@ -9,7 +9,6 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.inject.Inject;
 
-import org.jboss.resteasy.util.DateUtil;
 import org.primefaces.context.RequestContext;
 import org.primefaces.event.RowEditEvent;
 
@@ -33,6 +32,7 @@ public class ClienteControlador extends CoreControlador {
 	
 	//LISTAS
 	private List<Cliente> clientesList;
+	private List<Cliente> clientesListFiltrados;
 	
 	//OBJETOS
 	
@@ -135,6 +135,14 @@ public class ClienteControlador extends CoreControlador {
 
 	public void setDataMax(Date dataMax) {
 		this.dataMax = dataMax;
+	}
+
+	public List<Cliente> getClientesListFiltrados() {
+		return clientesListFiltrados;
+	}
+
+	public void setClientesListFiltrados(List<Cliente> clientesListFiltrados) {
+		this.clientesListFiltrados = clientesListFiltrados;
 	}
 
 }
