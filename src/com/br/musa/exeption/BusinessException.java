@@ -3,7 +3,7 @@ package com.br.musa.exeption;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.br.musa.constantes.MsgConstantes;
+import com.br.musa.constantes.Constantes;
 
 public class BusinessException extends RuntimeException {
 
@@ -27,7 +27,7 @@ public class BusinessException extends RuntimeException {
 	public BusinessException(List<String> mensagemList) {
 		StringBuilder sb = new StringBuilder();
 		for (String msg : mensagemList) {
-			sb.append(msg+MsgConstantes.PONTO_E_VIRGULA+MsgConstantes.ESPACO_EM_BRANCO);
+			sb.append(msg+Constantes.PONTO_E_VIRGULA+Constantes.ESPACO_EM_BRANCO);
 		}
 		this.mensagemList = mensagemList;
 		this.message = sb.toString();

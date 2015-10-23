@@ -1,6 +1,7 @@
 package com.br.musa.conntrolador;
 
 import java.text.ParseException;
+import java.util.Date;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -8,11 +9,15 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.inject.Inject;
 
+import org.jboss.resteasy.util.DateUtil;
 import org.primefaces.context.RequestContext;
+import org.primefaces.event.RowEditEvent;
 
+import com.br.musa.constantes.Constantes;
 import com.br.musa.constantes.MsgConstantes;
 import com.br.musa.entidades.Cliente;
 import com.br.musa.servicos.ClienteServico;
+import com.br.musa.util.Data;
 import com.br.musa.util.MascaraUtil;
 import com.br.musa.util.ObjetoUtil;
 
@@ -32,11 +37,13 @@ public class ClienteControlador extends CoreControlador {
 	//OBJETOS
 	
 	private Cliente cliente;
+	private Date dataMax;
 	
 	@PostConstruct
 	public void init() {
 		cliente = new Cliente();
 		listarTodosOsClientes();
+		dataMax = new Date();
 		
 	}
 
@@ -75,7 +82,7 @@ public class ClienteControlador extends CoreControlador {
 			clienteServico.excluir(cliente);
 			adicionarMensagem(MsgConstantes.MSG_ALTERACAO_SUCESSO);
 			listarTodosOsClientes();
-			RequestContext.getCurrentInstance().update("tabelaCliente");
+			RequestContext.getCurrentInstance().update("@all");
 		}else {
 			adicionarErro(MsgConstantes.MSG_ERRO);
 		}
@@ -92,6 +99,20 @@ public class ClienteControlador extends CoreControlador {
 		RequestContext.getCurrentInstance().update("tabelaCliente");
 	}
 	
+	public String montarDataNascimento(Cliente cliente){
+		
+		if (ObjetoUtil.notBlank(cliente.getDtNascimento())) {
+			return Data.getDataFormatada(cliente.getDtNascimento());
+		}
+		return Constantes.STRING_VAZIA;
+	}
+	
+	public void onRowEdit(RowEditEvent event) {
+    }
+     
+    public void onRowCancel(RowEditEvent event) {
+    }
+	
 	public List<Cliente> getClientesList() {
 		return clientesList;
 	}
@@ -106,6 +127,14 @@ public class ClienteControlador extends CoreControlador {
 
 	public void setCliente(Cliente cliente) {
 		this.cliente = cliente;
+	}
+
+	public Date getDataMax() {
+		return dataMax;
+	}
+
+	public void setDataMax(Date dataMax) {
+		this.dataMax = dataMax;
 	}
 
 }

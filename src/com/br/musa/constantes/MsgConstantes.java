@@ -5,9 +5,7 @@ public abstract class MsgConstantes {
 	public MsgConstantes() {
 	}
 
-	public static final String MSG_SUCESSO = "Operação realizada com sucesso.";
-	public static final String MSG_ERRO = "Não foi possível realizar operação.";
-	public static final String PONTO_E_VIRGULA = ";";
-	public static final String ESPACO_EM_BRANCO = " ";
-	public static final String MSG_ALTERACAO_SUCESSO = "Alteração realizada com sucesso.";
+	public static final String MSG_SUCESSO = "OperaÃ§Ã£o realizada com sucesso.";
+	public static final String MSG_ERRO = "NÃ£o foi possÃ­vel realizar a operaÃ§Ã£o.";
+	public static final String MSG_ALTERACAO_SUCESSO = "AlteraÃ§Ã£o realizada com sucesso.";
 }
