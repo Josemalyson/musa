@@ -10,12 +10,6 @@
 	<ui:define name="conteudo">
 		<h:form prependId="false" id="listarClientes">
 		
-		<div class="form-inline text-right row">
-	  				<div class="form-group col-sm-offset-2 col-sm-10">
-						<p:commandButton value="Incluir" oncomplete="PF('incluirCliente').show();" styleClass="btn btn-primary" />
-					</div>
-		</div>
-		
 		<div class="form-inline row"></div>
 		
 		<br />
@@ -91,69 +85,11 @@
 			
 				<div class="form-inline text-center row">
 	  				<div class="form-group">
-						<p:commandButton value="Salvar" styleClass="btn btn-default" />
+						<p:commandButton value="Salvar" styleClass="btn btn-success" 
+								actionListener="#{clienteControlador.salvarCliente()}" />
 					</div>
 				</div>
 			
-				
-			
-			<p:dialog 
-			modal="true" 
-			widgetVar="incluirCliente"
-			id="incluirCliente" 
-			closable="false"
-			draggable="false"
-			width="700" 
-			resizable="false">
-			
-			<br />
-			<legend>Cadastro de Clientes</legend>
-			<div class="panel panel-default">
-  				<div class="panel-body">
-						
-						<div class="form-group row ">
-								<label class="col-sm-2 control-label">Nome:</label>
-							<div class="col-sm-10">
-								<p:inputText id="nome" styleClass="form-control" value="#{clienteControlador.cliente.nome}"></p:inputText>
-							</div>
-						</div>
-				
-						<div class="form-group row">
-								<label class="col-sm-2 control-label">CPF:</label>
-							<div class="col-sm-4">
-								<p:inputMask styleClass="form-control" mask="?999.999.999-99" id="cpf"
-									value="#{clienteControlador.cliente.cpf}" maxlength="14"/>
-							</div>
-						</div>
-						
-						<div class="form-group row">
-								<label class="col-sm-2 control-label">RG:</label>
-							<div class="col-sm-4">
-								<p:inputMask styleClass="form-control" mask="?999.999-9" id="rg"
-									value="#{clienteControlador.cliente.rg}" maxlength="9"/>
-							</div>
-						</div>
-						
-						<div class="form-group row">
-								<label class="col-sm-2 control-label">Data de Nascimento:</label>
-							<div class="col-sm-4">
-								<p:calendar locale="pt_BR" navigator="true" pattern="dd/MM/yyyy"
-									value="#{clienteControlador.cliente.dtNascimento}"	id="dtNascimento"/>
-							</div>
-						</div>
-				
-				<br />
-				
-					<div class="form-inline text-center">
-						<div class="form-group">
-							<p:commandButton value="Salvar" styleClass="btn btn-success" 
-								actionListener="#{clienteControlador.salvarCliente()}" oncomplete="PF('incluirCliente').hide();"/>
-							<p:commandButton  value="Cancelar" styleClass="btn btn-danger" oncomplete="PF('incluirCliente').hide();"/>
-						</div>
-					</div>
-				</div>
-			</div>		
-			</p:dialog>
 			
 			<p:confirmDialog 
 							widgetVar="confirmarExclusaoCliente"

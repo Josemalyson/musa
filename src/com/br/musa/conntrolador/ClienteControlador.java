@@ -89,7 +89,7 @@ public class ClienteControlador extends CoreControlador {
 		
 	}
 
-	public void salvarCliente(){
+	public String salvarCliente(){
 		cliente.setCpf(MascaraUtil.removerMascara(cliente.getCpf()));
 		cliente.setRg(MascaraUtil.removerMascara(cliente.getRg()));
 		clienteServico.salvar(cliente);
@@ -97,6 +97,7 @@ public class ClienteControlador extends CoreControlador {
 		cliente = new Cliente();
 		listarTodosOsClientes();
 		RequestContext.getCurrentInstance().update("tabelaCliente");
+		return sendRedirect(Constantes.PAGINA_LISTAR_CLIENTES);
 	}
 	
 	public String montarDataNascimento(Cliente cliente){

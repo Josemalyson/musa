@@ -20,10 +20,18 @@
 		<param-name>com.sun.faces.writeStateAtFormEnd</param-name>
 		<param-value>false</param-value>
 	</context-param>
-	
-<!-- 	<context-param>
-        <param-name>primefaces.THEME</param-name>
-        <param-value>blitzer</param-value>
-    </context-param> -->
-	
+
+	<error-page>
+		<error-code>404</error-code>
+		<location>/404.jsf</location>
+	</error-page>
+	<error-page>
+		<error-code>500</error-code>
+		<location>/500.jsf</location>
+	</error-page>
+	<context-param>
+		<param-name>primefaces.THEME</param-name>
+		<param-value>bootstrap</param-value>
+	</context-param>
+
 </web-app>

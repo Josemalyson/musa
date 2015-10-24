@@ -5,7 +5,7 @@
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:ui="http://java.sun.com/jsf/facelets"
-	>
+	xmlns:p="http://primefaces.org/ui">
 
 
 <h:head>
@@ -15,6 +15,7 @@
 
 	<title>Musa Acessorios</title>
 
+	<link rel="stylesheet" href="#{request.contextPath}/recursos/bootstrap/css/meuEstilo.css" type="text/css" media="all"/>
 	<!-- BOOTSRAP -->
 	<link rel="stylesheet" href="#{request.contextPath}/recursos/bootstrap/css/bootstrap.css" type="text/css" media="all"/>
 	<link rel="stylesheet" href="#{request.contextPath}/recursos/bootstrap/css/bootstrap-theme.css" type="text/css" media="all"/>
@@ -26,9 +27,14 @@
 		</ui:insert>
 	</div>
 	<div>
-		<h:form>
-			<h:messages id="messages"  autoUpdate="true" closable="true" />
-		</h:form>
+		 <p:outputPanel autoUpdate="true">
+	            <p:dialog widgetVar="messagesModal" modal="true" visible="true" id="messagesReturn"
+	            	 showHeader="false" rendered="#{not empty facesContext.messageList}" resizable="false"
+	            	 styleClass="has-message" closeOnEscape="true" onHide="colocaFocoErro();">
+	            	<a id="close-error-msg" class="scw-icon-cancel pull-right" onclick="PF('messagesModal').hide();"></a>
+	                <p:messages id="messages" globalOnly="false" severity="info, error" escape="false"/>
+	            </p:dialog>
+	        </p:outputPanel>
 	</div>
 	<div id="conteudo" class="container-fluid">
 		<ui:insert name="conteudo">
@@ -36,6 +42,7 @@
 		</ui:insert>
 	</div>
 </h:body>
+<script type="text/javascript" src="#{request.contextPath}/recursos/js/general.js"></script>
 <script type="text/javascript" src="#{request.contextPath}/recursos/js/jquery.js"></script>
 <script type="text/javascript" src="#{request.contextPath}/recursos/js/jquery-ui.js"></script>
 <script type="text/javascript"	src="#{request.contextPath}/recursos/bootstrap/js/bootstrap.js"></script>
