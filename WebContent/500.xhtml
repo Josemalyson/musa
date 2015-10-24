@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.prime.com.tr/ui"
+	xmlns:f="http://java.sun.com/jsf/core">
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Erro inesperado</title>
+<style media="all" type="text/css">
+</style>
+
+</head>
+<h:body>
+	<h:form>
+
+		<h1>ERRO INESPERADO</h1>
+		<p>
+			Ocorreu um erro inesperado, contacte o administrador do sistema.<br />
+			Para mais informações entre em contato com a Central de Atendimento:
+			<br /> Telefone: <strong>(83) 98763 - 9591</strong> <br /> Email: <strong>josemalyson@gmail.com</strong>
+		</p>
+
+		<h:inputHidden value="#{sessionScope['erroMsg']}" />
+
+	</h:form>
+</h:body>
+</html>
