@@ -7,12 +7,16 @@
 	xmlns:p="http://primefaces.org/ui"
 	template="/WEB-INF/template/template.xhtml">
 
-	<ui:define name="conteudo">
+
+<ui:define name="conteudo">
+
+	<ol class="breadcrumb">
+		  <li><a href="#">Inicio</a></li>
+		  <li><a href="#">Cliente</a></li>
+		  <li class="active">Listar Clientes</li>
+	</ol>
+
 		<h:form prependId="false" id="listarClientes">
-		
-		<div class="form-inline row"></div>
-		
-		<br />
 		
 		<div class="table-responsive">
 				<p:dataTable widgetVar="tabelaCliente" 
