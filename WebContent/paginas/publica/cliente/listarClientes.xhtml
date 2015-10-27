@@ -33,48 +33,33 @@
 						paginatorPosition="bottom"
 						filteredValue="#{clienteControlador.clientesListFiltrados}">
 						
-						<p:ajax event="rowEdit" listener="#{clienteControlador.onRowEdit}" />
- 					    <p:ajax event="rowEditCancel" listener="#{clienteControlador.onRowCancel}" />
  
 						<p:column headerText="Código" styleClass="text-center" >
 				             <h:outputText value="#{cliente.id}" />
 						</p:column>
 												
 						<p:column headerText="Nome" styleClass="text-center" filterBy="#{cliente.nome}" ooterText="contains" filterMatchMode="contains">
-							<p:cellEditor>
-				               <f:facet name="output"><h:outputText value="#{cliente.nome}" /></f:facet>
-				               <f:facet name="input"><p:inputText id="nome" value="#{cliente.nome}" /></f:facet>
-           					</p:cellEditor>
+				               <h:outputText value="#{cliente.nome}" />
 						</p:column>
 						
 						<p:column headerText="CPF" styleClass="text-center" filterBy="#{cliente.cpf}" ooterText="contains" filterMatchMode="contains">
-							<p:cellEditor>
-				               <f:facet name="output"><h:outputText value="#{clienteControlador.adiconarMascaraCpf(cliente)}" /></f:facet>
-				               <f:facet name="input"><p:inputText id="cpf" value="#{cliente.cpf}" maxlength="11"/></f:facet>
-           					</p:cellEditor>
+				               <h:outputText value="#{clienteControlador.adiconarMascaraCpf(cliente)}" />
 						</p:column>
 						
 						<p:column headerText="RG" styleClass="text-center">
-							<p:cellEditor>
-					               <f:facet name="output"><h:outputText value="#{clienteControlador.adiconarMascaraRg(cliente)}" /></f:facet>
-					               <f:facet name="input"><p:inputText id="rg" value="#{cliente.rg}" maxlength="7"/></f:facet>
-	        				</p:cellEditor>
+					               <h:outputText value="#{clienteControlador.adiconarMascaraRg(cliente)}" />
 						</p:column>
 						
 						<p:column headerText="Data de Nascimento" styleClass="text-center">
-							<p:cellEditor>
-				               <f:facet name="output"><h:outputText value="#{clienteControlador.montarDataNascimento(cliente)}" /></f:facet>
-				               <f:facet name="input">
-					               <p:calendar value="#{cliente.dtNascimento}" navigator="true" locale="pt_BR" 
-					               		maxdate="#{clienteControlador.dataMax}" pattern="dd/MM/yyyy">
-					               </p:calendar>
-				               </f:facet>
-           					</p:cellEditor>
+				               <h:outputText value="#{clienteControlador.montarDataNascimento(cliente)}" />
 						</p:column>
 						
 						<p:column headerText="Opções" styleClass="text-center" >
-									<p:rowEditor />
 							<div class="form-inline">
+									<p:commandButton icon="ui-icon-pencil" 
+										 title="Editar" action="#{clienteControlador.editarCliente(cliente)}"
+										 />
+
 									<p:commandButton icon="ui-icon-trash" 
 										 title="Excluir" oncomplete="PF('confirmarExclusaoCliente').show();"
 										 actionListener="#{clienteControlador.setCliente(cliente)}"/>

@@ -11,6 +11,7 @@ public abstract class Constantes {
 	
 	/* PAGINAS */
 	
-	public static final String PAGINA_LISTAR_CLIENTES = "/paginas/publica/cliente/listarClientes.jsf";
+	public static final String PAGINA_LISTAR_CLIENTES = "listarClientes";
+	public static final String PAGINA_CLIENTE = "cliente";
 	
 }

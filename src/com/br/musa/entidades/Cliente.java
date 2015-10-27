@@ -7,6 +7,7 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -48,10 +49,10 @@ public class Cliente extends GenericEntity {
 
 	// RELACIONAMENTOS
 
-	@OneToMany(mappedBy = "cliente",cascade=CascadeType.ALL)
+	@OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	private List<Contato> contatoList;
 
-	@OneToMany(mappedBy = "cliente", cascade=CascadeType.ALL)
+	@OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL)
 	private List<Pedido> pedidoList;
 
 	// GET E SET
@@ -129,9 +130,8 @@ public class Cliente extends GenericEntity {
 		return serialVersionUID;
 	}
 
-	public Cliente(Long id, String nome, String cpf, String rg,
-			Date dtNascimento, Boolean flExcluido, List<Contato> contatoList,
-			List<Pedido> pedidoList) {
+	public Cliente(Long id, String nome, String cpf, String rg, Date dtNascimento, Boolean flExcluido,
+			List<Contato> contatoList, List<Pedido> pedidoList) {
 		super();
 		this.id = id;
 		this.nome = nome;
@@ -150,7 +150,14 @@ public class Cliente extends GenericEntity {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
+		result = prime * result + ((contatoList == null) ? 0 : contatoList.hashCode());
+		result = prime * result + ((cpf == null) ? 0 : cpf.hashCode());
+		result = prime * result + ((dtNascimento == null) ? 0 : dtNascimento.hashCode());
+		result = prime * result + ((flExcluido == null) ? 0 : flExcluido.hashCode());
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		result = prime * result + ((nome == null) ? 0 : nome.hashCode());
+		result = prime * result + ((pedidoList == null) ? 0 : pedidoList.hashCode());
+		result = prime * result + ((rg == null) ? 0 : rg.hashCode());
 		return result;
 	}
 
@@ -163,10 +170,45 @@ public class Cliente extends GenericEntity {
 		if (getClass() != obj.getClass())
 			return false;
 		Cliente other = (Cliente) obj;
+		if (contatoList == null) {
+			if (other.contatoList != null)
+				return false;
+		} else if (!contatoList.equals(other.contatoList))
+			return false;
+		if (cpf == null) {
+			if (other.cpf != null)
+				return false;
+		} else if (!cpf.equals(other.cpf))
+			return false;
+		if (dtNascimento == null) {
+			if (other.dtNascimento != null)
+				return false;
+		} else if (!dtNascimento.equals(other.dtNascimento))
+			return false;
+		if (flExcluido == null) {
+			if (other.flExcluido != null)
+				return false;
+		} else if (!flExcluido.equals(other.flExcluido))
+			return false;
 		if (id == null) {
 			if (other.id != null)
 				return false;
 		} else if (!id.equals(other.id))
+			return false;
+		if (nome == null) {
+			if (other.nome != null)
+				return false;
+		} else if (!nome.equals(other.nome))
+			return false;
+		if (pedidoList == null) {
+			if (other.pedidoList != null)
+				return false;
+		} else if (!pedidoList.equals(other.pedidoList))
+			return false;
+		if (rg == null) {
+			if (other.rg != null)
+				return false;
+		} else if (!rg.equals(other.rg))
 			return false;
 		return true;
 	}

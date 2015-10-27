@@ -10,7 +10,6 @@ import javax.faces.bean.ViewScoped;
 import javax.inject.Inject;
 
 import org.primefaces.context.RequestContext;
-import org.primefaces.event.RowEditEvent;
 
 import com.br.musa.constantes.Constantes;
 import com.br.musa.constantes.MsgConstantes;
@@ -41,7 +40,14 @@ public class ClienteControlador extends CoreControlador {
 	
 	@PostConstruct
 	public void init() {
-		cliente = new Cliente();
+		
+		if (ObjetoUtil.isBlank(cliente)) {
+			cliente = (Cliente) obterAtributoFlash("cliente");
+		}else {
+			cliente = new Cliente();
+		}
+		
+		
 		listarTodosOsClientes();
 		dataMax = new Date();
 		
@@ -69,11 +75,9 @@ public class ClienteControlador extends CoreControlador {
 	}
 
 	
-	public void editar(Cliente cliente){
-		clienteServico.salvar(cliente);
-		adicionarMensagem(MsgConstantes.MSG_ALTERACAO_SUCESSO);
-		listarTodosOsClientes();
-		RequestContext.getCurrentInstance().update("listarClientes");
+	public String editarCliente(Cliente cliente){
+		adicionarAtributoFlash("cliente", cliente);
+		return sendRedirect(Constantes.PAGINA_CLIENTE);
 	}
 
 	public void excluir(){
@@ -93,9 +97,9 @@ public class ClienteControlador extends CoreControlador {
 		cliente.setCpf(MascaraUtil.removerMascara(cliente.getCpf()));
 		cliente.setRg(MascaraUtil.removerMascara(cliente.getRg()));
 		clienteServico.salvar(cliente);
-		adicionarMensagem(MsgConstantes.MSG_SUCESSO);
 		cliente = new Cliente();
 		listarTodosOsClientes();
+		adicionarMensagem(MsgConstantes.MSG_SUCESSO);
 		RequestContext.getCurrentInstance().update("tabelaCliente");
 		return sendRedirect(Constantes.PAGINA_LISTAR_CLIENTES);
 	}
@@ -107,12 +111,6 @@ public class ClienteControlador extends CoreControlador {
 		}
 		return Constantes.STRING_VAZIA;
 	}
-	
-	public void onRowEdit(RowEditEvent event) {
-    }
-     
-    public void onRowCancel(RowEditEvent event) {
-    }
 	
 	public List<Cliente> getClientesList() {
 		return clientesList;
