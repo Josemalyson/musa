@@ -7,13 +7,8 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.inject.Inject;
 
-import org.primefaces.context.RequestContext;
-
-import com.br.musa.constantes.Constantes;
-import com.br.musa.constantes.MsgConstantes;
 import com.br.musa.entidades.Cliente;
 import com.br.musa.servicos.ClienteServico;
-import com.br.musa.util.MascaraUtil;
 
 @ManagedBean
 @ViewScoped
@@ -40,16 +35,8 @@ public class ClienteControlador extends ManterClienteControlador {
 	}
 
 	public String salvarCliente() {
-		cliente.setCpf(MascaraUtil.removerMascara(cliente.getCpf()));
-		cliente.setRg(MascaraUtil.removerMascara(cliente.getRg()));
-		clienteServico.salvar(cliente);
-		cliente = new Cliente();
-		listarTodosOsClientes();
-		adicionarMensagem(MsgConstantes.MSG_SUCESSO);
-		RequestContext.getCurrentInstance().update("tabelaCliente");
-		return sendRedirect(Constantes.PAGINA_LISTAR_CLIENTES);
+		return super.salvarCliente();
 	}
-
 
 	public List<Cliente> getClientesList() {
 		return clientesList;
