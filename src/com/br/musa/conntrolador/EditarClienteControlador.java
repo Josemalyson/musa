@@ -17,7 +17,7 @@ import com.br.musa.util.MascaraUtil;
 
 @ManagedBean
 @ViewScoped
-public class ClienteControlador extends ManterClienteControlador {
+public class EditarClienteControlador extends ManterClienteControlador {
 
 	private static final long serialVersionUID = 921184405757324590L;
 
@@ -35,7 +35,7 @@ public class ClienteControlador extends ManterClienteControlador {
 
 	@PostConstruct
 	public void init() {
-		cliente = new Cliente();
+		cliente = (Cliente) obterAtributoFlash("cliente");
 
 	}
 

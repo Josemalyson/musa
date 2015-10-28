@@ -22,7 +22,7 @@
 				<p:dataTable widgetVar="tabelaCliente" 
 						id="tabelaCliente" styleClass="table table-striped"
 						var="cliente"
-						value="#{clienteControlador.clientesList}"
+						value="#{manterClienteControlador.clientesList}"
 						emptyMessage="Nenhum cliente encontrado." 
 						paginator="true"
 						paginatorAlwaysVisible="true" 
@@ -31,7 +31,7 @@
 						editable="true"
 						rowsPerPageTemplate="10,30,50" 
 						paginatorPosition="bottom"
-						filteredValue="#{clienteControlador.clientesListFiltrados}">
+						filteredValue="#{manterClienteControlador.clientesListFiltrados}">
 						
  
 						<p:column headerText="Código" styleClass="text-center" >
@@ -43,26 +43,26 @@
 						</p:column>
 						
 						<p:column headerText="CPF" styleClass="text-center" filterBy="#{cliente.cpf}" ooterText="contains" filterMatchMode="contains">
-				               <h:outputText value="#{clienteControlador.adiconarMascaraCpf(cliente)}" />
+				               <h:outputText value="#{manterClienteControlador.adiconarMascaraCpf(cliente)}" />
 						</p:column>
 						
 						<p:column headerText="RG" styleClass="text-center">
-					               <h:outputText value="#{clienteControlador.adiconarMascaraRg(cliente)}" />
+					               <h:outputText value="#{manterClienteControlador.adiconarMascaraRg(cliente)}" />
 						</p:column>
 						
 						<p:column headerText="Data de Nascimento" styleClass="text-center">
-				               <h:outputText value="#{clienteControlador.montarDataNascimento(cliente)}" />
+				               <h:outputText value="#{manterClienteControlador.montarDataNascimento(cliente)}" />
 						</p:column>
 						
 						<p:column headerText="Opções" styleClass="text-center" >
 							<div class="form-inline">
 									<p:commandButton icon="ui-icon-pencil" 
-										 title="Editar" action="#{clienteControlador.editarCliente(cliente)}"
+										 title="Editar" action="#{manterClienteControlador.editarCliente(cliente)}"
 										 />
 
 									<p:commandButton icon="ui-icon-trash" 
 										 title="Excluir" oncomplete="PF('confirmarExclusaoCliente').show();"
-										 actionListener="#{clienteControlador.setCliente(cliente)}"/>
+										 actionListener="#{manterClienteControlador.setCliente(cliente)}"/>
 							</div>
 						</p:column>
 						
@@ -71,14 +71,6 @@
 			</div>
 			
 			<br />
-			
-				<div class="form-inline text-center row">
-	  				<div class="form-group">
-						<p:commandButton value="Salvar" styleClass="btn btn-success" 
-								actionListener="#{clienteControlador.salvarCliente()}" />
-					</div>
-				</div>
-			
 			
 			<p:confirmDialog 
 							widgetVar="confirmarExclusaoCliente"
@@ -90,7 +82,7 @@
 											 value="Confirmar"
 											 styleClass="btn btn-success"
 											 onclick="PF('confirmarExclusaoCliente').hide();"
-											 actionListener="#{clienteControlador.excluir()}"/>
+											 actionListener="#{manterClienteControlador.excluir()}"/>
 					
 							<p:commandButton id="btnCancelaExclusaoCliente"
 											 value="Cancelar"
