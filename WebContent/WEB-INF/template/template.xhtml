@@ -27,14 +27,7 @@
 		</ui:insert>
 	</div>
 	<div>
-		 <p:outputPanel autoUpdate="true">
-	            <p:dialog widgetVar="messagesModal" modal="true" visible="true" id="messagesReturn"
-	            	 showHeader="false" rendered="#{not empty facesContext.messageList}" resizable="false"
-	            	 styleClass="has-message" closeOnEscape="true" onHide="colocaFocoErro();">
-	            	<a id="close-error-msg" class="scw-icon-cancel pull-right" onclick="PF('messagesModal').hide();"></a>
-	                <p:messages id="messages" globalOnly="false" severity="info, error" escape="false"/>
-	            </p:dialog>
-	        </p:outputPanel>
+	        <p:growl id="messages" globalOnly="false" severity="info, error" escape="false" closable="true" autoUpdate="true" />
 	</div>
 	<div id="conteudo" class="container-fluid">
 		<ui:insert name="conteudo">

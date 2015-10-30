@@ -15,7 +15,7 @@
 		  <li class="active">Cadastro</li>
 	</ol>
 	
-<h:form prependId="false" id="listarClientes">
+<h:form prependId="false" id="editarClientes">
 		
 	<p:fieldset legend="Dados Cadastrais" >
 		
@@ -25,7 +25,7 @@
 						<div class="form-group row ">
 								<label class="col-sm-2 control-label">Nome:</label>
 							<div class="col-sm-10">
-								<p:inputText id="nome" styleClass="form-control" value="#{editarClienteControlador.cliente.nome}"></p:inputText>
+								<p:inputText id="nome" styleClass="form-control" value="#{editarClienteControlador.clienteSelecionado.nome}"></p:inputText>
 							</div>
 						</div>
 				
@@ -33,7 +33,7 @@
 								<label class="col-sm-2 control-label">CPF:</label>
 							<div class="col-sm-4">
 								<p:inputMask styleClass="form-control" mask="?999.999.999-99" id="cpf"
-									value="#{editarClienteControlador.cliente.cpf}" maxlength="14"/>
+									value="#{editarClienteControlador.clienteSelecionado.cpf}" maxlength="14"/>
 							</div>
 						</div>
 						
@@ -41,7 +41,7 @@
 								<label class="col-sm-2 control-label">RG:</label>
 							<div class="col-sm-4">
 								<p:inputMask styleClass="form-control" mask="?999.999-9" id="rg"
-									value="#{editarClienteControlador.cliente.rg}" maxlength="9"/>
+									value="#{editarClienteControlador.clienteSelecionado.rg}" maxlength="9"/>
 							</div>
 						</div>
 						
@@ -49,7 +49,7 @@
 								<label class="col-sm-2 control-label">Data de Nascimento:</label>
 							<div class="col-sm-4">
 								<p:calendar locale="pt_BR" navigator="true" pattern="dd/MM/yyyy"
-									value="#{editarClienteControlador.cliente.dtNascimento}"	id="dtNascimento"/>
+									value="#{editarClienteControlador.clienteSelecionado.dtNascimento}"	id="dtNascimento" maxdate="#{editarClienteControlador.dataMaxima}"/>
 							</div>
 						</div>
 				
@@ -67,15 +67,15 @@
 	  				<div class="panel-body">
 	  				
 	  				<p:dataTable widgetVar="tabelaContato" 
-						id="contatosCliente" styleClass="table table-striped"
+						id="tabelaContato" 
+						styleClass="table table-striped"
 						var="contato"
-						value="#{editarClienteControlador.cliente.contatoList}"
+						value="#{editarClienteControlador.clienteSelecionado.contatoList}"
 						emptyMessage="Nenhum contato cadastrado." 
 						paginator="true"
 						paginatorAlwaysVisible="true" 
 						pageLinks="5" 
 						rows="5"
-						editable="true"
 						rowsPerPageTemplate="5,10,15" 
 						paginatorPosition="bottom"
 						>
@@ -92,9 +92,18 @@
 				            <h:outputText styleClass="form-control" id="email" value="#{contato.email}" />
 						</p:column>
 
+						<p:column headerText="Opções" styleClass="text-center" >
+							<div class="form-inline">
+									<p:commandButton icon="ui-icon-pencil" title="Editar"/>
+
+									<p:commandButton icon="ui-icon-trash" title="Excluir" />
+							</div>
+						</p:column>
+
 					</p:dataTable>
 					
-					<p:commandButton value="Incluir" styleClass="btn btn-primary" oncomplete="PF('incluirContato').show();"/>
+					<p:commandButton value="Incluir" styleClass="btn btn-primary" 
+						oncomplete="PF('incluirContato').show();" actionListener="#{editarClienteControlador.limparModalContato()}"/>
 					
 					</div>
 			</div>			
@@ -128,7 +137,7 @@
 	  					<div class="form-group row ">
 								<label class="col-sm-1 control-label">Rua:</label>
 							<div class="col-sm-6">
-								<p:inputText id="rua" styleClass="form-control" value="" disabled="true" ></p:inputText>
+								<p:inputText id="rua" styleClass="form-control" value="#" disabled="true" ></p:inputText>
 							</div>
 						</div>
 
@@ -136,12 +145,12 @@
 						
 								<label class="col-sm-1 control-label">Cidade:</label>
 									<div class="col-sm-2">
-										<p:inputText id="cidade" styleClass="form-control" value="" disabled="true" ></p:inputText>
+										<p:inputText id="cidade" styleClass="form-control" value="#" disabled="true" ></p:inputText>
 									</div>
 							
 								<label class="col-sm-1 control-label">Bairro:</label>
 									<div class="col-sm-2">
-										<p:inputText id="bairro" styleClass="form-control" value="" disabled="true"></p:inputText>
+										<p:inputText id="bairro" styleClass="form-control" value="#" disabled="true"></p:inputText>
 									</div>
 						
 								<label class="col-sm-1 control-label">Estado:</label>
@@ -172,8 +181,8 @@
 	  				<div class="form-group">
 		  				<label class="col-sm-2 control-label"></label>
 							<div class="col-sm-2">
-							<h:commandButton value="Salvar" styleClass="btn btn-success" 
-									action="#{editarClienteControlador.salvarCliente()}" oncomplete="PF('incluirCliente').hide();"/>
+							<p:commandButton value="Salvar" styleClass="btn btn-success" process="editarClientes" 
+									action="#{editarClienteControlador.salvarCliente()}" oncomplete="PF('incluirCliente').hide();" />
 							</div>
 						<label class="col-sm-2 control-label"></label>	
 						<div class="col-sm-2">
@@ -197,19 +206,19 @@
 						<div class="form-group row ">
 								<label class="col-sm-2 control-label">Email:</label>
 							<div class="col-sm-10">
-								<p:inputText id="email" styleClass="form-control" value=""></p:inputText>
+								<p:inputText id="email" styleClass="form-control" value="#{editarClienteControlador.contato.email}"></p:inputText>
 							</div>
 						</div>
 
 						<div class="form-group row ">
 								<label class="col-sm-2 control-label">DDD:</label>
 							<div class="col-sm-2">
-								<p:inputText id="ddd" styleClass="form-control" value=""></p:inputText>
+								<p:inputText id="ddd" styleClass="form-control" value="#{editarClienteControlador.contato.ddd}"></p:inputText>
 							</div>
 						
 								<label class="col-sm-2 control-label">Telefone:</label>
 							<div class="col-sm-6">
-								<p:inputText id="telefone" styleClass="form-control" value=""></p:inputText>
+								<p:inputText id="telefone" styleClass="form-control" value="#{editarClienteControlador.contato.telefone}"></p:inputText>
 							</div>
 						</div>
 						
@@ -220,6 +229,7 @@
 							<p:commandButton id="btnConfirma"
 											 value="Confirmar"
 											 styleClass="btn btn-success"
+											 actionListener="#{editarClienteControlador.adiconarContato()}"
 											 />
 					
 							<p:commandButton id="btnCancela"
@@ -230,7 +240,6 @@
 						</div>	
 			
 			</p:dialog>
-			
 		</h:form>
 	</ui:define>
 </ui:composition>

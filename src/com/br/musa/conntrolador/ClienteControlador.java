@@ -1,65 +1,71 @@
 package com.br.musa.conntrolador;
 
-import java.util.List;
+
+import java.util.Date;
 
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
-import javax.inject.Inject;
 
+import org.primefaces.context.RequestContext;
+
+import com.br.musa.constantes.Constantes;
+import com.br.musa.constantes.MsgConstantes;
 import com.br.musa.entidades.Cliente;
-import com.br.musa.servicos.ClienteServico;
+import com.br.musa.util.MascaraUtil;
 
 @ManagedBean
 @ViewScoped
 public class ClienteControlador extends ManterClienteControlador {
-
-	private static final long serialVersionUID = 921184405757324590L;
-
-	// Servicos
-	@Inject
-	private ClienteServico clienteServico;
-
-	// LISTAS
-	private List<Cliente> clientesList;
-	private List<Cliente> clientesListFiltrados;
-
-	// OBJETOS
-
-	private Cliente cliente;
-
+	private static final long serialVersionUID = 4425238557135997397L;
+	
+	
+	private Cliente novocliente;
+	private Date dataMaxima;
+	
 	@PostConstruct
-	public void init() {
-		cliente = new Cliente();
-
+	public void init(){
+		novocliente = new Cliente();
+		dataMaxima = new Date();
 	}
+	
+	
 
 	public String salvarCliente() {
-		return super.salvarCliente();
+
+		novocliente.setCpf(MascaraUtil.removerMascara(novocliente.getCpf()));
+		novocliente.setRg(MascaraUtil.removerMascara(novocliente.getRg()));
+		novocliente.setFlExcluido(false);
+		
+		getClienteServico().salvar(novocliente);
+		
+		adicionarMensagem(MsgConstantes.MSG_SUCESSO);
+		RequestContext.getCurrentInstance().update("tabelaCliente");
+		return sendRedirect(Constantes.PAGINA_LISTAR_CLIENTES);
+		
 	}
 
-	public List<Cliente> getClientesList() {
-		return clientesList;
+
+
+	public Cliente getNovocliente() {
+		return novocliente;
 	}
 
-	public void setClientesList(List<Cliente> clientesList) {
-		this.clientesList = clientesList;
+
+
+	public void setNovocliente(Cliente novocliente) {
+		this.novocliente = novocliente;
 	}
 
-	public Cliente getCliente() {
-		return cliente;
+
+
+	public Date getDataMaxima() {
+		return dataMaxima;
 	}
 
-	public void setCliente(Cliente cliente) {
-		this.cliente = cliente;
-	}
 
-	public List<Cliente> getClientesListFiltrados() {
-		return clientesListFiltrados;
-	}
 
-	public void setClientesListFiltrados(List<Cliente> clientesListFiltrados) {
-		this.clientesListFiltrados = clientesListFiltrados;
+	public void setDataMaxima(Date dataMaxima) {
+		this.dataMaxima = dataMaxima;
 	}
-
 }

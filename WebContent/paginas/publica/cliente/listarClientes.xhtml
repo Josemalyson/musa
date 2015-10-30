@@ -20,7 +20,8 @@
 		
 		<div class="table-responsive">
 				<p:dataTable widgetVar="tabelaCliente" 
-						id="tabelaCliente" styleClass="table table-striped"
+						id="tabelaCliente" 
+						styleClass="table table-striped"
 						var="cliente"
 						value="#{manterClienteControlador.clientesList}"
 						emptyMessage="Nenhum cliente encontrado." 
@@ -28,7 +29,6 @@
 						paginatorAlwaysVisible="true" 
 						pageLinks="10" 
 						rows="10"
-						editable="true"
 						rowsPerPageTemplate="10,30,50" 
 						paginatorPosition="bottom"
 						filteredValue="#{manterClienteControlador.clientesListFiltrados}">

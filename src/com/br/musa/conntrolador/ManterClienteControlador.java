@@ -35,11 +35,12 @@ public class ManterClienteControlador extends CoreControlador {
 
 	// OBJETOS
 
-	private Cliente cliente;
+	private Cliente clienteSelecioando;
 	private Date dataMax;
 
 	@PostConstruct
 	public void init() {
+		clienteSelecioando = new Cliente();
 		listarTodosOsClientes();
 		dataMax = new Date();
 
@@ -74,8 +75,8 @@ public class ManterClienteControlador extends CoreControlador {
 
 	public void excluir() {
 
-		if (ObjetoUtil.notBlank(cliente)) {
-			clienteServico.excluir(cliente);
+		if (ObjetoUtil.notBlank(clienteSelecioando)) {
+			clienteServico.excluir(clienteSelecioando);
 			adicionarMensagem(MsgConstantes.MSG_ALTERACAO_SUCESSO);
 			listarTodosOsClientes();
 			RequestContext.getCurrentInstance().update("tabelaCliente");
@@ -83,17 +84,6 @@ public class ManterClienteControlador extends CoreControlador {
 			adicionarErro(MsgConstantes.MSG_ERRO);
 		}
 
-	}
-
-	public String salvarCliente() {
-		cliente.setCpf(MascaraUtil.removerMascara(cliente.getCpf()));
-		cliente.setRg(MascaraUtil.removerMascara(cliente.getRg()));
-		clienteServico.salvar(cliente);
-		cliente = new Cliente();
-		listarTodosOsClientes();
-		adicionarMensagem(MsgConstantes.MSG_SUCESSO);
-		RequestContext.getCurrentInstance().update("tabelaCliente");
-		return sendRedirect(Constantes.PAGINA_LISTAR_CLIENTES);
 	}
 
 	public String montarDataNascimento(Cliente cliente) {
@@ -113,11 +103,11 @@ public class ManterClienteControlador extends CoreControlador {
 	}
 
 	public Cliente getCliente() {
-		return cliente;
+		return clienteSelecioando;
 	}
 
 	public void setCliente(Cliente cliente) {
-		this.cliente = cliente;
+		this.clienteSelecioando = cliente;
 	}
 
 	public Date getDataMax() {
@@ -134,6 +124,14 @@ public class ManterClienteControlador extends CoreControlador {
 
 	public void setClientesListFiltrados(List<Cliente> clientesListFiltrados) {
 		this.clientesListFiltrados = clientesListFiltrados;
+	}
+
+	public ClienteServico getClienteServico() {
+		return clienteServico;
+	}
+
+	public void setClienteServico(ClienteServico clienteServico) {
+		this.clienteServico = clienteServico;
 	}
 
 }

@@ -167,4 +167,8 @@ public final class FacesUtil {
 
 		return MessageFormat.format(chave, params);
 	}
+	
+	  public static String obterTexto(String chave){
+	      return chave;
+	  }
 }

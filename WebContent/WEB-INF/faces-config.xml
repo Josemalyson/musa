@@ -5,6 +5,9 @@
     xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-facesconfig_2_2.xsd"
     version="2.2">
     
+    <factory>
+        <exception-handler-factory>com.br.musa.exeption.ExceptionHandlerCustomFactory</exception-handler-factory>
+    </factory>
     
 
 </faces-config>
