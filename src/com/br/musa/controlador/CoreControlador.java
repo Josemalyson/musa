@@ -1,4 +1,4 @@
-package com.br.musa.conntrolador;
+package com.br.musa.controlador;
 
 import java.io.Serializable;
 

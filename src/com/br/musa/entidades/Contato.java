@@ -47,8 +47,8 @@ public class Contato extends GenericEntity {
 
 	// RELACIONAMENTOS
 
-	@ManyToOne(cascade=CascadeType.ALL, fetch=FetchType.EAGER)
-	@JoinColumn(name="FK_CLIENTE", referencedColumnName="ID_CLIENTE")
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	@JoinColumn(name = "FK_CLIENTE", referencedColumnName = "ID_CLIENTE")
 	private Cliente cliente;
 
 	// CONSTRUTORES
@@ -119,7 +119,14 @@ public class Contato extends GenericEntity {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
+		result = prime * result + ((cliente == null) ? 0 : cliente.hashCode());
+		result = prime * result + ((ddd == null) ? 0 : ddd.hashCode());
+		result = prime * result + ((email == null) ? 0 : email.hashCode());
+		result = prime * result
+				+ ((flExcluido == null) ? 0 : flExcluido.hashCode());
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		result = prime * result
+				+ ((telefone == null) ? 0 : telefone.hashCode());
 		return result;
 	}
 
@@ -132,10 +139,35 @@ public class Contato extends GenericEntity {
 		if (getClass() != obj.getClass())
 			return false;
 		Contato other = (Contato) obj;
+		if (cliente == null) {
+			if (other.cliente != null)
+				return false;
+		} else if (!cliente.equals(other.cliente))
+			return false;
+		if (ddd == null) {
+			if (other.ddd != null)
+				return false;
+		} else if (!ddd.equals(other.ddd))
+			return false;
+		if (email == null) {
+			if (other.email != null)
+				return false;
+		} else if (!email.equals(other.email))
+			return false;
+		if (flExcluido == null) {
+			if (other.flExcluido != null)
+				return false;
+		} else if (!flExcluido.equals(other.flExcluido))
+			return false;
 		if (id == null) {
 			if (other.id != null)
 				return false;
 		} else if (!id.equals(other.id))
+			return false;
+		if (telefone == null) {
+			if (other.telefone != null)
+				return false;
+		} else if (!telefone.equals(other.telefone))
 			return false;
 		return true;
 	}

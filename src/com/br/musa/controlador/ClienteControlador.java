@@ -1,4 +1,4 @@
-package com.br.musa.conntrolador;
+package com.br.musa.controlador;
 
 
 import java.util.Date;
@@ -6,20 +6,26 @@ import java.util.Date;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
+import javax.inject.Inject;
 
 import org.primefaces.context.RequestContext;
 
 import com.br.musa.constantes.Constantes;
 import com.br.musa.constantes.MsgConstantes;
 import com.br.musa.entidades.Cliente;
+import com.br.musa.servicos.ClienteServico;
 import com.br.musa.util.MascaraUtil;
 
 @ManagedBean
 @ViewScoped
-public class ClienteControlador extends ManterClienteControlador {
+public class ClienteControlador extends CoreControlador {
 	private static final long serialVersionUID = 4425238557135997397L;
 	
-	
+	//SERVICOS
+	@Inject
+	private ClienteServico clienteServico;
+
+	//OBJETOS
 	private Cliente novocliente;
 	private Date dataMaxima;
 	
@@ -37,7 +43,7 @@ public class ClienteControlador extends ManterClienteControlador {
 		novocliente.setRg(MascaraUtil.removerMascara(novocliente.getRg()));
 		novocliente.setFlExcluido(false);
 		
-		getClienteServico().salvar(novocliente);
+		clienteServico.salvar(novocliente);
 		
 		adicionarMensagem(MsgConstantes.MSG_SUCESSO);
 		RequestContext.getCurrentInstance().update("tabelaCliente");
