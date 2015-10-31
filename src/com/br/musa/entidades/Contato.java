@@ -47,7 +47,7 @@ public class Contato extends GenericEntity {
 
 	// RELACIONAMENTOS
 
-	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	@ManyToOne
 	@JoinColumn(name = "FK_CLIENTE", referencedColumnName = "ID_CLIENTE")
 	private Cliente cliente;
 

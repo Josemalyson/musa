@@ -24,19 +24,18 @@ public class EditarClienteControlador extends CoreControlador {
 
 	private static final long serialVersionUID = 921184405757324590L;
 
-	
-	//SERVICOS
+	// SERVICOS
 	@Inject
 	private ClienteServico clienteServico;
 	@Inject
 	private ContatoServico contatoServico;
-	
+
 	// OBJETOS
 	private Cliente clienteSelecionado;
 	private Contato contato;
 	private Date dataMaxima;
-	
-	//LISTA
+
+	// LISTA
 	private List<Contato> contatoList;
 
 	@PostConstruct
@@ -44,115 +43,108 @@ public class EditarClienteControlador extends CoreControlador {
 		clienteSelecionado = (Cliente) obterAtributoFlash("cliente");
 		dataMaxima = new Date();
 		contato = new Contato();
+		listarContatosDoCliente();
+	}
+
+	private void listarContatosDoCliente() {
 		contatoList = contatoServico.listarContatosClienteNaoExcluido(clienteSelecionado);
 	}
 
+	public void adiconarContato() {
 
-
-
-	public void adiconarContato(){
-		
-		
 		if (contato.getId() == null && contato.getCliente() == null) {
 			contato.setCliente(clienteSelecionado);
 			contato.setFlExcluido(false);
 			contatoList.add(contato);
-		}else {
+		} else {
 			Contato contatoAux = contato;
 			if (contatoList.contains(contato)) {
 				contatoList.remove(contato);
 				contatoList.add(contatoAux);
 			}
 		}
-		
+
 		contato = new Contato();
 		adicionarMensagem(MsgConstantes.MSG_SUCESSO);
 		RequestContext.getCurrentInstance().update("tabelaContato");
-		RequestContext.getCurrentInstance().execute("PF('incluirContato').hide()");
-	
+		RequestContext.getCurrentInstance().execute(
+				"PF('incluirContato').hide()");
+
 	}
-	
-	
-	public void limparModalContato(){
+
+	public void limparModalContato() {
 		contato = new Contato();
 		RequestContext.getCurrentInstance().update("incluirContato");
 	}
-	
-	
-	public void editarContato(Contato contatoSelecionado){
+
+	public void editarContato(Contato contatoSelecionado) {
 		contato = new Contato();
 		contato = contatoSelecionado;
 		RequestContext.getCurrentInstance().execute("PF('incluirContato').show()");
 		RequestContext.getCurrentInstance().update("incluirContato");
 	}
-	
-	//TODO VERIFICAR METODO EXLUCIR NAO ESTA FUNCIONADO
-	
-	public void excluirContato(){
 
-		
+	// TODO VERIFICAR METODO EXLUCIR NAO ESTA FUNCIONADO, ESTA SETANDO OS
+	// VALORES DE EMAIL,TELEDONE E DDD PARA NULL
+
+	public void excluirContato() {
+
 		if (contato.getId() != null) {
 			contato.setFlExcluido(true);
-			clienteSelecionado.getContatoList().add(contato);
+			contatoServico.salvar(contato);
+			listarContatosDoCliente();
+		} else {
+			contatoList.remove(contato);
 		}
 
-		contatoList.remove(contato);
-		
 		adicionarMensagem(MsgConstantes.MSG_EXCLUSAO_SUCESSO);
 		RequestContext.getCurrentInstance().update("tabelaContato");
 	}
-	
+
 	public String salvarCliente() {
 
-		clienteSelecionado.setCpf(MascaraUtil.removerMascara(clienteSelecionado.getCpf()));
+		clienteSelecionado.setCpf(MascaraUtil.removerMascara(clienteSelecionado	.getCpf()));
 		clienteSelecionado.setRg(MascaraUtil.removerMascara(clienteSelecionado.getRg()));
-		
+
 		if (!contatoList.isEmpty()) {
 			clienteSelecionado.getContatoList().addAll(contatoList);
 		}
-		
+
 		clienteServico.salvar(clienteSelecionado);
-		
+
 		adicionarMensagem(MsgConstantes.MSG_SUCESSO);
 		RequestContext.getCurrentInstance().update("tabelaCliente");
 		return sendRedirect(Constantes.PAGINA_LISTAR_CLIENTES);
-		
+
 	}
 
 	public Cliente getClienteSelecionado() {
 		return clienteSelecionado;
 	}
 
-
 	public void setClienteSelecionado(Cliente clienteSelecionado) {
 		this.clienteSelecionado = clienteSelecionado;
 	}
-
 
 	public Date getDataMaxima() {
 		return dataMaxima;
 	}
 
-
 	public void setDataMaxima(Date dataMaxima) {
 		this.dataMaxima = dataMaxima;
 	}
-
 
 	public Contato getContato() {
 		return contato;
 	}
 
-
 	public void setContato(Contato contato) {
 		this.contato = contato;
 	}
 
-
 	public List<Contato> getContatoList() {
 		return contatoList;
 	}
-
 
 	public void setContatoList(List<Contato> contatoList) {
 		this.contatoList = contatoList;
