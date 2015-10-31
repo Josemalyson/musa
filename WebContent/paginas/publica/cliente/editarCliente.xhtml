@@ -70,7 +70,7 @@
 						id="tabelaContato" 
 						styleClass="table table-striped"
 						var="contato"
-						value="#{editarClienteControlador.clienteSelecionado.contatoList}"
+						value="#{editarClienteControlador.contatoList}"
 						emptyMessage="Nenhum contato cadastrado." 
 						paginator="true"
 						paginatorAlwaysVisible="true" 
@@ -96,7 +96,9 @@
 							<div class="form-inline">
 									<p:commandButton icon="ui-icon-pencil" title="Editar" actionListener="#{editarClienteControlador.editarContato(contato)}"/>
 
-									<p:commandButton icon="ui-icon-trash" title="Excluir" />
+									<p:commandButton icon="ui-icon-trash" title="Excluir" 
+										actionListener="#{editarClienteControlador.setContato(contato)}"
+										oncomplete="PF('confirmarExclusaoContato').show();"/>
 							</div>
 						</p:column>
 
@@ -240,6 +242,28 @@
 						</div>	
 			
 			</p:dialog>
+			
+			
+			<p:confirmDialog 
+							widgetVar="confirmarExclusaoContato"
+							id="confirmarExclusaoContato"
+							message="Confirmar Exclusão deste item?"
+							closable="false">
+							
+							<p:commandButton id="btnConfirmaExclusaoContato"
+											 value="Confirmar"
+											 styleClass="btn btn-success"
+											 oncomplete="PF('confirmarExclusaoContato').hide();"
+											 actionListener="#{editarClienteControlador.excluirContato()}"/>
+					
+							<p:commandButton id="btnCancelaExclusaoContato"
+											 value="Cancelar"
+											 styleClass="btn btn-danger"
+											 oncomplete="PF('confirmarExclusaoContato').hide();"/>
+				
+			</p:confirmDialog>
+			
+			
 		</h:form>
 	</ui:define>
 </ui:composition>

@@ -4,14 +4,11 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import com.br.musa.constantes.Constantes;
 import com.br.musa.constantes.MsgConstantes;
 import com.br.musa.entidades.Cliente;
 import com.br.musa.exeption.BusinessException;
 import com.br.musa.repositorio.ClienteRepositorio;
 import com.br.musa.util.CpfUtil;
-import com.br.musa.util.FacesUtil;
-import com.sun.xml.internal.fastinfoset.sax.Properties;
 
 public class ClienteServico {
 

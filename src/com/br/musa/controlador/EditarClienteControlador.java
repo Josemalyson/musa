@@ -1,6 +1,7 @@
 package com.br.musa.controlador;
 
 import java.util.Date;
+import java.util.List;
 
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
@@ -14,6 +15,7 @@ import com.br.musa.constantes.MsgConstantes;
 import com.br.musa.entidades.Cliente;
 import com.br.musa.entidades.Contato;
 import com.br.musa.servicos.ClienteServico;
+import com.br.musa.servicos.ContatoServico;
 import com.br.musa.util.MascaraUtil;
 
 @ManagedBean
@@ -26,17 +28,26 @@ public class EditarClienteControlador extends CoreControlador {
 	//SERVICOS
 	@Inject
 	private ClienteServico clienteServico;
+	@Inject
+	private ContatoServico contatoServico;
+	
 	// OBJETOS
 	private Cliente clienteSelecionado;
 	private Contato contato;
 	private Date dataMaxima;
+	
+	//LISTA
+	private List<Contato> contatoList;
 
 	@PostConstruct
 	public void init() {
 		clienteSelecionado = (Cliente) obterAtributoFlash("cliente");
 		dataMaxima = new Date();
 		contato = new Contato();
+		contatoList = contatoServico.listarContatosClienteNaoExcluido(clienteSelecionado);
 	}
+
+
 
 
 	public void adiconarContato(){
@@ -45,16 +56,17 @@ public class EditarClienteControlador extends CoreControlador {
 		if (contato.getId() == null && contato.getCliente() == null) {
 			contato.setCliente(clienteSelecionado);
 			contato.setFlExcluido(false);
-			clienteSelecionado.getContatoList().add(contato);
+			contatoList.add(contato);
 		}else {
 			Contato contatoAux = contato;
-			if (clienteSelecionado.getContatoList().contains(contato)) {
-				clienteSelecionado.getContatoList().remove(contato);
-				clienteSelecionado.getContatoList().add(contatoAux);
+			if (contatoList.contains(contato)) {
+				contatoList.remove(contato);
+				contatoList.add(contatoAux);
 			}
 		}
 		
 		contato = new Contato();
+		adicionarMensagem(MsgConstantes.MSG_SUCESSO);
 		RequestContext.getCurrentInstance().update("tabelaContato");
 		RequestContext.getCurrentInstance().execute("PF('incluirContato').hide()");
 	
@@ -74,21 +86,30 @@ public class EditarClienteControlador extends CoreControlador {
 		RequestContext.getCurrentInstance().update("incluirContato");
 	}
 	
-	public void excluirContato(Contato contatoSelecionado){
+	//TODO VERIFICAR METODO EXLUCIR NAO ESTA FUNCIONADO
+	
+	public void excluirContato(){
 
-		if (contatoSelecionado.getId() != null) {
-			
-		}
 		
-		RequestContext.getCurrentInstance().execute("PF('incluirContato').show()");
-		RequestContext.getCurrentInstance().update("incluirContato");
+		if (contato.getId() != null) {
+			contato.setFlExcluido(true);
+			clienteSelecionado.getContatoList().add(contato);
+		}
+
+		contatoList.remove(contato);
+		
+		adicionarMensagem(MsgConstantes.MSG_EXCLUSAO_SUCESSO);
+		RequestContext.getCurrentInstance().update("tabelaContato");
 	}
 	
 	public String salvarCliente() {
 
 		clienteSelecionado.setCpf(MascaraUtil.removerMascara(clienteSelecionado.getCpf()));
 		clienteSelecionado.setRg(MascaraUtil.removerMascara(clienteSelecionado.getRg()));
-		clienteSelecionado.setFlExcluido(false);
+		
+		if (!contatoList.isEmpty()) {
+			clienteSelecionado.getContatoList().addAll(contatoList);
+		}
 		
 		clienteServico.salvar(clienteSelecionado);
 		
@@ -125,6 +146,16 @@ public class EditarClienteControlador extends CoreControlador {
 
 	public void setContato(Contato contato) {
 		this.contato = contato;
+	}
+
+
+	public List<Contato> getContatoList() {
+		return contatoList;
+	}
+
+
+	public void setContatoList(List<Contato> contatoList) {
+		this.contatoList = contatoList;
 	}
 
 }
