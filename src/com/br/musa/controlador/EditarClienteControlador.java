@@ -14,8 +14,10 @@ import com.br.musa.constantes.Constantes;
 import com.br.musa.constantes.MsgConstantes;
 import com.br.musa.entidades.Cliente;
 import com.br.musa.entidades.Contato;
+import com.br.musa.entidades.Estado;
 import com.br.musa.servicos.ClienteServico;
 import com.br.musa.servicos.ContatoServico;
+import com.br.musa.servicos.EstadoServico;
 import com.br.musa.util.MascaraUtil;
 
 @ManagedBean
@@ -29,6 +31,8 @@ public class EditarClienteControlador extends CoreControlador {
 	private ClienteServico clienteServico;
 	@Inject
 	private ContatoServico contatoServico;
+	@Inject
+	private EstadoServico estadoServico;
 
 	// OBJETOS
 	private Cliente clienteSelecionado;
@@ -37,6 +41,8 @@ public class EditarClienteControlador extends CoreControlador {
 
 	// LISTA
 	private List<Contato> contatoList;
+	private List<Estado> estadoList;
+
 
 	@PostConstruct
 	public void init() {
@@ -44,10 +50,17 @@ public class EditarClienteControlador extends CoreControlador {
 		dataMaxima = new Date();
 		contato = new Contato();
 		listarContatosDoCliente();
+		listarEstados();
+	}
+
+	private void listarEstados() {
+		estadoList = estadoServico.listarEstados();
+
 	}
 
 	private void listarContatosDoCliente() {
-		contatoList = contatoServico.listarContatosClienteNaoExcluido(clienteSelecionado);
+		contatoList = contatoServico
+				.listarContatosClienteNaoExcluido(clienteSelecionado);
 	}
 
 	public void adiconarContato() {
@@ -80,7 +93,8 @@ public class EditarClienteControlador extends CoreControlador {
 	public void editarContato(Contato contatoSelecionado) {
 		contato = new Contato();
 		contato = contatoSelecionado;
-		RequestContext.getCurrentInstance().execute("PF('incluirContato').show()");
+		RequestContext.getCurrentInstance().execute(
+				"PF('incluirContato').show()");
 		RequestContext.getCurrentInstance().update("incluirContato");
 	}
 
@@ -103,8 +117,10 @@ public class EditarClienteControlador extends CoreControlador {
 
 	public String salvarCliente() {
 
-		clienteSelecionado.setCpf(MascaraUtil.removerMascara(clienteSelecionado	.getCpf()));
-		clienteSelecionado.setRg(MascaraUtil.removerMascara(clienteSelecionado.getRg()));
+		clienteSelecionado.setCpf(MascaraUtil.removerMascara(clienteSelecionado
+				.getCpf()));
+		clienteSelecionado.setRg(MascaraUtil.removerMascara(clienteSelecionado
+				.getRg()));
 
 		if (!contatoList.isEmpty()) {
 			clienteSelecionado.getContatoList().addAll(contatoList);
@@ -148,6 +164,14 @@ public class EditarClienteControlador extends CoreControlador {
 
 	public void setContatoList(List<Contato> contatoList) {
 		this.contatoList = contatoList;
+	}
+
+	public List<Estado> getEstadoList() {
+		return estadoList;
+	}
+
+	public void setEstadoList(List<Estado> estadoList) {
+		this.estadoList = estadoList;
 	}
 
 }

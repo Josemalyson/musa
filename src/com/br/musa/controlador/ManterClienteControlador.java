@@ -23,7 +23,7 @@ import com.br.musa.util.ObjetoUtil;
 @ViewScoped
 public class ManterClienteControlador extends CoreControlador {
 
-	private static final long serialVersionUID = 921184405757324590L;
+ static final long serialVersionUID = 921184405757324590L;
 
 	// Servicos
 	@Inject
