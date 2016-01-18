@@ -28,9 +28,6 @@ public class Endereco extends GenericEntity {
 	@Column(name = "DS_RUA")
 	private String rua;
 
-	@Column(name = "DS_CIDADE")
-	private String cidade;
-
 	@Column(name = "DS_BAIRRO")
 	private String bairro;
 
@@ -44,18 +41,22 @@ public class Endereco extends GenericEntity {
 	@JoinColumn(name = "FK_ESTADO", referencedColumnName = "ID_ESTADO")
 	private Estado estado;
 
+	@ManyToOne
+	@JoinColumn(name = "FK_CIDADE", referencedColumnName = "ID_CIDADE")
+	private Cidade cidade;
+
 	public Endereco() {
 	}
 
-	public Endereco(Long id, String rua, String cidade, String bairro, Integer numero, Integer cep, Estado estado) {
+	public Endereco(Long id, String rua, String bairro, Integer numero, Integer cep, Estado estado, Cidade cidade) {
 		super();
 		this.id = id;
 		this.rua = rua;
-		this.cidade = cidade;
 		this.bairro = bairro;
 		this.numero = numero;
 		this.cep = cep;
 		this.estado = estado;
+		this.cidade = cidade;
 	}
 
 	public Long getId() {
@@ -72,14 +73,6 @@ public class Endereco extends GenericEntity {
 
 	public void setRua(String rua) {
 		this.rua = rua;
-	}
-
-	public String getCidade() {
-		return cidade;
-	}
-
-	public void setCidade(String cidade) {
-		this.cidade = cidade;
 	}
 
 	public String getBairro() {
@@ -123,61 +116,30 @@ public class Endereco extends GenericEntity {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((bairro == null) ? 0 : bairro.hashCode());
-		result = prime * result + ((cep == null) ? 0 : cep.hashCode());
-		result = prime * result + ((cidade == null) ? 0 : cidade.hashCode());
-		result = prime * result + ((estado == null) ? 0 : estado.hashCode());
-		result = prime * result + ((id == null) ? 0 : id.hashCode());
 		result = prime * result + ((numero == null) ? 0 : numero.hashCode());
-		result = prime * result + ((rua == null) ? 0 : rua.hashCode());
 		return result;
 	}
 
 	@Override
 	public boolean equals(Object obj) {
-		if (this == obj)
+		if (this == obj) {
 			return true;
-		if (obj == null)
+		}
+		if (obj == null) {
 			return false;
-		if (getClass() != obj.getClass())
+		}
+		if (getClass() != obj.getClass()) {
 			return false;
-		Endereco other = (Endereco) obj;
-		if (bairro == null) {
-			if (other.bairro != null)
-				return false;
-		} else if (!bairro.equals(other.bairro))
-			return false;
-		if (cep == null) {
-			if (other.cep != null)
-				return false;
-		} else if (!cep.equals(other.cep))
-			return false;
-		if (cidade == null) {
-			if (other.cidade != null)
-				return false;
-		} else if (!cidade.equals(other.cidade))
-			return false;
-		if (estado == null) {
-			if (other.estado != null)
-				return false;
-		} else if (!estado.equals(other.estado))
-			return false;
-		if (id == null) {
-			if (other.id != null)
-				return false;
-		} else if (!id.equals(other.id))
-			return false;
-		if (numero == null) {
-			if (other.numero != null)
-				return false;
-		} else if (!numero.equals(other.numero))
-			return false;
-		if (rua == null) {
-			if (other.rua != null)
-				return false;
-		} else if (!rua.equals(other.rua))
-			return false;
-		return true;
+		}
+		return false;
+	}
+
+	public Cidade getCidade() {
+		return cidade;
+	}
+
+	public void setCidade(Cidade cidade) {
+		this.cidade = cidade;
 	}
 
 }

@@ -13,6 +13,5 @@ public abstract class Constantes {
 	
 	public static final String PAGINA_LISTAR_CLIENTES = "listarClientes";
 	public static final String PAGINA_CLIENTE = "cliente";
-	public static final String PAGINA_EDITAR_CLIENTE = "editarCliente";
 	
 }

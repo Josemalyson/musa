@@ -6,34 +6,36 @@ import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import com.br.musa.generics.GenericEntity;
 
 @Entity
-@Table(name = "TB_MUSA_ESTADO")
-public class Estado extends GenericEntity {
+@Table(name = "TB_MUSA_CIDADE")
+public class Cidade extends GenericEntity {
 
-	private static final long serialVersionUID = -4654883203557183016L;
+	private static final long serialVersionUID = 6091984940990541385L;
 
 	// ATRIBUTOS
 
 	@Id
-	@Column(name = "ID_ESTADO")
+	@Column(name = "ID_CIDADE")
 	private Long id;
 
 	@Column(name = "DS_DESCRICAO")
 	private String descricao;
 
-	@Column(name = "SI_SIGLA")
-	private String sigla;
+	// RELACIONAMENTOS
 
+	@ManyToOne
+	private Estado estado;
+	
 	@OneToMany(mappedBy = "estado")
 	private List<Endereco> enderecoList;
 
-	@OneToMany(mappedBy = "estado")
-	private List<Cidade> cidadeList;
+	// GET E SET
 
 	@Override
 	public Serializable obterIdentificador() {
@@ -48,20 +50,20 @@ public class Estado extends GenericEntity {
 		this.id = id;
 	}
 
+	public Estado getEstado() {
+		return estado;
+	}
+
+	public void setEstado(Estado estado) {
+		this.estado = estado;
+	}
+
 	public String getDescricao() {
 		return descricao;
 	}
 
 	public void setDescricao(String descricao) {
 		this.descricao = descricao;
-	}
-
-	public String getSigla() {
-		return sigla;
-	}
-
-	public void setSigla(String sigla) {
-		this.sigla = sigla;
 	}
 
 	@Override
@@ -80,7 +82,7 @@ public class Estado extends GenericEntity {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Estado other = (Estado) obj;
+		Cidade other = (Cidade) obj;
 		if (id == null) {
 			if (other.id != null)
 				return false;
@@ -89,12 +91,12 @@ public class Estado extends GenericEntity {
 		return true;
 	}
 
-	public List<Cidade> getCidadeList() {
-		return cidadeList;
+	public List<Endereco> getEnderecoList() {
+		return enderecoList;
 	}
 
-	public void setCidadeList(List<Cidade> cidadeList) {
-		this.cidadeList = cidadeList;
+	public void setEnderecoList(List<Endereco> enderecoList) {
+		this.enderecoList = enderecoList;
 	}
 
 }

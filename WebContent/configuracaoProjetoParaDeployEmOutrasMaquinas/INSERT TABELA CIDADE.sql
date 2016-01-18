@@ -10,6 +10,17 @@ ADD CONSTRAINT `ID_ESTADO`
   ON DELETE NO ACTION
   ON UPDATE NO ACTION;
 
+  
+  ALTER TABLE `musa`.`tb_musa_endereco` 
+CHANGE COLUMN `FK_CIDADE` `FK_CIDADE` BIGINT(11) NULL ,
+ADD INDEX `FK_CIDADE_idx` (`FK_CIDADE` ASC);
+ALTER TABLE `musa`.`tb_musa_endereco` 
+ADD CONSTRAINT `FK_CIDADE`
+  FOREIGN KEY (`FK_CIDADE`)
+  REFERENCES `musa`.`tb_musa_cidade` (`ID_CIDADE`)
+  ON DELETE NO ACTION
+  ON UPDATE NO ACTION;
+
 
 --------------------------------------------------------
 --  Arquivo criado - Segunda-feira-Janeiro-18-2016   
