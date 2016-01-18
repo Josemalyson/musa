@@ -59,7 +59,6 @@ public class ClienteControlador extends CoreControlador {
 		listarEstados();
 		listarCidadesPorEstados();
 		listarContatosdoCliente();
-		adicionarAtributoFlash("cliente", cliente);
 	}
 
 	private void listarContatosdoCliente() {
@@ -100,7 +99,11 @@ public class ClienteControlador extends CoreControlador {
 	public void adiconarContato() {
 		contato.setCliente(cliente);
 		contato.setFlExcluido(false);
-		cliente.getContatoList().add(contato);
+		
+		if (!cliente.getContatoList().contains(contato)) {
+			cliente.getContatoList().add(contato);
+		}
+		
 		contato = new Contato();
 		adicionarMensagem(MsgConstantes.MSG_SUCESSO);
 		RequestContext.getCurrentInstance().update("contatosCliente");
@@ -123,7 +126,7 @@ public class ClienteControlador extends CoreControlador {
 	public void excluirContato() {
 		cliente.getContatoList().remove(contato);
 		adicionarMensagem(MsgConstantes.MSG_EXCLUSAO_SUCESSO);
-		RequestContext.getCurrentInstance().update("tabelaContato");
+		RequestContext.getCurrentInstance().update("contatosCliente");
 	}
 
 	public void listarCidadesPorEstados() {

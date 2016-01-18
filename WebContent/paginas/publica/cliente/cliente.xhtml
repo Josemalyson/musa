@@ -94,7 +94,7 @@
 
 							<p:column headerText="opções" styleClass="text-center">
 								<p:commandButton title="Editar" icon="ui-icon-pencil"
-									actionListener="#{clienteControlador.editarContato(contato)}" oncomplete="PF('incluirContato').show();" />
+									actionListener="#{clienteControlador.editarContato(contato)}" />
 								<p:commandButton title="Excluir" icon="ui-icon-trash"
 									actionListener="#{clienteControlador.setContato(contato)}" oncomplete="PF('dialogExcluirCliente').show();"/>
 							</p:column>
@@ -202,7 +202,7 @@
 			</div>
 		</h:form>
 
-		<h:form id="formModalIncluirContato">
+		<h:form id="formModalIncluirContato" prependId="false">
 
 			<p:dialog modal="true" widgetVar="incluirContato" id="incluirContato"
 				closable="true" draggable="false" width="700"
@@ -248,7 +248,7 @@
 		</h:form>
 
 
-		<h:form id="dialogExcluirCliente">
+		<h:form id="dialogExcluirClienteForm" prependId="false">
 
 			<p:confirmDialog widgetVar="dialogExcluirCliente"
 				id="dialogExcluirCliente" message="Confirmar Exclusão deste item?"
