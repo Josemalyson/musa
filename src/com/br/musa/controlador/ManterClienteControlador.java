@@ -70,7 +70,7 @@ public class ManterClienteControlador extends CoreControlador {
 
 	public String editarCliente(Cliente cliente) {
 		adicionarAtributoFlash("cliente", cliente);
-		return sendRedirect(Constantes.PAGINA_CLIENTE);
+		return sendRedirect(Constantes.PAGINA_EDITAR_CLIENTE);
 	}
 
 	public void excluir() {

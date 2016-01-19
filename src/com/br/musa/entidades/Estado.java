@@ -29,12 +29,10 @@ public class Estado extends GenericEntity {
 	@Column(name = "SI_SIGLA")
 	private String sigla;
 
-	@OneToMany(mappedBy = "estado")
+	
+	@OneToMany(mappedBy="estado")
 	private List<Endereco> enderecoList;
-
-	@OneToMany(mappedBy = "estado")
-	private List<Cidade> cidadeList;
-
+	
 	@Override
 	public Serializable obterIdentificador() {
 		return id;
@@ -68,7 +66,9 @@ public class Estado extends GenericEntity {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
+		result = prime * result + ((descricao == null) ? 0 : descricao.hashCode());
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		result = prime * result + ((sigla == null) ? 0 : sigla.hashCode());
 		return result;
 	}
 
@@ -81,20 +81,22 @@ public class Estado extends GenericEntity {
 		if (getClass() != obj.getClass())
 			return false;
 		Estado other = (Estado) obj;
+		if (descricao == null) {
+			if (other.descricao != null)
+				return false;
+		} else if (!descricao.equals(other.descricao))
+			return false;
 		if (id == null) {
 			if (other.id != null)
 				return false;
 		} else if (!id.equals(other.id))
 			return false;
+		if (sigla == null) {
+			if (other.sigla != null)
+				return false;
+		} else if (!sigla.equals(other.sigla))
+			return false;
 		return true;
-	}
-
-	public List<Cidade> getCidadeList() {
-		return cidadeList;
-	}
-
-	public void setCidadeList(List<Cidade> cidadeList) {
-		this.cidadeList = cidadeList;
 	}
 
 }

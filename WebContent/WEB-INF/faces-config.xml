@@ -9,8 +9,5 @@
         <exception-handler-factory>com.br.musa.exeption.ExceptionHandlerCustomFactory</exception-handler-factory>
     </factory>
     
-    <lifecycle>
-    	<phase-listener>com.br.musa.reflexao.MultiPageMessagesSupport</phase-listener>
-    </lifecycle>
 
 </faces-config>
