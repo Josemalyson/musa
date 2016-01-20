@@ -13,10 +13,12 @@ import org.primefaces.context.RequestContext;
 
 import com.br.musa.constantes.Constantes;
 import com.br.musa.constantes.MsgConstantes;
+import com.br.musa.entidades.Cidade;
 import com.br.musa.entidades.Cliente;
 import com.br.musa.entidades.Contato;
 import com.br.musa.entidades.Endereco;
 import com.br.musa.entidades.Estado;
+import com.br.musa.servicos.CidadeServico;
 import com.br.musa.servicos.ClienteServico;
 import com.br.musa.servicos.EstadoServico;
 import com.br.musa.util.MascaraUtil;
@@ -31,23 +33,50 @@ public class ClienteControlador extends CoreControlador {
 	private ClienteServico clienteServico;
 	@Inject
 	private EstadoServico estadoServico;
+	@Inject
+	private CidadeServico cidadeServico;
 
 	// OBJETOS
-	private Cliente novocliente;
+	private Cliente cliente;
 	private Date dataMaxima;
 	private Contato contato;
 
 	// LISTA
 	private List<Estado> estadoList;
+	private List<Cidade> cidadeList;
 
 	@PostConstruct
 	public void init() {
-		novocliente = new Cliente();
+
+		cliente = (Cliente) obterAtributoFlash("cliente");
+
+		if (cliente == null) {
+			montarNovoCliente();
+		}
+
+		dataMaxima = new Date();
+		cidadeList = new ArrayList<Cidade>();
+		listarEstados();
+		listarCidadesPorEstados();
+		listarContatosdoCliente();
+	}
+
+	private void listarContatosdoCliente() {
+
+		if (cliente.getContatoList() == null || cliente.getContatoList().size() == 0) {
+			cliente.setContatoList(new ArrayList<Contato>());
+		}
+
+	}
+
+	private void montarNovoCliente() {
+		cliente = new Cliente();
 		Endereco endereco = new Endereco();
-		novocliente.setEndereco(endereco);
-		novocliente.setContatoList(new ArrayList<Contato>());
+		cliente.setEndereco(endereco);
+		cliente.setContatoList(new ArrayList<Contato>());
 		dataMaxima = new Date();
 		contato = new Contato();
+
 		listarEstados();
 	}
 
@@ -58,10 +87,10 @@ public class ClienteControlador extends CoreControlador {
 
 	public String salvarCliente() {
 
-		novocliente.setCpf(MascaraUtil.removerMascara(novocliente.getCpf()));
-		novocliente.setRg(MascaraUtil.removerMascara(novocliente.getRg()));
-		novocliente.setFlExcluido(false);
-		clienteServico.salvar(novocliente);
+		cliente.setCpf(MascaraUtil.removerMascara(cliente.getCpf()));
+		cliente.setRg(MascaraUtil.removerMascara(cliente.getRg()));
+		cliente.setFlExcluido(false);
+		clienteServico.salvar(cliente);
 
 		adicionarMensagem(MsgConstantes.MSG_SUCESSO);
 		RequestContext.getCurrentInstance().update("tabelaCliente");
@@ -70,7 +99,14 @@ public class ClienteControlador extends CoreControlador {
 	}
 
 	public void adiconarContato() {
-		novocliente.getContatoList().add(contato);
+		contato.setCliente(cliente);
+		contato.setFlExcluido(false);
+
+		if (!cliente.getContatoList().contains(contato)) {
+			cliente.getContatoList().add(contato);
+		}
+
+		cliente.getContatoList().add(contato);
 		contato = new Contato();
 		adicionarMensagem(MsgConstantes.MSG_SUCESSO);
 		RequestContext.getCurrentInstance().update("contatosCliente");
@@ -91,17 +127,29 @@ public class ClienteControlador extends CoreControlador {
 	}
 
 	public void excluirContato() {
-		novocliente.getContatoList().remove(contato);
+		cliente.getContatoList().remove(contato);
+		cliente.getContatoList().remove(contato);
 		adicionarMensagem(MsgConstantes.MSG_EXCLUSAO_SUCESSO);
+		RequestContext.getCurrentInstance().update("contatosCliente");
+	}
+
+	public void listarCidadesPorEstados() {
+		if (cliente.getEndereco().getEstado() == null) {
+			Estado estado = new Estado();
+			estado.setId(new Long(1));
+			cliente.getEndereco().setEstado(estado);
+		}
+
+		cidadeList = cidadeServico.listarCidadesPorEstados(cliente.getEndereco().getEstado());
 		RequestContext.getCurrentInstance().update("tabelaContato");
 	}
 
-	public Cliente getNovocliente() {
-		return novocliente;
+	public Cliente getCliente() {
+		return cliente;
 	}
 
-	public void setNovocliente(Cliente novocliente) {
-		this.novocliente = novocliente;
+	public void setCliente(Cliente cliente) {
+		this.cliente = cliente;
 	}
 
 	public Date getDataMaxima() {
@@ -126,5 +174,13 @@ public class ClienteControlador extends CoreControlador {
 
 	public void setEstadoList(List<Estado> estadoList) {
 		this.estadoList = estadoList;
+	}
+
+	public List<Cidade> getCidadeList() {
+		return cidadeList;
+	}
+
+	public void setCidadeList(List<Cidade> cidadeList) {
+		this.cidadeList = cidadeList;
 	}
 }
