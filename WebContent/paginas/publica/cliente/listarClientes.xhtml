@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <!DOCTYPE HTML>
-<ui:composition  xmlns="http://www.w3.org/1999/xhtml"
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:ui="http://java.sun.com/jsf/facelets"
@@ -8,90 +8,86 @@
 	template="/WEB-INF/template/template.xhtml">
 
 
-<ui:define name="conteudo">
+	<ui:define name="conteudo">
 
-	<ol class="breadcrumb">
-		  <li><a href="#">Inicio</a></li>
-		  <li><a href="#">Cliente</a></li>
-		  <li class="active">Listar Clientes</li>
-	</ol>
+		<ol class="breadcrumb">
+			<li><a href="#">Inicio</a></li>
+			<li><a href="#">Cliente</a></li>
+			<li class="active">Listar Clientes</li>
+		</ol>
 
 		<h:form prependId="false" id="listarClientes">
-		
-		<div class="table-responsive">
-				<p:dataTable widgetVar="tabelaCliente" 
-						id="tabelaCliente" 
-						styleClass="table table-striped"
-						var="cliente"
-						value="#{manterClienteControlador.clientesList}"
-						emptyMessage="Nenhum cliente encontrado." 
-						paginator="true"
-						paginatorAlwaysVisible="true" 
-						pageLinks="10" 
-						rows="10"
-						rowsPerPageTemplate="10,30,50" 
-						paginatorPosition="bottom"
-						filteredValue="#{manterClienteControlador.clientesListFiltrados}">
-						
- 
-						<p:column headerText="Código" styleClass="text-center" >
-				             <h:outputText value="#{cliente.id}" />
-						</p:column>
-												
-						<p:column headerText="Nome" styleClass="text-center" filterBy="#{cliente.nome}" ooterText="contains" filterMatchMode="contains">
-				               <h:outputText value="#{cliente.nome}" />
-						</p:column>
-						
-						<p:column headerText="CPF" styleClass="text-center" filterBy="#{cliente.cpf}" ooterText="contains" filterMatchMode="contains">
-				               <h:outputText value="#{manterClienteControlador.adiconarMascaraCpf(cliente)}" />
-						</p:column>
-						
-						<p:column headerText="RG" styleClass="text-center">
-					               <h:outputText value="#{manterClienteControlador.adiconarMascaraRg(cliente)}" />
-						</p:column>
-						
-						<p:column headerText="Data de Nascimento" styleClass="text-center">
-				               <h:outputText value="#{manterClienteControlador.montarDataNascimento(cliente)}" />
-						</p:column>
-						
-						<p:column headerText="Opções" styleClass="text-center" >
-							<div class="form-inline">
-									<p:commandButton icon="ui-icon-pencil" 
-										 title="Editar" action="#{manterClienteControlador.editarCliente(cliente)}"
-										 />
 
-									<p:commandButton icon="ui-icon-trash" 
-										 title="Excluir" oncomplete="PF('confirmarExclusaoCliente').show();"
-										 actionListener="#{manterClienteControlador.setCliente(cliente)}"/>
-							</div>
-						</p:column>
-						
-						
+			<div class="table-responsive">
+				<p:dataTable widgetVar="tabelaCliente" id="tabelaCliente"
+					styleClass="table table-striped" var="cliente"
+					value="#{manterClienteControlador.clientesList}"
+					emptyMessage="Nenhum cliente encontrado." paginator="true"
+					paginatorAlwaysVisible="true" pageLinks="10" rows="10"
+					rowsPerPageTemplate="10,30,50" paginatorPosition="bottom"
+					filteredValue="#{manterClienteControlador.clientesListFiltrados}">
+
+
+					<p:column headerText="Código" styleClass="text-center">
+						<h:outputText value="#{cliente.id}" />
+					</p:column>
+
+					<p:column headerText="Nome" styleClass="text-center"
+						filterBy="#{cliente.nome}" ooterText="contains"
+						filterMatchMode="contains">
+						<h:outputText value="#{cliente.nome}" />
+					</p:column>
+
+					<p:column headerText="CPF" styleClass="text-center"
+						filterBy="#{cliente.cpf}" ooterText="contains"
+						filterMatchMode="contains">
+						<h:outputText
+							value="#{manterClienteControlador.adiconarMascaraCpf(cliente)}" />
+					</p:column>
+
+					<p:column headerText="RG" styleClass="text-center">
+						<h:outputText
+							value="#{manterClienteControlador.adiconarMascaraRg(cliente)}" />
+					</p:column>
+
+					<p:column headerText="Data de Nascimento" styleClass="text-center">
+						<h:outputText
+							value="#{manterClienteControlador.montarDataNascimento(cliente)}" />
+					</p:column>
+
+					<p:column headerText="Opções" styleClass="text-center">
+						<div class="form-inline">
+							<p:commandButton icon="ui-icon-pencil" title="Editar"
+								action="#{manterClienteControlador.editarCliente(cliente)}" />
+
+							<p:commandButton icon="ui-icon-trash" title="Excluir"
+								oncomplete="PF('confirmarExclusaoCliente').show();"
+								actionListener="#{manterClienteControlador.setCliente(cliente)}" />
+						</div>
+					</p:column>
+
+
 				</p:dataTable>
 			</div>
-			
+
 			<br />
-			
-			<p:confirmDialog 
-							widgetVar="confirmarExclusaoCliente"
-							id="confirmarExclusaoCliente"
-							message="Confirmar Exclusão deste item?"
-							closable="false">
-							
-							<p:commandButton id="btnConfirmaExclusaoCliente"
-											 value="Confirmar"
-											 styleClass="btn btn-success"
-											 onclick="PF('confirmarExclusaoCliente').hide();"
-											 actionListener="#{manterClienteControlador.excluir()}"/>
-					
-							<p:commandButton id="btnCancelaExclusaoCliente"
-											 value="Cancelar"
-											 styleClass="btn btn-danger"
-											 onclick="PF('confirmarExclusaoCliente').hide();"
-											 oncomplete="PF('confirmarExclusaoCliente').hide(); PF('incluirCliente').hide();"/>
-				
+
+			<p:confirmDialog widgetVar="confirmarExclusaoCliente"
+				id="confirmarExclusaoCliente"
+				message="Confirmar Exclusão deste item?" closable="false">
+
+				<p:commandButton id="btnConfirmaExclusaoCliente" value="Confirmar"
+					styleClass="btn btn-success"
+					onclick="PF('confirmarExclusaoCliente').hide();"
+					actionListener="#{manterClienteControlador.excluir()}" />
+
+				<p:commandButton id="btnCancelaExclusaoCliente" value="Cancelar"
+					styleClass="btn btn-danger"
+					onclick="PF('confirmarExclusaoCliente').hide();"
+					oncomplete="PF('confirmarExclusaoCliente').hide(); PF('incluirCliente').hide();" />
+
 			</p:confirmDialog>
-			
+
 		</h:form>
 	</ui:define>
 </ui:composition>

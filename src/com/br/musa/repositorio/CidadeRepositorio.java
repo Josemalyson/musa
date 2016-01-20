@@ -24,7 +24,7 @@ public class CidadeRepositorio extends CustomGenericDAOImpl<Cidade> {
 	public List<Cidade> listarCidadesPorEstados(Estado estado) {
 
 		StringBuilder consulta = new StringBuilder();
-		consulta.append(" SELECT C.* FROM TB_MUSA_CIDADE C WHERE C.ESTADO_ID=:estado ORDER BY C.DS_DESCRICAO ");
+		consulta.append(" SELECT C.* FROM TB_MUSA_CIDADE C WHERE C.FK_ESTADO=:estado ORDER BY C.DS_DESCRICAO ");
 		Query query = obterEntityManager().createNativeQuery(consulta.toString(), Cidade.class);
 		query.setParameter("estado", estado.getId());
 		return query.getResultList();

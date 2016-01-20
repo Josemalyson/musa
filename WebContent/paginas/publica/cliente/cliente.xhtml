@@ -5,7 +5,7 @@
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:p="http://primefaces.org/ui"
-	template="/WEBINF/template/template.xhtml">
+	template="/WEB-INF/template/template.xhtml">
 
 	<ui:define name="conteudo">
 
@@ -77,7 +77,7 @@
 							editable="true" rowsPerPageTemplate="5,10,15"
 							paginatorPosition="bottom">
 
-							<p:column headerText="Cï¿½digo" styleClass="textcenter">
+							<p:column headerText="Código" styleClass="textcenter">
 								<h:outputText styleClass="formcontrol" id="ddd"
 									value="#{contato.ddd}" />
 							</p:column>
@@ -92,7 +92,7 @@
 									value="#{contato.email}" />
 							</p:column>
 
-							<p:column headerText="opï¿½ï¿½es" styleClass="textcenter">
+							<p:column headerText="Opções" styleClass="textcenter">
 								<p:commandButton title="Editar" icon="uiiconpencil"
 									actionListener="#{clienteControlador.editarContato(contato)}" />
 								<p:commandButton title="Excluir" icon="uiicontrash"
@@ -103,7 +103,7 @@
 						</p:dataTable>
 
 						<p:commandButton value="Incluir" styleClass="btn btnprimary"
-							actionListener="#{clienteControlador.limparModalContato()}" />
+							actionListener="#{clienteControlador.limparModalContato()}" 
 						oncomplete="PF('incluirContato').show();" />
 
 					</div>
@@ -113,7 +113,7 @@
 
 			<br />
 
-			<p:fieldset legend="Dados do Endereï¿½o">
+			<p:fieldset legend="Dados do Endereço">
 				<br />
 
 				<div class="panel paneldefault">
@@ -161,24 +161,12 @@
 										var="cidade" itemLabel="#{cidade.descricao}"
 										itemValue="#{cidade}" />
 								</h:selectOneMenu>
-								<p:inputText id="cidade" styleClass="formcontrol"
-									value="#{clienteControlador.cliente.endereco.cidade}"></p:inputText>
 							</div>
 
 							<label class="colsm1 controllabel">Bairro:</label>
 							<div class="colsm2">
 								<p:inputText id="bairro" styleClass="formcontrol"
 									value="#{clienteControlador.cliente.endereco.bairro}"></p:inputText>
-							</div>
-
-							<label class="colsm1 controllabel">Estado:</label>
-							<div class="colsm1">
-								<h:selectOneMenu id="estado" styleClass="widthfull formcontrol"
-									value="#{clienteControlador.cliente.endereco.estado}"
-									converter="genericConverter">
-									<f:selectItems value="#{clienteControlador.estadoList}"
-										var="estado" itemLabel="#{estado.sigla}" itemValue="#{estado}" />
-								</h:selectOneMenu>
 							</div>
 
 							<label class="colsm1 controllabel">Numero:</label>

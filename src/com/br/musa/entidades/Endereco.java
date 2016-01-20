@@ -28,9 +28,6 @@ public class Endereco extends GenericEntity {
 	@Column(name = "DS_RUA")
 	private String rua;
 
-	@Column(name = "DS_CIDADE")
-	private String cidade;
-
 	@Column(name = "DS_BAIRRO")
 	private String bairro;
 
@@ -44,18 +41,13 @@ public class Endereco extends GenericEntity {
 	@JoinColumn(name = "FK_ESTADO", referencedColumnName = "ID_ESTADO")
 	private Estado estado;
 
-	public Endereco() {
-	}
+	@ManyToOne
+	@JoinColumn(name = "FK_CIDADE", referencedColumnName = "ID_CIDADE")
+	private Cidade cidade;
 
-	public Endereco(Long id, String rua, String cidade, String bairro, Integer numero, Integer cep, Estado estado) {
-		super();
-		this.id = id;
-		this.rua = rua;
-		this.cidade = cidade;
-		this.bairro = bairro;
-		this.numero = numero;
-		this.cep = cep;
-		this.estado = estado;
+	@Override
+	public Serializable obterIdentificador() {
+		return id;
 	}
 
 	public Long getId() {
@@ -72,14 +64,6 @@ public class Endereco extends GenericEntity {
 
 	public void setRua(String rua) {
 		this.rua = rua;
-	}
-
-	public String getCidade() {
-		return cidade;
-	}
-
-	public void setCidade(String cidade) {
-		this.cidade = cidade;
 	}
 
 	public String getBairro() {
@@ -114,9 +98,12 @@ public class Endereco extends GenericEntity {
 		this.estado = estado;
 	}
 
-	@Override
-	public Serializable obterIdentificador() {
-		return id;
+	public Cidade getCidade() {
+		return cidade;
+	}
+
+	public void setCidade(Cidade cidade) {
+		this.cidade = cidade;
 	}
 
 	@Override
@@ -180,4 +167,6 @@ public class Endereco extends GenericEntity {
 		return true;
 	}
 
+
+	
 }

@@ -76,7 +76,6 @@ public class ClienteControlador extends CoreControlador {
 		cliente.setContatoList(new ArrayList<Contato>());
 		dataMaxima = new Date();
 		contato = new Contato();
-
 		listarEstados();
 	}
 
@@ -136,12 +135,16 @@ public class ClienteControlador extends CoreControlador {
 	public void listarCidadesPorEstados() {
 		if (cliente.getEndereco().getEstado() == null) {
 			Estado estado = new Estado();
-			estado.setId(new Long(1));
+			estado.setId(new Long(16));
 			cliente.getEndereco().setEstado(estado);
 		}
 
 		cidadeList = cidadeServico.listarCidadesPorEstados(cliente.getEndereco().getEstado());
-		RequestContext.getCurrentInstance().update("tabelaContato");
+		
+		if (cliente.getEndereco().getCidade() == null) {
+			cliente.getEndereco().setCidade(cidadeList.stream().filter(c -> c.getId().equals(Constantes.ID_JOAO_PESSOA)).findFirst().get());
+		}
+		
 	}
 
 	public Cliente getCliente() {
