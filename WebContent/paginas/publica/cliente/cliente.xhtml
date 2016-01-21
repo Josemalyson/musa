@@ -19,37 +19,37 @@
 
 			<p:fieldset legend="Dados Cadastrais">
 
-				<div class="panel paneldefault">
-					<div class="panelbody">
+				<div class="panel panel-default">
+					<div class="panel-body">
 
-						<div class="formgroup row ">
-							<label class="colsm2 controllabel">Nome:</label>
-							<div class="colsm10">
-								<p:inputText id="nome" styleClass="formcontrol"
+						<div class="form-group row ">
+							<label class="col-sm-2 control-label">Nome:</label>
+							<div class="col-sm-10">
+								<p:inputText id="nome" styleClass="form-control"
 									value="#{clienteControlador.cliente.nome}"></p:inputText>
 							</div>
 						</div>
 
-						<div class="formgroup row">
-							<label class="colsm2 controllabel">CPF:</label>
-							<div class="colsm4">
-								<p:inputMask styleClass="formcontrol" mask="?999.999.99999"
+						<div class="form-group row">
+							<label class="col-sm-2 control-label">CPF:</label>
+							<div class="col-sm-4">
+								<p:inputMask styleClass="form-control" mask="?999.999.99999"
 									id="cpf" value="#{clienteControlador.cliente.cpf}"
 									maxlength="14" />
 							</div>
 						</div>
 
-						<div class="formgroup row">
-							<label class="colsm2 controllabel">RG:</label>
-							<div class="colsm4">
-								<p:inputMask styleClass="formcontrol" mask="?999.9999" id="rg"
+						<div class="form-group row">
+							<label class="col-sm-2 control-label">RG:</label>
+							<div class="col-sm-4">
+								<p:inputMask styleClass="form-control" mask="?999.9999" id="rg"
 									value="#{clienteControlador.cliente.rg}" maxlength="9" />
 							</div>
 						</div>
 
-						<div class="formgroup row">
-							<label class="colsm2 controllabel">Data de Nascimento:</label>
-							<div class="colsm4">
+						<div class="form-group row">
+							<label class="col-sm-2 control-label">Data de Nascimento:</label>
+							<div class="col-sm-4">
 								<p:calendar locale="pt_BR" navigator="true" pattern="dd/MM/yyyy"
 									value="#{clienteControlador.cliente.dtNascimento}"
 									id="dtNascimento" maxdate="#{clienteControlador.dataMaxima}" />
@@ -66,43 +66,43 @@
 
 			<p:fieldset legend="Dados de Contatos">
 
-				<div class="panel paneldefault">
-					<div class="panelbody">
+				<div class="panel panel-default">
+					<div class="panel-body">
 
 						<p:dataTable widgetVar="tabelaContato" id="contatosCliente"
-							styleClass="table tablestriped" var="contato"
+							styleClass="table table-striped" var="contato"
 							value="#{clienteControlador.cliente.contatoList}"
 							emptyMessage="Nenhum contato cadastrado." paginator="true"
 							paginatorAlwaysVisible="true" pageLinks="5" rows="5"
 							editable="true" rowsPerPageTemplate="5,10,15"
 							paginatorPosition="bottom">
 
-							<p:column headerText="Código" styleClass="textcenter">
-								<h:outputText styleClass="formcontrol" id="ddd"
+							<p:column headerText="Código" styleClass="text-center">
+								<h:outputText styleClass="form-control" id="ddd"
 									value="#{contato.ddd}" />
 							</p:column>
 
-							<p:column headerText="Telefone" styleClass="textcenter">
-								<h:outputText styleClass="formcontrol" id="telefone"
+							<p:column headerText="Telefone" styleClass="text-center">
+								<h:outputText styleClass="form-control" id="telefone"
 									value="#{contato.telefone}" />
 							</p:column>
 
-							<p:column headerText="email" styleClass="textcenter">
-								<h:outputText styleClass="formcontrol" id="email"
+							<p:column headerText="email" styleClass="text-center">
+								<h:outputText styleClass="form-control" id="email"
 									value="#{contato.email}" />
 							</p:column>
 
-							<p:column headerText="Opções" styleClass="textcenter">
-								<p:commandButton title="Editar" icon="uiiconpencil"
+							<p:column headerText="Opções" styleClass="text-center">
+								<p:commandButton title="Editar" icon="ui-icon-pencil"
 									actionListener="#{clienteControlador.editarContato(contato)}" />
-								<p:commandButton title="Excluir" icon="uiicontrash"
+								<p:commandButton title="Excluir" icon="ui-icon-trash"
 									actionListener="#{clienteControlador.setContato(contato)}"
 									oncomplete="PF('dialogExcluirCliente').show();" />
 							</p:column>
 
 						</p:dataTable>
 
-						<p:commandButton value="Incluir" styleClass="btn btnprimary"
+						<p:commandButton value="Incluir" styleClass="btn btn-primary"
 							actionListener="#{clienteControlador.limparModalContato()}" 
 						oncomplete="PF('incluirContato').show();" />
 
@@ -116,30 +116,30 @@
 			<p:fieldset legend="Dados do Endereço">
 				<br />
 
-				<div class="panel paneldefault">
+				<div class="panel panel-default">
 					<br />
-					<div class="panelbody">
+					<div class="panel-body">
 
-						<div class="formgroup row ">
-							<label class="colsm1 controllabel">Rua:</label>
-							<div class="colsm6">
-								<p:inputText id="rua" styleClass="formcontrol"
+						<div class="form-group row ">
+							<label class="col-sm-1 control-label">Rua:</label>
+							<div class="col-sm-6">
+								<p:inputText id="rua" styleClass="form-control"
 									value="#{clienteControlador.cliente.endereco.rua}"></p:inputText>
 							</div>
 
 
-							<label class="colsm1 controllabel">CEP:</label>
-							<div class="colsm2">
-								<p:inputText id="cep" styleClass="formcontrol"
+							<label class="col-sm-1 control-label">CEP:</label>
+							<div class="col-sm-2">
+								<p:inputText id="cep" styleClass="form-control"
 									value="#{clienteControlador.cliente.endereco.cep}"></p:inputText>
 							</div>
 						</div>
 
 
-						<div class="formgroup row ">
-							<label class="colsm1 controllabel">Estado:</label>
-							<div class="colsm1">
-								<h:selectOneMenu id="estado" styleClass="widthfull formcontrol"
+						<div class="form-group row ">
+							<label class="col-sm-1 control-label">Estado:</label>
+							<div class="col-sm-1">
+								<h:selectOneMenu id="estado" styleClass="widthfull form-control"
 									value="#{clienteControlador.cliente.endereco.estado}"
 									converter="genericConverter">
 									<f:selectItems value="#{clienteControlador.estadoList}"
@@ -152,9 +152,9 @@
 
 
 
-							<label class="colsm1 controllabel">Cidade:</label>
-							<div class="colsm2">
-								<h:selectOneMenu id="cidade" styleClass="widthfull formcontrol"
+							<label class="col-sm-1 control-label">Cidade:</label>
+							<div class="col-sm-2">
+								<h:selectOneMenu id="cidade" styleClass="widthfull form-control"
 									value="#{clienteControlador.cliente.endereco.cidade}"
 									converter="genericConverter">
 									<f:selectItems value="#{clienteControlador.cidadeList}"
@@ -163,15 +163,15 @@
 								</h:selectOneMenu>
 							</div>
 
-							<label class="colsm1 controllabel">Bairro:</label>
-							<div class="colsm2">
-								<p:inputText id="bairro" styleClass="formcontrol"
+							<label class="col-sm-1 control-label">Bairro:</label>
+							<div class="col-sm-2">
+								<p:inputText id="bairro" styleClass="form-control"
 									value="#{clienteControlador.cliente.endereco.bairro}"></p:inputText>
 							</div>
 
-							<label class="colsm1 controllabel">Numero:</label>
-							<div class="colsm1">
-								<p:inputText id="numero" styleClass="formcontrol"
+							<label class="col-sm-1 control-label">Numero:</label>
+							<div class="col-sm-1">
+								<p:inputText id="numero" styleClass="form-control"
 									value="#{clienteControlador.cliente.endereco.numero}"></p:inputText>
 							</div>
 						</div>
@@ -182,19 +182,19 @@
 
 			<br />
 
-			<div class="forminline textcenter row"
+			<div class="form-inline text-center row"
 				style="marginbottom: 50px; paddingbottom: 10px;">
-				<div class="forminline textcenter row">
-					<div class="formgroup">
-						<label class="colsm2 controllabel"></label>
-						<div class="colsm2">
-							<p:commandButton value="Salvar" styleClass="btn btnsuccess"
+				<div class="form-inline text-center row">
+					<div class="form-group">
+						<label class="col-sm-2 control-label"></label>
+						<div class="col-sm-2">
+							<p:commandButton value="Salvar" styleClass="btn btn-success"
 								process="cliente" action="#{clienteControlador.salvarCliente()}"
 								oncomplete="PF('incluirCliente').hide();" />
 						</div>
-						<label class="colsm2 controllabel"></label>
-						<div class="colsm2">
-							<p:commandButton value="Cancelar" styleClass="btn btndanger"
+						<label class="col-sm-2 control-label"></label>
+						<div class="col-sm-2">
+							<p:commandButton value="Cancelar" styleClass="btn btn-danger"
 								action="/paginas/publica/cliente/listarClientes.jsf" />
 						</div>
 					</div>
@@ -208,22 +208,36 @@
 				closable="true" draggable="false" width="700"
 				header="Incluir Novo Contato" resizable="false">
 
-				<div class="formgroup row ">
-					<label class="colsm2 controllabel">Email:</label>
-					<div class="colsm10">
-						<p:inputText id="email" styleClass="formcontrol"
+				<div class="form-group row ">
+					<label class="col-sm-2 control-label">Email:</label>
+					<div class="col-sm-10">
+						<p:inputText id="email" styleClass="form-control"
 							value="#{clienteControlador.contato.email}"></p:inputText>
 					</div>
 				</div>
+				<div class="form-group row ">
+					<label class="col-sm-2 control-label">DDD:</label>
+					<div class="col-sm-10">
+						<p:inputText id="ddd" styleClass="form-control"
+							value="#{clienteControlador.contato.ddd}"></p:inputText>
+					</div>
+				</div>
+				<div class="form-group row ">
+					<label class="col-sm-2 control-label">Telefone:</label>
+					<div class="col-sm-10">
+						<p:inputText id="telefone" styleClass="form-control"
+							value="#{clienteControlador.contato.telefone}"></p:inputText>
+					</div>
+				</div>
 
-				<div class="formgroup">
+				<div class="form-group">
 
 					<p:commandButton id="btnConfirma" value="Confirmar"
-						styleClass="btn btnsuccess"
+						styleClass="btn btn-success"
 						actionListener="#{clienteControlador.adiconarContato()}" />
 
 					<p:commandButton id="btnCancela" value="Cancelar"
-						styleClass="btn btndanger"
+						styleClass="btn btn-danger"
 						oncomplete="PF('incluirContato').hide();" />
 				</div>
 
@@ -234,16 +248,16 @@
 		<h:form id="dialogExcluirClienteForm" prependId="false">
 
 			<p:confirmDialog widgetVar="dialogExcluirCliente"
-				id="dialogExcluirCliente" message="Confirmar Exclusï¿½o deste item?"
+				id="dialogExcluirCliente" message="Confirmar Exclusção deste item?"
 				closable="false">
 
 				<p:commandButton id="btnConfirmaExclusaoContato" value="Confirmar"
-					styleClass="btn btnsuccess"
+					styleClass="btn btn-success"
 					onclick="PF('dialogExcluirCliente').hide();"
 					actionListener="#{clienteControlador.excluirContato()}" />
 
 				<p:commandButton id="btnCancelaExclusaoContato" value="Cancelar"
-					styleClass="btn btndanger"
+					styleClass="btn btn-danger"
 					onclick="PF('dialogExcluirCliente').hide();"
 					oncomplete="PF('confirmarExclusaoCliente').hide();" />
 
