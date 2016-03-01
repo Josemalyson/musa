@@ -104,10 +104,10 @@ public class ClienteControlador extends CoreControlador {
 
 		} catch (BusinessException e) {
 			adicionarErro(e.getMessage());
-			RequestContext.getCurrentInstance().update("@form");
+			RequestContext.getCurrentInstance().update("@all");
 		}
-	
 		return Constantes.STRING_VAZIA;
+	
 	}
 
 	public void adiconarContato() {

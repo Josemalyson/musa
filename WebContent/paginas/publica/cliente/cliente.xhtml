@@ -187,8 +187,8 @@
 				<div class="form-group">
 					<label class="col-sm-2 control-label"></label>
 					<div class="col-sm-2">
-						<p:commandButton value="Salvar" styleClass="btn btn-success"
-							process="@form" action="#{clienteControlador.salvarCliente()}"
+						<p:commandButton id="btSalvar" value="Salvar" styleClass="btn btn-success"
+							process="@form" action="#{clienteControlador.salvarCliente()}" ajax="false"
 							oncomplete="PF('incluirCliente').hide();" />
 					</div>
 					<label class="col-sm-2 control-label"></label>

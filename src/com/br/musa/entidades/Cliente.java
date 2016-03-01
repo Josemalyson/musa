@@ -50,13 +50,13 @@ public class Cliente extends GenericEntity {
 
 	// RELACIONAMENTOS
 
-	@OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	@OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval=true)
 	private List<Contato> contatoList;
 
-	@OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL, orphanRemoval=true)
 	private List<Pedido> pedidoList;
 
-	@OneToOne(cascade=CascadeType.ALL)
+	@OneToOne(cascade=CascadeType.ALL, orphanRemoval=true)
 	private Endereco endereco;
 
 	// GET E SET

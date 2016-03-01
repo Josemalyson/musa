@@ -28,6 +28,14 @@ public class ClienteServico {
 	}
 
 	public boolean validarClienteParaSalvar(Cliente cliente){
+		validarcamposObrigatorios(cliente);
+		validarCpfCliente(cliente);
+		return true;
+		
+		
+	}
+
+	private void validarcamposObrigatorios(Cliente cliente) {
 		StringBuilder erro = new StringBuilder();
 		
 		if (cliente.getNome() == null || cliente.getNome().isEmpty()) {
@@ -49,12 +57,9 @@ public class ClienteServico {
 		if (!erro.toString().isEmpty()) {
 			throw new BusinessException(erro.toString());
 		}
-		return true;
-		
-		
 	}
 	
-	public boolean validarCpfCliente(Cliente cliente) {
+	private boolean validarCpfCliente(Cliente cliente) {
 		if (!CpfUtil.isValido(cliente.getCpf())) {
 			throw new BusinessException(MsgConstantes.CPF_INVALIDO);
 		}
