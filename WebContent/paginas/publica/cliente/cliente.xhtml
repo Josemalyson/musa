@@ -23,7 +23,7 @@
 					<div class="panel-body">
 
 						<div class="form-group row ">
-							<label class="col-sm-2 control-label">Nome:</label>
+							<label class="col-sm-2 control-label obrigatorio">Nome:</label>
 							<div class="col-sm-10">
 								<p:inputText id="nome" styleClass="form-control"
 									value="#{clienteControlador.cliente.nome}"></p:inputText>
@@ -31,7 +31,7 @@
 						</div>
 
 						<div class="form-group row">
-							<label class="col-sm-2 control-label">CPF:</label>
+							<label class="col-sm-2 control-label obrigatorio">CPF:</label>
 							<div class="col-sm-4">
 								<p:inputMask styleClass="form-control" mask="?999.999.99999"
 									id="cpf" value="#{clienteControlador.cliente.cpf}"
@@ -40,7 +40,7 @@
 						</div>
 
 						<div class="form-group row">
-							<label class="col-sm-2 control-label">RG:</label>
+							<label class="col-sm-2 control-label obrigatorio">RG:</label>
 							<div class="col-sm-4">
 								<p:inputMask styleClass="form-control" mask="?999.9999" id="rg"
 									value="#{clienteControlador.cliente.rg}" maxlength="9" />
@@ -65,9 +65,9 @@
 			<br />
 
 			<fieldset>
-				<legend>Dados de Contatos</legend>
+				<legend class="obrigatorio">Dados de Contatos</legend>
 				<div class="panel panel-default">
-					<div class="panel-body">
+					<div class="panel-body ">
 
 						<p:dataTable widgetVar="tabelaContato" id="contatosCliente"
 							var="contato" tableStyleClass="table table-bordered"
@@ -77,7 +77,7 @@
 							editable="true" rowsPerPageTemplate="5,10,15"
 							paginatorPosition="bottom">
 
-							<p:column headerText="Código" styleClass="text-center"
+							<p:column headerText="Código" styleClass="text-center "
 								style="width: 79px;">
 								<h:outputText id="ddd" value="#{contato.ddd}" />
 							</p:column>
@@ -103,7 +103,8 @@
 
 						<p:commandButton value="Incluir" styleClass="btn btn-primary"
 							actionListener="#{clienteControlador.limparModalContato()}"
-							oncomplete="PF('incluirContato').show();" style="margin-top: 15px;"/>
+							oncomplete="PF('incluirContato').show();"
+							style="margin-top: 15px;" />
 
 					</div>
 				</div>
@@ -265,6 +266,7 @@
 
 		</h:form>
 
+		<p class="obrigatorio">Campos Obrigatórios</p>
 
 	</ui:define>
 </ui:composition>

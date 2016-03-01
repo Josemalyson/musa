@@ -4,3 +4,8 @@
 	margin-bottom: 20px;
 	margin-top: 15px;
 }
+
+.obrigatorio::after {
+	color: red;
+	content: " *";
+}
