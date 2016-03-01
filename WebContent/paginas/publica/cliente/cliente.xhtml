@@ -17,8 +17,8 @@
 
 		<h:form prependId="false" id="cliente">
 
-			<p:fieldset legend="Dados Cadastrais">
-
+			<fieldset>
+				<legend>Dados Cadastrais</legend>
 				<div class="panel panel-default">
 					<div class="panel-body">
 
@@ -60,39 +60,38 @@
 
 					</div>
 				</div>
-			</p:fieldset>
+			</fieldset>
 
 			<br />
 
-			<p:fieldset legend="Dados de Contatos">
-
+			<fieldset>
+				<legend>Dados de Contatos</legend>
 				<div class="panel panel-default">
 					<div class="panel-body">
 
 						<p:dataTable widgetVar="tabelaContato" id="contatosCliente"
-							styleClass="table table-striped" var="contato"
+							var="contato" tableStyleClass="table table-bordered"
 							value="#{clienteControlador.cliente.contatoList}"
 							emptyMessage="Nenhum contato cadastrado." paginator="true"
 							paginatorAlwaysVisible="true" pageLinks="5" rows="5"
 							editable="true" rowsPerPageTemplate="5,10,15"
 							paginatorPosition="bottom">
 
-							<p:column headerText="Código" styleClass="text-center">
-								<h:outputText styleClass="form-control" id="ddd"
-									value="#{contato.ddd}" />
+							<p:column headerText="Código" styleClass="text-center"
+								style="width: 79px;">
+								<h:outputText id="ddd" value="#{contato.ddd}" />
 							</p:column>
 
 							<p:column headerText="Telefone" styleClass="text-center">
-								<h:outputText styleClass="form-control" id="telefone"
-									value="#{contato.telefone}" />
+								<h:outputText id="telefone" value="#{contato.telefone}" />
 							</p:column>
 
 							<p:column headerText="email" styleClass="text-center">
-								<h:outputText styleClass="form-control" id="email"
-									value="#{contato.email}" />
+								<h:outputText id="email" value="#{contato.email}" />
 							</p:column>
 
-							<p:column headerText="Opções" styleClass="text-center">
+							<p:column headerText="Opções" styleClass="text-center"
+								style="width: 98px;">
 								<p:commandButton title="Editar" icon="ui-icon-pencil"
 									actionListener="#{clienteControlador.editarContato(contato)}" />
 								<p:commandButton title="Excluir" icon="ui-icon-trash"
@@ -103,18 +102,18 @@
 						</p:dataTable>
 
 						<p:commandButton value="Incluir" styleClass="btn btn-primary"
-							actionListener="#{clienteControlador.limparModalContato()}" 
-						oncomplete="PF('incluirContato').show();" />
+							actionListener="#{clienteControlador.limparModalContato()}"
+							oncomplete="PF('incluirContato').show();" style="margin-top: 15px;"/>
 
 					</div>
 				</div>
 
-			</p:fieldset>
+			</fieldset>
 
 			<br />
 
-			<p:fieldset legend="Dados do Endereço">
-				<br />
+			<fieldset>
+				<legend>Dados do Endereço</legend>
 
 				<div class="panel panel-default">
 					<br />
@@ -178,27 +177,26 @@
 
 					</div>
 				</div>
-			</p:fieldset>
+			</fieldset>
 
 			<br />
 
 			<div class="form-inline text-center row"
 				style="marginbottom: 50px; paddingbottom: 10px;">
-				<div class="form-inline text-center row">
-					<div class="form-group">
-						<label class="col-sm-2 control-label"></label>
-						<div class="col-sm-2">
-							<p:commandButton value="Salvar" styleClass="btn btn-success"
-								process="cliente" action="#{clienteControlador.salvarCliente()}"
-								oncomplete="PF('incluirCliente').hide();" />
-						</div>
-						<label class="col-sm-2 control-label"></label>
-						<div class="col-sm-2">
-							<p:commandButton value="Cancelar" styleClass="btn btn-danger"
-								action="/paginas/publica/cliente/listarClientes.jsf" />
-						</div>
+				<div class="form-group">
+					<label class="col-sm-2 control-label"></label>
+					<div class="col-sm-2">
+						<p:commandButton value="Salvar" styleClass="btn btn-success"
+							process="@form" action="#{clienteControlador.salvarCliente()}"
+							oncomplete="PF('incluirCliente').hide();" />
+					</div>
+					<label class="col-sm-2 control-label"></label>
+					<div class="col-sm-2">
+						<p:commandButton value="Cancelar" styleClass="btn btn-danger"
+							action="/paginas/publica/cliente/listarClientes.jsf" />
 					</div>
 				</div>
+				<div style="margin-bottom: 10px;"></div>
 			</div>
 		</h:form>
 
@@ -231,14 +229,14 @@
 				</div>
 
 				<div class="form-group">
-
-					<p:commandButton id="btnConfirma" value="Confirmar"
-						styleClass="btn btn-success"
-						actionListener="#{clienteControlador.adiconarContato()}" />
-
-					<p:commandButton id="btnCancela" value="Cancelar"
-						styleClass="btn btn-danger"
-						oncomplete="PF('incluirContato').hide();" />
+					<div class="form-inline text-center row">
+						<p:commandButton id="btnConfirma" value="Confirmar"
+							styleClass="btn btn-success"
+							actionListener="#{clienteControlador.adiconarContato()}" />
+						<p:commandButton id="btnCancela" value="Cancelar"
+							styleClass="btn btn-danger"
+							oncomplete="PF('incluirContato').hide();" />
+					</div>
 				</div>
 
 			</p:dialog>
@@ -260,6 +258,8 @@
 					styleClass="btn btn-danger"
 					onclick="PF('dialogExcluirCliente').hide();"
 					oncomplete="PF('confirmarExclusaoCliente').hide();" />
+
+				<div style="margin-bottom: 10px;"></div>
 
 			</p:confirmDialog>
 

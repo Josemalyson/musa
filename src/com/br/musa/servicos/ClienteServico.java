@@ -27,6 +27,33 @@ public class ClienteServico {
 		clienteRepositorio.excluir(cliente);
 	}
 
+	public boolean validarClienteParaSalvar(Cliente cliente){
+		StringBuilder erro = new StringBuilder();
+		
+		if (cliente.getNome() == null || cliente.getNome().isEmpty()) {
+			erro.append("Preencha o campo cliente").append(" \n");
+		}
+		
+		if (cliente.getCpf() == null || cliente.getCpf().isEmpty()) {
+			erro.append("Preencha o campo cpf").append(" \n");
+		}
+
+		if (cliente.getRg() == null || cliente.getRg().isEmpty()) {
+			erro.append("Preencha o campo Rg").append(" \n");
+		}
+		
+		if (cliente.getContatoList() == null || cliente.getContatoList().isEmpty()) {
+			erro.append("Preencha o campo Contato").append(" \n");
+		}
+		
+		if (!erro.toString().isEmpty()) {
+			throw new BusinessException(erro.toString());
+		}
+		return true;
+		
+		
+	}
+	
 	public boolean validarCpfCliente(Cliente cliente) {
 		if (!CpfUtil.isValido(cliente.getCpf())) {
 			throw new BusinessException(MsgConstantes.CPF_INVALIDO);

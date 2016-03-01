@@ -26,7 +26,7 @@
 		href="#{request.contextPath}/recursos/bootstrap/css/bootstrap-theme.css"
 		type="text/css" media="all" />
 </h:head>
-<h:body>
+<h:body  style="width: 93%; margin-left: 45px;">
 	<div id="topo">
 		<ui:insert name="topo">
 			<ui:include src="/WEB-INF/template/topo.xhtml"></ui:include>
@@ -43,7 +43,7 @@
 			</p:dialog>
 		</p:outputPanel>
 	</div>
-	<div id="conteudo" class="container-fluid">
+	<div id="conteudo">
 		<ui:insert name="conteudo">
 			<ui:include src="/WEB-INF/template/conteudo.xhtml" />
 		</ui:insert>

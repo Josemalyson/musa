@@ -18,6 +18,7 @@ import com.br.musa.entidades.Cliente;
 import com.br.musa.entidades.Contato;
 import com.br.musa.entidades.Endereco;
 import com.br.musa.entidades.Estado;
+import com.br.musa.exeption.BusinessException;
 import com.br.musa.servicos.CidadeServico;
 import com.br.musa.servicos.ClienteServico;
 import com.br.musa.servicos.EstadoServico;
@@ -85,16 +86,28 @@ public class ClienteControlador extends CoreControlador {
 	}
 
 	public String salvarCliente() {
+		
+		try {	
+		
+			if (clienteServico.validarClienteParaSalvar(cliente)) {
+			
+				cliente.setCpf(MascaraUtil.removerMascara(cliente.getCpf()));
+				cliente.setRg(MascaraUtil.removerMascara(cliente.getRg()));
+				cliente.setFlExcluido(false);
+				clienteServico.salvar(cliente);
+				
+				RequestContext.getCurrentInstance().update("tabelaCliente");
+				adicionarMensagem(MsgConstantes.MSG_SUCESSO);
+				return sendRedirect(Constantes.PAGINA_LISTAR_CLIENTES);
+			}
+	
 
-		cliente.setCpf(MascaraUtil.removerMascara(cliente.getCpf()));
-		cliente.setRg(MascaraUtil.removerMascara(cliente.getRg()));
-		cliente.setFlExcluido(false);
-		clienteServico.salvar(cliente);
-
-		adicionarMensagem(MsgConstantes.MSG_SUCESSO);
-		RequestContext.getCurrentInstance().update("tabelaCliente");
-		return sendRedirect(Constantes.PAGINA_LISTAR_CLIENTES);
-
+		} catch (BusinessException e) {
+			adicionarErro(e.getMessage());
+			RequestContext.getCurrentInstance().update("@form");
+		}
+	
+		return Constantes.STRING_VAZIA;
 	}
 
 	public void adiconarContato() {
@@ -105,7 +118,6 @@ public class ClienteControlador extends CoreControlador {
 			cliente.getContatoList().add(contato);
 		}
 
-		cliente.getContatoList().add(contato);
 		contato = new Contato();
 		adicionarMensagem(MsgConstantes.MSG_SUCESSO);
 		RequestContext.getCurrentInstance().update("contatosCliente");
@@ -133,14 +145,17 @@ public class ClienteControlador extends CoreControlador {
 	}
 
 	public void listarCidadesPorEstados() {
-		if (cliente.getEndereco().getEstado() == null) {
+
+		if (cliente.getEndereco() == null || cliente.getEndereco().getEstado() == null) {
 			Estado estado = new Estado();
 			estado.setId(new Long(16));
+			Endereco endereco = new Endereco();
+			endereco.setEstado(estado);
+			cliente.setEndereco(endereco);
 			cliente.getEndereco().setEstado(estado);
 		}
 
 		cidadeList = cidadeServico.listarCidadesPorEstados(cliente.getEndereco().getEstado());
-		
 		if (cliente.getEndereco().getCidade() == null) {
 			cliente.getEndereco().setCidade(cidadeList.stream().filter(c -> c.getId().equals(Constantes.ID_JOAO_PESSOA)).findFirst().get());
 		}
