@@ -113,8 +113,11 @@ public class ClienteControlador extends CoreControlador {
 	public void adiconarContato() {
 		contato.setCliente(cliente);
 		contato.setFlExcluido(false);
+		
 
 		if (!cliente.getContatoList().contains(contato)) {
+			contato.setTelefone(MascaraUtil.removerMascara(contato.getTelefone()));
+			contato.setDdd(MascaraUtil.removerMascara(contato.getDdd()));
 			cliente.getContatoList().add(contato);
 		}
 

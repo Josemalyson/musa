@@ -16,7 +16,16 @@
 		</ol>
 
 		<h:form prependId="false" id="cliente">
-
+			
+			<script>
+//COMO CHAMAR FUNCAO JAVASCRIP(JQUERY) NO XHTML
+// 				$(document).ready(function(){
+// 					$('#nome').hover(function(){
+// 						alert($(this).val());
+// 					});
+// 				});
+			</script>
+			
 			<fieldset>
 				<legend>Dados Cadastrais</legend>
 				<div class="panel panel-default">
@@ -92,7 +101,7 @@
 
 							<p:column headerText="Opções" styleClass="text-center"
 								style="width: 98px;">
-								<p:commandButton title="Editar" icon="ui-icon-pencil"
+								<p:commandButton title="Editar" icon="ui-icon-pencil" process="@this" update="incluirContato"
 									actionListener="#{clienteControlador.editarContato(contato)}" />
 								<p:commandButton title="Excluir" icon="ui-icon-trash"
 									actionListener="#{clienteControlador.setContato(contato)}"
@@ -187,8 +196,9 @@
 				<div class="form-group">
 					<label class="col-sm-2 control-label"></label>
 					<div class="col-sm-2">
-						<p:commandButton id="btSalvar" value="Salvar" styleClass="btn btn-success"
-							process="@form" action="#{clienteControlador.salvarCliente()}" ajax="false"
+						<p:commandButton id="btSalvar" value="Salvar"
+							styleClass="btn btn-success" process="@form"
+							action="#{clienteControlador.salvarCliente()}" ajax="false"
 							oncomplete="PF('incluirCliente').hide();" />
 					</div>
 					<label class="col-sm-2 control-label"></label>
@@ -201,31 +211,31 @@
 			</div>
 		</h:form>
 
-		<h:form id="formModalIncluirContato" prependId="false">
 
-			<p:dialog modal="true" widgetVar="incluirContato" id="incluirContato"
-				closable="true" draggable="false" width="700"
-				header="Incluir Novo Contato" resizable="false">
+		<p:dialog modal="true" widgetVar="incluirContato" id="incluirContato"
+			closable="true" draggable="false" width="700"
+			header="Incluir Novo Contato" resizable="false">
+			<h:form id="formModalIncluirContato" prependId="false">
 
 				<div class="form-group row ">
 					<label class="col-sm-2 control-label">Email:</label>
 					<div class="col-sm-10">
 						<p:inputText id="email" styleClass="form-control"
-							value="#{clienteControlador.contato.email}"></p:inputText>
+							value="#{clienteControlador.contato.email}"/>
 					</div>
 				</div>
 				<div class="form-group row ">
 					<label class="col-sm-2 control-label">DDD:</label>
 					<div class="col-sm-10">
-						<p:inputText id="ddd" styleClass="form-control"
-							value="#{clienteControlador.contato.ddd}"></p:inputText>
+						<p:inputMask id="ddd" mask="(99)" styleClass="form-control"
+							value="#{clienteControlador.contato.ddd}"/> 
 					</div>
 				</div>
 				<div class="form-group row ">
 					<label class="col-sm-2 control-label">Telefone:</label>
 					<div class="col-sm-10">
-						<p:inputText id="telefone" styleClass="form-control"
-							value="#{clienteControlador.contato.telefone}"></p:inputText>
+						<p:inputMask mask="99999-9999" id="telefone" styleClass="form-control"
+							value="#{clienteControlador.contato.telefone}"/>
 					</div>
 				</div>
 
@@ -240,8 +250,8 @@
 					</div>
 				</div>
 
-			</p:dialog>
-		</h:form>
+			</h:form>
+		</p:dialog>
 
 
 		<h:form id="dialogExcluirClienteForm" prependId="false">
