@@ -56,7 +56,7 @@ public class Cliente extends GenericEntity {
 	@OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL, orphanRemoval=true)
 	private List<Pedido> pedidoList;
 
-	@OneToOne(cascade=CascadeType.ALL, orphanRemoval=true)
+	@OneToOne(cascade=CascadeType.ALL, orphanRemoval=true, mappedBy="cliente",  fetch = FetchType.EAGER)
 	private Endereco endereco;
 
 	// GET E SET

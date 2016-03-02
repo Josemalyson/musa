@@ -42,7 +42,7 @@
 						<div class="form-group row">
 							<label class="col-sm-2 control-label obrigatorio">CPF:</label>
 							<div class="col-sm-4">
-								<p:inputMask styleClass="form-control" mask="?999.999.99999"
+								<p:inputMask styleClass="form-control" mask="?999.999.999-99"
 									id="cpf" value="#{clienteControlador.cliente.cpf}"
 									maxlength="14" />
 							</div>
@@ -88,7 +88,8 @@
 
 							<p:column headerText="Código" styleClass="text-center "
 								style="width: 79px;">
-								<h:outputText id="ddd" value="#{contato.ddd}" />
+								<h:outputText id="ddd" value="#{contato.ddd}" >
+								</h:outputText>
 							</p:column>
 
 							<p:column headerText="Telefone" styleClass="text-center">
@@ -139,8 +140,8 @@
 
 							<label class="col-sm-1 control-label">CEP:</label>
 							<div class="col-sm-2">
-								<p:inputText id="cep" styleClass="form-control"
-									value="#{clienteControlador.cliente.endereco.cep}"></p:inputText>
+								<p:inputMask mask="99.999-999" id="cep" styleClass="form-control"
+									value="#{clienteControlador.cliente.endereco.cep}" />
 							</div>
 						</div>
 

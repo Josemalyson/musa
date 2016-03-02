@@ -73,10 +73,13 @@ public class ClienteControlador extends CoreControlador {
 	private void montarNovoCliente() {
 		cliente = new Cliente();
 		Endereco endereco = new Endereco();
+		contato = new Contato();
+
 		cliente.setEndereco(endereco);
+		cliente.getEndereco().setCliente(cliente); 
+		
 		cliente.setContatoList(new ArrayList<Contato>());
 		dataMaxima = new Date();
-		contato = new Contato();
 		listarEstados();
 	}
 
@@ -94,6 +97,12 @@ public class ClienteControlador extends CoreControlador {
 				cliente.setCpf(MascaraUtil.removerMascara(cliente.getCpf()));
 				cliente.setRg(MascaraUtil.removerMascara(cliente.getRg()));
 				cliente.setFlExcluido(false);
+				
+				if (cliente.getEndereco() !=null && cliente.getEndereco().getCep() != null) {
+					cliente.getEndereco().setCep(MascaraUtil.removerMascara(cliente.getEndereco().getCep()));
+					cliente.getEndereco().setCliente(cliente); 
+				}
+				
 				clienteServico.salvar(cliente);
 				
 				RequestContext.getCurrentInstance().update("tabelaCliente");

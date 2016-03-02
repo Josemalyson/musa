@@ -1,3 +1,8 @@
+body{
+	padding-left: 50px;
+    padding-right: 50px;
+}
+
 #logo {
 	width: 250px;
 	height: 85px;

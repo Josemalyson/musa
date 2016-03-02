@@ -9,6 +9,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import com.br.musa.generics.GenericEntity;
@@ -32,10 +33,10 @@ public class Endereco extends GenericEntity {
 	private String bairro;
 
 	@Column(name = "NU_NUMERO")
-	private Integer numero;
+	private String numero;
 
 	@Column(name = "NU_CEP")
-	private Integer cep;
+	private String cep;
 
 	@ManyToOne
 	@JoinColumn(name = "FK_ESTADO", referencedColumnName = "ID_ESTADO")
@@ -45,6 +46,10 @@ public class Endereco extends GenericEntity {
 	@JoinColumn(name = "FK_CIDADE", referencedColumnName = "ID_CIDADE")
 	private Cidade cidade;
 
+	@OneToOne
+	@JoinColumn(name = "FK_CLIENTE", referencedColumnName = "ID_CLIENTE")
+	private Cliente cliente;
+	
 	@Override
 	public Serializable obterIdentificador() {
 		return id;
@@ -74,19 +79,19 @@ public class Endereco extends GenericEntity {
 		this.bairro = bairro;
 	}
 
-	public Integer getNumero() {
+	public String getNumero() {
 		return numero;
 	}
 
-	public void setNumero(Integer numero) {
+	public void setNumero(String numero) {
 		this.numero = numero;
 	}
 
-	public Integer getCep() {
+	public String getCep() {
 		return cep;
 	}
 
-	public void setCep(Integer cep) {
+	public void setCep(String cep) {
 		this.cep = cep;
 	}
 
@@ -165,6 +170,14 @@ public class Endereco extends GenericEntity {
 		} else if (!rua.equals(other.rua))
 			return false;
 		return true;
+	}
+
+	public Cliente getCliente() {
+		return cliente;
+	}
+
+	public void setCliente(Cliente cliente) {
+		this.cliente = cliente;
 	}
 
 
