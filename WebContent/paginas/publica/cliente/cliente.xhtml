@@ -16,16 +16,31 @@
 		</ol>
 
 		<h:form prependId="false" id="cliente">
-			
 			<script>
 //COMO CHAMAR FUNCAO JAVASCRIP(JQUERY) NO XHTML
 // 				$(document).ready(function(){
-// 					$('#nome').hover(function(){
-// 						alert($(this).val());
-// 					});
+// 					var teste =   $("#btSalvar").click(function(){
+// 					if($("#nome").val() === null | $("#nome").val() === ""){
+// 						 $("#nome").addClass("focus");
+// 						  event.preventDefault();
+// 						}
+// 				    });
 // 				});
+
+// 			function teste(){
+// 				var ids = ["#nome","#cpf"];
+
+// 				for (i = 0; i < ids.length; i++) { 
+// 					if($(ids[i]).val() === null | $(ids[i]).val() === ""){
+// 						$(ids[i]).addClass("focus");
+// 					}	
+// 				};
+// 			};
+
+
+				
 			</script>
-			
+
 			<fieldset>
 				<legend>Dados Cadastrais</legend>
 				<div class="panel panel-default">
@@ -61,7 +76,8 @@
 							<div class="col-sm-4">
 								<p:calendar locale="pt_BR" navigator="true" pattern="dd/MM/yyyy"
 									value="#{clienteControlador.cliente.dtNascimento}"
-									id="dtNascimento" maxdate="#{clienteControlador.dataMaxima}" />
+									readonlyInput="true" id="dtNascimento"
+									maxdate="#{clienteControlador.dataMaxima}" />
 							</div>
 						</div>
 
@@ -88,7 +104,7 @@
 
 							<p:column headerText="Código" styleClass="text-center "
 								style="width: 79px;">
-								<h:outputText id="ddd" value="#{contato.ddd}" >
+								<h:outputText id="ddd" value="#{contato.ddd}">
 								</h:outputText>
 							</p:column>
 
@@ -102,7 +118,8 @@
 
 							<p:column headerText="Opções" styleClass="text-center"
 								style="width: 98px;">
-								<p:commandButton title="Editar" icon="ui-icon-pencil" process="@this" update="incluirContato"
+								<p:commandButton title="Editar" icon="ui-icon-pencil"
+									process="@this" update="incluirContato"
 									actionListener="#{clienteControlador.editarContato(contato)}" />
 								<p:commandButton title="Excluir" icon="ui-icon-trash"
 									actionListener="#{clienteControlador.setContato(contato)}"
@@ -140,7 +157,8 @@
 
 							<label class="col-sm-1 control-label">CEP:</label>
 							<div class="col-sm-2">
-								<p:inputMask mask="99.999-999" id="cep" styleClass="form-control"
+								<p:inputMask mask="99.999-999" id="cep"
+									styleClass="form-control"
 									value="#{clienteControlador.cliente.endereco.cep}" />
 							</div>
 						</div>
@@ -222,21 +240,22 @@
 					<label class="col-sm-2 control-label">Email:</label>
 					<div class="col-sm-10">
 						<p:inputText id="email" styleClass="form-control"
-							value="#{clienteControlador.contato.email}"/>
+							value="#{clienteControlador.contato.email}" />
 					</div>
 				</div>
 				<div class="form-group row ">
 					<label class="col-sm-2 control-label">DDD:</label>
 					<div class="col-sm-10">
 						<p:inputMask id="ddd" mask="(99)" styleClass="form-control"
-							value="#{clienteControlador.contato.ddd}"/> 
+							value="#{clienteControlador.contato.ddd}" />
 					</div>
 				</div>
 				<div class="form-group row ">
 					<label class="col-sm-2 control-label">Telefone:</label>
 					<div class="col-sm-10">
-						<p:inputMask mask="99999-9999" id="telefone" styleClass="form-control"
-							value="#{clienteControlador.contato.telefone}"/>
+						<p:inputMask mask="99999-9999" id="telefone"
+							styleClass="form-control"
+							value="#{clienteControlador.contato.telefone}" />
 					</div>
 				</div>
 

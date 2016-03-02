@@ -3,6 +3,7 @@ package com.br.musa.servicos;
 import java.util.List;
 
 import javax.inject.Inject;
+import javax.transaction.Transactional;
 
 import com.br.musa.constantes.MsgConstantes;
 import com.br.musa.entidades.Cliente;
@@ -19,10 +20,12 @@ public class ClienteServico {
 		return clienteRepositorio.listar();
 	}
 
+	@Transactional
 	public void salvar(Cliente cliente) {
 		clienteRepositorio.salvar(cliente);
 	}
 
+	@Transactional
 	public void excluir(Cliente cliente) {
 		clienteRepositorio.excluir(cliente);
 	}
@@ -39,19 +42,19 @@ public class ClienteServico {
 		StringBuilder erro = new StringBuilder();
 		
 		if (cliente.getNome() == null || cliente.getNome().isEmpty()) {
-			erro.append("Preencha o campo cliente").append(" \n");
+			erro.append("Preencha o campo cliente").append("<br />");
 		}
 		
 		if (cliente.getCpf() == null || cliente.getCpf().isEmpty()) {
-			erro.append("Preencha o campo cpf").append(" \n");
+			erro.append("Preencha o campo cpf").append("<br />");
 		}
 
 		if (cliente.getRg() == null || cliente.getRg().isEmpty()) {
-			erro.append("Preencha o campo Rg").append(" \n");
+			erro.append("Preencha o campo Rg").append("<br />");
 		}
 		
 		if (cliente.getContatoList() == null || cliente.getContatoList().isEmpty()) {
-			erro.append("Preencha o campo Contato").append(" \n");
+			erro.append("Preencha o campo Contato").append("<br />");
 		}
 		
 		if (!erro.toString().isEmpty()) {
