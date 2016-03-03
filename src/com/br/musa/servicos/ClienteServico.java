@@ -10,6 +10,7 @@ import com.br.musa.entidades.Cliente;
 import com.br.musa.exeption.BusinessException;
 import com.br.musa.repositorio.ClienteRepositorio;
 import com.br.musa.util.CpfUtil;
+import com.br.musa.util.JavaScriptUtil;
 
 public class ClienteServico {
 
@@ -43,18 +44,22 @@ public class ClienteServico {
 		
 		if (cliente.getNome() == null || cliente.getNome().isEmpty()) {
 			erro.append("Preencha o campo cliente").append("<br />");
+			JavaScriptUtil.marcarCampoObrigatorio("#nome");
 		}
 		
 		if (cliente.getCpf() == null || cliente.getCpf().isEmpty()) {
 			erro.append("Preencha o campo cpf").append("<br />");
+			JavaScriptUtil.marcarCampoObrigatorio("#cpf");
 		}
 
 		if (cliente.getRg() == null || cliente.getRg().isEmpty()) {
 			erro.append("Preencha o campo Rg").append("<br />");
+			JavaScriptUtil.marcarCampoObrigatorio("#rg");
 		}
 		
 		if (cliente.getContatoList() == null || cliente.getContatoList().isEmpty()) {
 			erro.append("Preencha o campo Contato").append("<br />");
+			JavaScriptUtil.marcarCampoObrigatorio("#contato");
 		}
 		
 		if (!erro.toString().isEmpty()) {
