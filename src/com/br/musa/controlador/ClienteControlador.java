@@ -113,7 +113,6 @@ public class ClienteControlador extends CoreControlador {
 
 		} catch (BusinessException e) {
 			adicionarErro(e.getMessage());
-//			RequestContext.getCurrentInstance().execute("teste();");
 		}
 		return Constantes.STRING_VAZIA;
 	
