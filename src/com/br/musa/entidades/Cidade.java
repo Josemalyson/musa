@@ -6,6 +6,7 @@ import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -30,6 +31,7 @@ public class Cidade extends GenericEntity {
 	// RELACIONAMENTOS
 
 	@ManyToOne
+	@JoinColumn(name = "FK_ESTADO", referencedColumnName = "ID_ESTADO")
 	private Estado estado;
 	
 	@OneToMany(mappedBy = "estado")
