@@ -22,7 +22,6 @@ import com.br.musa.exeption.BusinessException;
 import com.br.musa.servicos.CidadeServico;
 import com.br.musa.servicos.ClienteServico;
 import com.br.musa.servicos.EstadoServico;
-import com.br.musa.util.MascaraUtil;
 
 @ManagedBean
 @ViewScoped
@@ -56,7 +55,7 @@ public class ClienteControlador extends CoreControlador {
 		}
 
 		dataMaxima = new Date();
-		cidadeList = new ArrayList<Cidade>();
+		cidadeList = new ArrayList<>();
 		listarEstados();
 		listarCidadesPorEstados();
 		listarContatosdoCliente();
@@ -76,8 +75,8 @@ public class ClienteControlador extends CoreControlador {
 		contato = new Contato();
 
 		cliente.setEndereco(endereco);
-		cliente.getEndereco().setCliente(cliente); 
-		
+		cliente.getEndereco().setCliente(cliente);
+
 		cliente.setContatoList(new ArrayList<Contato>());
 		dataMaxima = new Date();
 		listarEstados();
@@ -85,55 +84,32 @@ public class ClienteControlador extends CoreControlador {
 
 	private void listarEstados() {
 		estadoList = estadoServico.listarEstados();
-
 	}
 
 	public String salvarCliente() {
-		
-		try {	
-		
-			if (clienteServico.validarClienteParaSalvar(cliente)) {
-			
-				cliente.setCpf(MascaraUtil.removerMascara(cliente.getCpf()));
-				cliente.setRg(MascaraUtil.removerMascara(cliente.getRg()));
-				cliente.setFlExcluido(false);
-				
-				if (cliente.getEndereco() !=null && cliente.getEndereco().getCep() != null) {
-					cliente.getEndereco().setCep(MascaraUtil.removerMascara(cliente.getEndereco().getCep()));
-					cliente.getEndereco().setCliente(cliente); 
-				}
-				
-				clienteServico.salvar(cliente);
-				
-				RequestContext.getCurrentInstance().update("tabelaCliente");
-				adicionarMensagem(MsgConstantes.MSG_SUCESSO);
-				return sendRedirect(Constantes.PAGINA_LISTAR_CLIENTES);
-			}
-	
+
+		try {
+			clienteServico.salvar(cliente);
+			RequestContext.getCurrentInstance().update("tabelaCliente");
+			adicionarMensagem(MsgConstantes.MSG_SUCESSO);
+			return sendRedirect(Constantes.PAGINA_LISTAR_CLIENTES);
 
 		} catch (BusinessException e) {
 			adicionarErro(e.getMessage());
 		}
 		return Constantes.STRING_VAZIA;
-	
 	}
 
 	public void adiconarContato() {
-		contato.setCliente(cliente);
-		contato.setFlExcluido(false);
-		
-
-		if (!cliente.getContatoList().contains(contato)) {
-			contato.setTelefone(MascaraUtil.removerMascara(contato.getTelefone()));
-			contato.setDdd(MascaraUtil.removerMascara(contato.getDdd()));
-			cliente.getContatoList().add(contato);
+		try {
+			clienteServico.adicionarContatos(contato, cliente);
+			contato = new Contato();
+			RequestContext.getCurrentInstance().update("contatosCliente");
+			RequestContext.getCurrentInstance().execute("PF('incluirContato').hide()");
+			adicionarMensagem(MsgConstantes.MSG_SUCESSO);
+		} catch (BusinessException e) {
+			adicionarErro(e.getMessage());
 		}
-
-		contato = new Contato();
-		adicionarMensagem(MsgConstantes.MSG_SUCESSO);
-		RequestContext.getCurrentInstance().update("contatosCliente");
-		RequestContext.getCurrentInstance().execute("PF('incluirContato').hide()");
-
 	}
 
 	public void limparModalContato() {
@@ -149,8 +125,7 @@ public class ClienteControlador extends CoreControlador {
 	}
 
 	public void excluirContato() {
-		cliente.getContatoList().remove(contato);
-		cliente.getContatoList().remove(contato);
+		clienteServico.excluirContato(cliente, contato);
 		adicionarMensagem(MsgConstantes.MSG_EXCLUSAO_SUCESSO);
 		RequestContext.getCurrentInstance().update("contatosCliente");
 	}
@@ -167,10 +142,12 @@ public class ClienteControlador extends CoreControlador {
 		}
 
 		cidadeList = cidadeServico.listarCidadesPorEstados(cliente.getEndereco().getEstado());
+
 		if (cliente.getEndereco().getCidade() == null) {
-			cliente.getEndereco().setCidade(cidadeList.stream().filter(c -> c.getId().equals(Constantes.ID_JOAO_PESSOA)).findFirst().get());
+			cliente.getEndereco().setCidade(
+					cidadeList.stream().filter(c -> c.getId().equals(Constantes.ID_JOAO_PESSOA)).findFirst().get());
 		}
-		
+
 	}
 
 	public Cliente getCliente() {

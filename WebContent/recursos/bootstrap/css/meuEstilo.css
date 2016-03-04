@@ -1,6 +1,6 @@
-body{
+body {
 	padding-left: 50px;
-    padding-right: 50px;
+	padding-right: 50px;
 }
 
 #logo {
@@ -15,9 +15,9 @@ body{
 	content: " *";
 }
 
-.focus{
-	border-color: red!important;
-	-webkit-box-shadow: inset 0 1px 0 #e8e2ca!important;
-	box-shadow: inset 0 1px 0 #e8e2ca!important;
+.focus {
+	border-color: red !important;
+	-webkit-box-shadow: inset 0 1px 0 #e8e2ca !important;
+	box-shadow: inset 0 1px 0 #e8e2ca !important;
 	outline: 0 !important;
 }

@@ -79,8 +79,7 @@
 
 							<p:column headerText="Código" styleClass="text-center "
 								style="width: 79px;">
-								<h:outputText id="ddd" value="#{contato.ddd}">
-								</h:outputText>
+								<h:outputText id="ddd" value="#{contato.ddd}" />
 							</p:column>
 
 							<p:column headerText="Telefone" styleClass="text-center">
@@ -219,14 +218,14 @@
 					</div>
 				</div>
 				<div class="form-group row ">
-					<label class="col-sm-2 control-label">DDD:</label>
+					<label class="col-sm-2 control-label obrigatorio">DDD:</label>
 					<div class="col-sm-10">
 						<p:inputMask id="ddd" mask="(99)" styleClass="form-control"
 							value="#{clienteControlador.contato.ddd}" />
 					</div>
 				</div>
 				<div class="form-group row ">
-					<label class="col-sm-2 control-label">Telefone:</label>
+					<label class="col-sm-2 control-label obrigatorio">Telefone:</label>
 					<div class="col-sm-10">
 						<p:inputMask mask="99999-9999" id="telefone"
 							styleClass="form-control"
@@ -244,7 +243,7 @@
 							oncomplete="PF('incluirContato').hide();" />
 					</div>
 				</div>
-
+				<p class="obrigatorio">Campos Obrigatórios</p>
 			</h:form>
 		</p:dialog>
 
@@ -274,5 +273,5 @@
 		<p class="obrigatorio">Campos Obrigatórios</p>
 
 	</ui:define>
-	
+
 </ui:composition>

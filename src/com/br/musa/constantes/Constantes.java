@@ -9,6 +9,10 @@ public abstract class Constantes {
 	public static final String ESPACO_EM_BRANCO = " ";
 	public static final String STRING_VAZIA = "";
 	
+	/* TAG HTML */
+	
+	public static final String TAG_BR = "<br />";
+	
 	/* PAGINAS */
 	
 	public static final String PAGINA_LISTAR_CLIENTES = "listarClientes";
