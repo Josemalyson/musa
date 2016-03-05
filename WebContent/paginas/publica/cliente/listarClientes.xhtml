@@ -20,7 +20,7 @@
 
 			<div class="table-responsive">
 				<p:dataTable widgetVar="tabelaCliente" id="tabelaCliente"
-					var="cliente" tableStyleClass="table table-bordered"
+					var="cliente" tableStyleClass="table table-hover"
 					value="#{manterClienteControlador.clientesList}"
 					emptyMessage="Nenhum cliente encontrado." paginator="true"
 					paginatorAlwaysVisible="true" pageLinks="10" rows="10"
@@ -33,13 +33,13 @@
 					</p:column>
 
 					<p:column headerText="Nome" styleClass="text-center"
-						filterBy="#{cliente.nome}" ooterText="contains"
+						filterBy="#{cliente.nome}"  
 						filterMatchMode="contains">
 						<h:outputText value="#{cliente.nome}" />
 					</p:column>
 
 					<p:column headerText="CPF" styleClass="text-center"
-						filterBy="#{cliente.cpf}" ooterText="contains"
+						filterBy="#{cliente.cpf}" 
 						filterMatchMode="contains">
 						<h:outputText
 							value="#{manterClienteControlador.adiconarMascaraCpf(cliente)}" />

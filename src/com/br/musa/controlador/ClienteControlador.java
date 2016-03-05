@@ -9,6 +9,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.inject.Inject;
 
+import org.jboss.logging.Logger;
 import org.primefaces.context.RequestContext;
 
 import com.br.musa.constantes.Constantes;
@@ -44,6 +45,8 @@ public class ClienteControlador extends CoreControlador {
 	// LISTA
 	private List<Estado> estadoList;
 	private List<Cidade> cidadeList;
+	
+	private static final Logger logger = Logger.getLogger(ClienteControlador.class);
 
 	@PostConstruct
 	public void init() {
@@ -95,6 +98,7 @@ public class ClienteControlador extends CoreControlador {
 			return sendRedirect(Constantes.PAGINA_LISTAR_CLIENTES);
 
 		} catch (BusinessException e) {
+			logger.error(e.getMessage(),e);
 			adicionarErro(e.getMessage());
 		}
 		return Constantes.STRING_VAZIA;
@@ -108,6 +112,7 @@ public class ClienteControlador extends CoreControlador {
 			RequestContext.getCurrentInstance().execute("PF('incluirContato').hide()");
 			adicionarMensagem(MsgConstantes.MSG_SUCESSO);
 		} catch (BusinessException e) {
+			logger.error(e.getMessage(),e);
 			adicionarErro(e.getMessage());
 		}
 	}
