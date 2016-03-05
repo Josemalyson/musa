@@ -20,8 +20,8 @@
 
 			<div class="table-responsive">
 				<p:dataTable widgetVar="tabelaCliente" id="tabelaCliente"
-					var="cliente" tableStyleClass="table table-hover"
-					value="#{manterClienteControlador.clientesList}"
+					var="clienteVO" tableStyleClass="table table-hover"
+					value="#{manterClienteControlador.clienteVOlist}"
 					emptyMessage="Nenhum cliente encontrado." paginator="true"
 					paginatorAlwaysVisible="true" pageLinks="10" rows="10"
 					rowsPerPageTemplate="10,30,50" paginatorPosition="bottom"
@@ -29,40 +29,37 @@
 
 
 					<p:column headerText="Código" styleClass="text-center">
-						<h:outputText value="#{cliente.id}" />
+						<h:outputText value="#{clienteVO.codigo}" />
 					</p:column>
 
 					<p:column headerText="Nome" styleClass="text-center"
-						filterBy="#{cliente.nome}"  
+						sortBy="#{clienteVO.nome}" filterBy="#{clienteVO.nome}"
 						filterMatchMode="contains">
-						<h:outputText value="#{cliente.nome}" />
+						<h:outputText value="#{clienteVO.nome}" />
 					</p:column>
 
 					<p:column headerText="CPF" styleClass="text-center"
-						filterBy="#{cliente.cpf}" 
+						sortBy="#{clienteVO.cpf}" filterBy="#{clienteVO.cpf}"
 						filterMatchMode="contains">
-						<h:outputText
-							value="#{manterClienteControlador.adiconarMascaraCpf(cliente)}" />
+						<h:outputText value="#{clienteVO.cpf}" />
 					</p:column>
 
 					<p:column headerText="RG" styleClass="text-center">
-						<h:outputText
-							value="#{manterClienteControlador.adiconarMascaraRg(cliente)}" />
+						<h:outputText value="#{clienteVO.rg}" />
 					</p:column>
 
 					<p:column headerText="Data de Nascimento" styleClass="text-center">
-						<h:outputText
-							value="#{manterClienteControlador.montarDataNascimento(cliente)}" />
+						<h:outputText value="#{clienteVO.dataNascimento}" />
 					</p:column>
 
 					<p:column headerText="Opções" styleClass="text-center">
 						<div class="form-inline">
 							<p:commandButton icon="ui-icon-pencil" title="Editar"
-								action="#{manterClienteControlador.editarCliente(cliente)}" />
+								action="#{manterClienteControlador.editarCliente(clienteVO.cliente)}" />
 
 							<p:commandButton icon="ui-icon-trash" title="Excluir"
 								oncomplete="PF('confirmarExclusaoCliente').show();"
-								actionListener="#{manterClienteControlador.setCliente(cliente)}" />
+								actionListener="#{manterClienteControlador.setCliente(clienteVO.cliente)}" />
 						</div>
 					</p:column>
 
@@ -83,7 +80,7 @@
 
 				<p:commandButton id="btnCancelaExclusaoCliente" value="Cancelar"
 					styleClass="btn btn-danger"
-					oncomplete="PF('confirmarExclusaoCliente').hide();"/>
+					oncomplete="PF('confirmarExclusaoCliente').hide();" />
 
 			</p:confirmDialog>
 

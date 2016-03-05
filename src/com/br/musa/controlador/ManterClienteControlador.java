@@ -1,6 +1,6 @@
 package com.br.musa.controlador;
 
-import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -14,24 +14,23 @@ import org.primefaces.context.RequestContext;
 import com.br.musa.constantes.Constantes;
 import com.br.musa.constantes.MsgConstantes;
 import com.br.musa.entidades.Cliente;
+import com.br.musa.entidades.Vo.ClienteVO;
 import com.br.musa.servicos.ClienteServico;
-import com.br.musa.util.Data;
-import com.br.musa.util.MascaraUtil;
-import com.br.musa.util.ObjetoUtil;
+
 
 @ManagedBean
 @ViewScoped
 public class ManterClienteControlador extends CoreControlador {
 
- static final long serialVersionUID = 921184405757324590L;
+	static final long serialVersionUID = 921184405757324590L;
 
 	// Servicos
 	@Inject
 	private ClienteServico clienteServico;
 
 	// LISTAS
-	private List<Cliente> clientesList;
 	private List<Cliente> clientesListFiltrados;
+	private List<ClienteVO> clienteVOlist;
 
 	// OBJETOS
 
@@ -47,25 +46,8 @@ public class ManterClienteControlador extends CoreControlador {
 	}
 
 	public void listarTodosOsClientes() {
-		clientesList = clienteServico.listarTodosClientes();
-	}
-
-	public String adiconarMascaraCpf(Cliente cliente) {
-		try {
-			return MascaraUtil.adicionarMascara(cliente.getCpf(), MascaraUtil.CPF);
-		} catch (ParseException e) {
-			e.printStackTrace();
-			return new String();
-		}
-	}
-
-	public String adiconarMascaraRg(Cliente cliente) {
-		try {
-			return MascaraUtil.adicionarMascara(cliente.getRg(), "###.###-#");
-		} catch (ParseException e) {
-			e.printStackTrace();
-			return new String();
-		}
+		clienteVOlist = new ArrayList<ClienteVO>();
+		clienteServico.montarClienteVO(clienteVOlist);
 	}
 
 	public String editarCliente(Cliente cliente) {
@@ -75,31 +57,11 @@ public class ManterClienteControlador extends CoreControlador {
 
 	public void excluir() {
 
-		if (ObjetoUtil.notBlank(clienteSelecioando)) {
-			clienteServico.excluir(clienteSelecioando);
-			adicionarMensagem(MsgConstantes.MSG_ALTERACAO_SUCESSO);
-			listarTodosOsClientes();
-			RequestContext.getCurrentInstance().update("tabelaCliente");
-		} else {
-			adicionarErro(MsgConstantes.MSG_ERRO);
-		}
+		clienteServico.excluir(clienteSelecioando);
+		adicionarMensagem(MsgConstantes.MSG_ALTERACAO_SUCESSO);
+		listarTodosOsClientes();
+		RequestContext.getCurrentInstance().update("tabelaCliente");
 
-	}
-
-	public String montarDataNascimento(Cliente cliente) {
-
-		if (ObjetoUtil.notBlank(cliente.getDtNascimento())) {
-			return Data.getDataFormatada(cliente.getDtNascimento());
-		}
-		return Constantes.STRING_VAZIA;
-	}
-
-	public List<Cliente> getClientesList() {
-		return clientesList;
-	}
-
-	public void setClientesList(List<Cliente> clientesList) {
-		this.clientesList = clientesList;
 	}
 
 	public Cliente getCliente() {
@@ -132,6 +94,14 @@ public class ManterClienteControlador extends CoreControlador {
 
 	public void setClienteServico(ClienteServico clienteServico) {
 		this.clienteServico = clienteServico;
+	}
+
+	public List<ClienteVO> getClienteVOlist() {
+		return clienteVOlist;
+	}
+
+	public void setClienteVOlist(List<ClienteVO> clienteVOlist) {
+		this.clienteVOlist = clienteVOlist;
 	}
 
 }
