@@ -248,11 +248,11 @@
 		</p:dialog>
 
 
-		<h:form id="dialogExcluirClienteForm" prependId="false">
 
-			<p:confirmDialog widgetVar="dialogExcluirCliente"
-				id="dialogExcluirCliente" message="Confirmar Exclusção deste item?"
-				closable="false">
+		<p:confirmDialog widgetVar="dialogExcluirCliente"
+			id="dialogExcluirCliente" message="Confirmar Exclusção deste item?"
+			closable="false">
+			<h:form id="dialogExcluirClienteForm" prependId="false">
 
 				<p:commandButton id="btnConfirmaExclusaoContato" value="Confirmar"
 					styleClass="btn btn-success"
@@ -261,14 +261,13 @@
 
 				<p:commandButton id="btnCancelaExclusaoContato" value="Cancelar"
 					styleClass="btn btn-danger"
-					onclick="PF('dialogExcluirCliente').hide();"
-					oncomplete="PF('confirmarExclusaoCliente').hide();" />
+					onclick="PF('dialogExcluirCliente').hide();" />
 
 				<div style="margin-bottom: 10px;"></div>
+			</h:form>
 
-			</p:confirmDialog>
+		</p:confirmDialog>
 
-		</h:form>
 
 		<p class="obrigatorio">Campos Obrigatórios</p>
 
