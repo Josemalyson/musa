@@ -9,6 +9,9 @@ import com.br.musa.constantes.Constantes;
 import com.br.musa.constantes.MsgConstantes;
 import com.br.musa.entidades.Cliente;
 import com.br.musa.entidades.Contato;
+import com.br.musa.entidades.Endereco;
+import com.br.musa.entidades.Estado;
+import com.br.musa.enums.EstadoEnum;
 import com.br.musa.exeption.BusinessException;
 import com.br.musa.repositorio.ClienteRepositorio;
 import com.br.musa.util.CpfUtil;
@@ -19,6 +22,10 @@ public class ClienteServico {
 
 	@Inject
 	private ClienteRepositorio clienteRepositorio;
+	@Inject
+	private EstadoServico estadoServico;
+	@Inject
+	private CidadeServico cidadeServico;
 
 	public List<Cliente> listarTodosClientes() {
 		return clienteRepositorio.listar();
@@ -118,5 +125,16 @@ public class ClienteServico {
 	public void excluirContato(Cliente cliente, Contato contato) {
 		cliente.getContatoList().remove(contato);
 
+	}
+	
+	public void montarEstadoECidadePadrao(Cliente cliente) {
+		if (cliente.getEndereco() == null || cliente.getEndereco().getEstado() == null || cliente.getEndereco().getCidade() == null) {
+			Estado estado = estadoServico.buscarPorCodigo(EstadoEnum.PARAIBA.getCodigo());
+			Endereco endereco = new Endereco();
+			endereco.setEstado(estado);
+			cliente.setEndereco(endereco);
+			cliente.getEndereco().setEstado(estado);
+			cliente.getEndereco().setCidade(cidadeServico.buscarCidadePorCodigoEstado(Constantes.ID_JOAO_PESSOA,estado));
+		}
 	}
 }

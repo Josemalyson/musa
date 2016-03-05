@@ -131,23 +131,8 @@ public class ClienteControlador extends CoreControlador {
 	}
 
 	public void listarCidadesPorEstados() {
-
-		if (cliente.getEndereco() == null || cliente.getEndereco().getEstado() == null) {
-			Estado estado = new Estado();
-			estado.setId(new Long(16));
-			Endereco endereco = new Endereco();
-			endereco.setEstado(estado);
-			cliente.setEndereco(endereco);
-			cliente.getEndereco().setEstado(estado);
-		}
-
+		clienteServico.montarEstadoECidadePadrao(cliente);
 		cidadeList = cidadeServico.listarCidadesPorEstados(cliente.getEndereco().getEstado());
-
-		if (cliente.getEndereco().getCidade() == null) {
-			cliente.getEndereco().setCidade(
-					cidadeList.stream().filter(c -> c.getId().equals(Constantes.ID_JOAO_PESSOA)).findFirst().get());
-		}
-
 	}
 
 	public Cliente getCliente() {

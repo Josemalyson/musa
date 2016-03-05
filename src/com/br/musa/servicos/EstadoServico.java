@@ -16,4 +16,7 @@ public class EstadoServico {
 		return estadosRepositorio.listar();
 	}
 
+	public Estado buscarPorCodigo(Long codigo){
+		return listarEstados().stream().filter(estado -> estado.getId().equals(codigo)).findFirst().orElse(null);
+	}
 }
