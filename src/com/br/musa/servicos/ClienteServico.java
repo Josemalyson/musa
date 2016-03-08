@@ -51,6 +51,7 @@ public class ClienteServico {
 		clienteRepositorio.salvar(cliente);
 	}
 
+	//TODO SÓ SERA POSSIVEL EXCLUIR UM CLIENTE QUANDO O MESMO NÃO POSSUIR CONTAS PENDENTES.
 	@Transactional
 	public void excluir(Cliente cliente) {
 		if (cliente != null) {
@@ -169,7 +170,7 @@ public class ClienteServico {
 		return Constantes.STRING_VAZIA;
 	}
 
-	private String adicionarMascaraCpf(Cliente cliente) {
+	public String adicionarMascaraCpf(Cliente cliente) {
 		try {
 			return MascaraUtil.adicionarMascara(cliente.getCpf(), MascaraUtil.CPF);
 		} catch (ParseException e) {
@@ -185,6 +186,10 @@ public class ClienteServico {
 			e.printStackTrace();
 			return new String();
 		}
+	}
+
+	public Cliente buscarPorCodigo(Cliente cliente) {
+		return clienteRepositorio.consultarPorId(cliente);
 	}
 
 }

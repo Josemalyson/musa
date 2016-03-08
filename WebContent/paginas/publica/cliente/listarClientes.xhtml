@@ -10,6 +10,12 @@
 
 	<ui:define name="conteudo">
 
+		<script>
+		jQuery(function($){
+		   $("#tabelaCliente\\:cpf\\:filter").mask("999.999.999-99");
+		});
+	</script>
+
 		<ol class="breadcrumb">
 			<li><a href="#">Inicio</a></li>
 			<li><a href="#">Cliente</a></li>
@@ -28,19 +34,22 @@
 					filteredValue="#{manterClienteControlador.clientesListFiltrados}">
 
 
-					<p:column headerText="Código" styleClass="text-center">
+					<p:column headerText="Código" styleClass="text-center"
+						style="width: 10%;">
 						<h:outputText value="#{clienteVO.codigo}" />
 					</p:column>
 
 					<p:column headerText="Nome" styleClass="text-center"
 						sortBy="#{clienteVO.nome}" filterBy="#{clienteVO.nome}"
-						filterMatchMode="contains">
+						filterStyle="width:100%" filterMatchMode="contains">
 						<h:outputText value="#{clienteVO.nome}" />
 					</p:column>
 
-					<p:column headerText="CPF" styleClass="text-center"
+
+					<!-- VERIFICAR FORMA DE AO LIMPAR O FILTRO A TABELA SER LISTADA NOVAMENTE -->
+					<p:column id="cpf" headerText="CPF" styleClass="text-center"
 						sortBy="#{clienteVO.cpf}" filterBy="#{clienteVO.cpf}"
-						filterMatchMode="contains">
+						filterMatchMode="contains" filterStyle="width:100%">
 						<h:outputText value="#{clienteVO.cpf}" />
 					</p:column>
 

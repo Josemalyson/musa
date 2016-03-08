@@ -1,6 +1,7 @@
 package com.br.musa.entidades;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -32,10 +33,10 @@ public class Produto extends GenericEntity {
 	private String descricaoProduto;
 
 	@Column(name = "NU_PRECO_VENDA")
-	private Float precoVenda;
+	private BigDecimal precoVenda;
 
 	@Column(name = "NU_PRECO_CUSTO")
-	private Float precoCusto;
+	private BigDecimal precoCusto;
 
 	@Column(name = "FL_EXCLUIDO")
 	private Boolean flExcluido;
@@ -49,17 +50,6 @@ public class Produto extends GenericEntity {
 	// CONSTRUTORES
 
 	public Produto() {
-	}
-
-	public Produto(Long id, String descricaoProduto, Float precoVenda,
-			Float precoCusto, Boolean flExcluido, Pedido pedido) {
-		super();
-		this.id = id;
-		this.descricaoProduto = descricaoProduto;
-		this.precoVenda = precoVenda;
-		this.precoCusto = precoCusto;
-		this.flExcluido = flExcluido;
-		this.pedido = pedido;
 	}
 
 	// GETTRS E SETTRS
@@ -85,19 +75,19 @@ public class Produto extends GenericEntity {
 		this.descricaoProduto = descricaoProduto;
 	}
 
-	public Float getPrecoVenda() {
+	public BigDecimal getPrecoVenda() {
 		return precoVenda;
 	}
 
-	public void setPrecoVenda(Float precoVenda) {
+	public void setPrecoVenda(BigDecimal precoVenda) {
 		this.precoVenda = precoVenda;
 	}
 
-	public Float getPrecoCusto() {
+	public BigDecimal getPrecoCusto() {
 		return precoCusto;
 	}
 
-	public void setPrecoCusto(Float precoCusto) {
+	public void setPrecoCusto(BigDecimal precoCusto) {
 		this.precoCusto = precoCusto;
 	}
 
