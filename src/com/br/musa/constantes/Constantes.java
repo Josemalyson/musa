@@ -17,6 +17,8 @@ public abstract class Constantes {
 	
 	public static final String PAGINA_LISTAR_CLIENTES = "listarClientes";
 	public static final String PAGINA_CLIENTE = "cliente";
+	public static final String PAGINA_LISTAR_PRODUTOS = "listarProdutos";
+	public static final String PAGINA_PROSUTO = "produto";
 	public static final Long ID_JOAO_PESSOA = 4964L;
 	
 }

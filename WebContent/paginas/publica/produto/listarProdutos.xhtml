@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE HTML>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	template="/WEB-INF/template/template.xhtml">
+
+
+	<ui:define name="conteudo">
+
+		<ol class="breadcrumb">
+			<li><a href="#">Inicio</a></li>
+			<li><a href="#">Produto</a></li>
+			<li class="active">Listar Produtos</li>
+		</ol>
+
+		<div class="espacamento20Px" />
+
+		<h:form prependId="false" id="listarProdutos">
+
+			<p:commandButton title="Novo Produto" value="Novo Produto"
+				styleClass="btn btn-default"
+				oncomplete="PF('incluirProduto').show();"
+				actionListener="#{manterProdutoControlador.inicializarObjeto()}"
+				update="incluirProduto" />
+
+			<div class="espacamento20Px" />
+
+
+			<div class="table-responsive">
+				<p:dataTable widgetVar="tabelaProduto" id="tabelaProduto"
+					var="produto" tableStyleClass="table table-hover"
+					value="#{manterProdutoControlador.produtoList}"
+					emptyMessage="Nenhum produto encontrado." paginator="true"
+					paginatorAlwaysVisible="true" pageLinks="10" rows="10"
+					rowsPerPageTemplate="10,30,50" paginatorPosition="bottom">
+
+
+					<p:column headerText="Descrição do Produto"
+						styleClass="text-center"
+						sortBy="#{produto.descricaoProduto.toUpperCase()}">
+						<h:outputText value="#{produto.descricaoProduto.toUpperCase()}" />
+					</p:column>
+
+					<p:column headerText="Preço de Custo" styleClass="text-center"
+						sortBy="#{produto.precoCusto}">
+						<h:outputText value="#{produto.precoCusto}">
+							<f:convertNumber currencySymbol="R$" groupingUsed="true"
+								maxFractionDigits="2" type="currency" locale="pt_BR" />
+						</h:outputText>
+					</p:column>
+
+					<p:column headerText="Preço de Venda" styleClass="text-center"
+						sortBy="#{produto.precoVenda}">
+						<h:outputText value="#{produto.precoVenda}">
+							<f:convertNumber currencySymbol="R$" groupingUsed="true"
+								maxFractionDigits="2" type="currency" locale="pt_BR" />
+						</h:outputText>
+					</p:column>
+
+					<p:column headerText="Opções" styleClass="text-center">
+						<div class="form-inline">
+							<p:commandButton icon="ui-icon-pencil" title="Editar"
+								oncomplete="PF('incluirProduto').show();"
+								actionListener="#{manterProdutoControlador.selecionarProduto(produto)}"
+								update="incluirProduto" />
+
+							<p:commandButton icon="ui-icon-trash" title="Excluir"
+								actionListener="#{manterProdutoControlador.selecionarProduto(produto)}"
+								oncomplete="PF('confirmarExclusaoProduto').show();" />
+						</div>
+					</p:column>
+				</p:dataTable>
+			</div>
+
+			<div class="espacamento20Px" />
+
+		</h:form>
+
+
+		<!-- MODAL PRODUTO  -->
+
+		<p:dialog modal="true" widgetVar="incluirProduto" id="incluirProduto"
+			closable="true" draggable="false" width="700"
+			header="Incluir Novo Produto" resizable="false">
+			<h:form id="formModalIncluirProduto" prependId="false">
+
+				<div class="form-group row ">
+					<label class="col-sm-2 control-label">Descrição Produto:</label>
+					<div class="col-sm-10">
+						<p:inputText id="produto" styleClass="form-control"
+							value="#{manterProdutoControlador.produto.descricaoProduto}" />
+					</div>
+				</div>
+				<div class="form-group row ">
+					<label class="col-sm-2 control-label obrigatorio">Preço de
+						Custo:</label>
+					<div class="col-sm-10">
+						<p:inputText id="precoCusto" placeholder="1200.00"
+							value="#{manterProdutoControlador.produto.precoCusto}" />
+					</div>
+				</div>
+				<div class="form-group row ">
+					<label class="col-sm-2 control-label obrigatorio">Preço de
+						Venda:</label>
+					<div class="col-sm-10">
+						<p:inputText id="precoVenda" placeholder="1200.00"
+							value="#{manterProdutoControlador.produto.precoVenda}" />
+					</div>
+				</div>
+
+				<div class="form-group">
+					<div class="form-inline text-center row">
+						<p:commandButton id="btnConfirma" value="Confirmar"
+							styleClass="btn btn-success"
+							oncomplete="PF('incluirProduto').hide();"
+							actionListener="#{manterProdutoControlador.salvarProduto()}"
+							update="tabelaProduto" />
+
+						<p:commandButton id="btnCancela" value="Cancelar"
+							styleClass="btn btn-danger"
+							oncomplete="PF('incluirProduto').hide();" />
+					</div>
+				</div>
+				<p class="obrigatorio">Campos Obrigatórios</p>
+			</h:form>
+		</p:dialog>
+
+
+		<!-- DIALOG EXCLUSAO PRODUTO -->
+
+		<h:form id="confirmExclusaoForm" prependId="false">
+			<p:confirmDialog widgetVar="confirmarExclusaoProduto"
+				header="Excluir Produto" icon="ui-icon-alert"
+				id="confirmarExclusaoProduto"
+				message="Confirmar Exclusão deste item?" closable="false">
+				<div class="form-inline botoesSalvarCancelar">
+					<p:commandButton id="btnConfirmaExclusaoProduto" value="Confirmar"
+						styleClass="btn btn-success"
+						actionListener="#{manterProdutoControlador.excluirProduto()}"
+						update="tabelaProduto" ajax="false"
+						oncomplete="PF('confirmarExclusaoProduto').hide();" />
+
+					<p:commandButton id="btnCancelaExclusaoProduto" value="Cancelar"
+						styleClass="btn btn-danger"
+						oncomplete="PF('confirmarExclusaoProduto').hide();" />
+
+				</div>
+			</p:confirmDialog>
+		</h:form>
+
+
+	</ui:define>
+</ui:composition>

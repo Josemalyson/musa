@@ -1,6 +1,9 @@
 package com.br.musa.servicos;
 
+import java.util.List;
+
 import javax.inject.Inject;
+import javax.transaction.Transactional;
 
 import com.br.musa.constantes.Constantes;
 import com.br.musa.entidades.Produto;
@@ -13,6 +16,7 @@ public class ProdutoServico {
 	@Inject
 	private ProdutoRepositorio produtoRepositorio;
 	
+	@Transactional
 	public void salvarProduto(Produto produto){
 		validarProdutoParaSalvar(produto);
 		produtoRepositorio.salvar(produto);
@@ -43,6 +47,20 @@ public class ProdutoServico {
 			}
 		}
 		
+	}
+
+	public List<Produto> listar() {
+		List<Produto> produtoList = produtoRepositorio.listar();
+		produtoList.sort((p1, p2) -> p1.getDescricaoProduto().compareToIgnoreCase(p2.getDescricaoProduto()));
+		return produtoList;
+	}
+
+	//TODO SÓ PODERÁ SER EXCLUIDO SE NÃO TIVER EM NENHUM PEDIDO
+	// CASO CONTRARIO A FLAG DE STATUS É UTILIZADA.
+	@Transactional
+	public void excluirProduto(Produto produto) {
+		produtoRepositorio.excluir(produto);
+		//SE NAO produto.setFlExcluido(true); salvarProduto(produto);
 	}
 	
 }
