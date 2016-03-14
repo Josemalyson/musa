@@ -1,6 +1,6 @@
 package com.br.musa.util;
 
-import com.br.musa.exeption.BusinessException;
+import com.br.musa.exeption.MusaExecao;
 
 public class CpfUtil {
 
@@ -21,8 +21,8 @@ public class CpfUtil {
 		if (isValido(cpfSoNumeros)) {
 			throw new Exception(
 					new StringBuilder()
-							.append("CPF inválido. Tamanho de um CPF válido é 11. Este CPF possui ")
-							.append(cpfSoNumeros.length()).append(" números.")
+							.append("CPF invï¿½lido. Tamanho de um CPF vï¿½lido ï¿½ 11. Este CPF possui ")
+							.append(cpfSoNumeros.length()).append(" nï¿½meros.")
 							.toString());
 		}
 		return MascaraUtil.adicionarMascara(cpfSoNumeros, "###.###.###-##");
@@ -74,9 +74,9 @@ public class CpfUtil {
 
 	public static String limpar(String cpf) {
 		if (cpf == null)
-			throw new BusinessException("O CPF informado é nulo.");
+			throw new MusaExecao("O CPF informado ï¿½ nulo.");
 		if ("".equals(cpf))
-			throw new BusinessException("O CPF informado é vazio.");
+			throw new MusaExecao("O CPF informado ï¿½ vazio.");
 		char[] chars = cpf.toCharArray();
 		StringBuilder sb = new StringBuilder();
 		for (int indice = 0; indice < chars.length; indice++) {

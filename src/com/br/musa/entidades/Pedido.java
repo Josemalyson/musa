@@ -42,29 +42,16 @@ public class Pedido extends GenericEntity {
 
 	// RELACIONAMENTOS
 
-	@ManyToOne(cascade=CascadeType.ALL, fetch=FetchType.EAGER)
-	@JoinColumn(name="FK_CLIENTE", referencedColumnName="ID_CLIENTE")
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	@JoinColumn(name = "FK_CLIENTE", referencedColumnName = "ID_CLIENTE")
 	private Cliente cliente;
 
-	@OneToMany(mappedBy = "pedido", cascade=CascadeType.ALL)
-	private List<Produto> produtoList;
-
-	@OneToMany(mappedBy = "pedido", cascade=CascadeType.ALL)
+	@OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL)
 	private List<Pagamento> pagamentoList;
 
 	// CONSTRUTORES
 
 	public Pedido() {
-	}
-
-	public Pedido(Long id, Boolean flExcluido, Date dtPedido, Cliente cliente,
-			List<Produto> produtoList) {
-		super();
-		this.id = id;
-		this.flExcluido = flExcluido;
-		this.dtPedido = dtPedido;
-		this.cliente = cliente;
-		this.produtoList = produtoList;
 	}
 
 	@Override
@@ -127,14 +114,6 @@ public class Pedido extends GenericEntity {
 
 	public void setCliente(Cliente cliente) {
 		this.cliente = cliente;
-	}
-
-	public List<Produto> getProdutoList() {
-		return produtoList;
-	}
-
-	public void setProdutoList(List<Produto> produtoList) {
-		this.produtoList = produtoList;
 	}
 
 	public List<Pagamento> getPagamentoList() {

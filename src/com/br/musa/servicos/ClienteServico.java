@@ -14,7 +14,7 @@ import com.br.musa.entidades.Endereco;
 import com.br.musa.entidades.Estado;
 import com.br.musa.entidades.Vo.ClienteVO;
 import com.br.musa.enums.EstadoEnum;
-import com.br.musa.exeption.BusinessException;
+import com.br.musa.exeption.MusaExecao;
 import com.br.musa.repositorio.ClienteRepositorio;
 import com.br.musa.util.CpfUtil;
 import com.br.musa.util.Data;
@@ -96,7 +96,7 @@ public class ClienteServico {
 		}
 
 		if (!erro.toString().isEmpty()) {
-			throw new BusinessException(erro.toString());
+			throw new MusaExecao(erro.toString());
 		}
 	}
 
@@ -119,13 +119,13 @@ public class ClienteServico {
 		}
 
 		if (!erro.toString().isEmpty()) {
-			throw new BusinessException(erro.toString());
+			throw new MusaExecao(erro.toString());
 		}
 	}
 
 	private void validarCpfCliente(Cliente cliente) {
 		if (!CpfUtil.isValido(cliente.getCpf())) {
-			throw new BusinessException(MsgConstantes.CPF_INVALIDO);
+			throw new MusaExecao(MsgConstantes.CPF_INVALIDO);
 		}
 	}
 

@@ -11,7 +11,7 @@ import java.util.List;
 import org.apache.commons.lang3.text.WordUtils;
 
 import com.br.musa.enums.SortTypeEnum;
-import com.br.musa.exeption.BusinessException;
+import com.br.musa.exeption.MusaExecao;
 import com.br.musa.generics.GenericComparator;
 
 @SuppressWarnings({ "rawtypes", "unchecked" })
@@ -30,7 +30,7 @@ public final class Colecoes {
 				}
 			return retorno;
 			} catch (InstantiationException | IllegalAccessException | NoSuchMethodException | SecurityException | IllegalArgumentException | InvocationTargetException e) {
-				throw new BusinessException(e.getMessage());
+				throw new MusaExecao(e.getMessage());
 			}
 		
 	}

@@ -3,15 +3,11 @@ package com.br.musa.entidades;
 import java.io.Serializable;
 import java.math.BigDecimal;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import com.br.musa.generics.GenericEntity;
@@ -40,12 +36,6 @@ public class Produto extends GenericEntity {
 
 	@Column(name = "FL_EXCLUIDO")
 	private Boolean flExcluido;
-
-	// RELACIONAMENTOS
-
-	@ManyToOne(cascade=CascadeType.ALL, fetch=FetchType.EAGER)
-	@JoinColumn(name="FK_PEDIDO", referencedColumnName="ID_PEDIDO")
-	private Pedido pedido;
 
 	// CONSTRUTORES
 
@@ -99,13 +89,6 @@ public class Produto extends GenericEntity {
 		this.flExcluido = flExcluido;
 	}
 
-	public Pedido getPedido() {
-		return pedido;
-	}
-
-	public void setPedido(Pedido pedido) {
-		this.pedido = pedido;
-	}
 
 	@Override
 	public int hashCode() {

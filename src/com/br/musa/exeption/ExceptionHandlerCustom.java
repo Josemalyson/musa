@@ -46,7 +46,7 @@ public class ExceptionHandlerCustom extends ExceptionHandlerWrapper {
 					String statckTrace = getStackTrace(throwable);
 					ExcecaoTratador.tratar(statckTrace);
 					
-					BusinessException be = getBusinessException(throwable);
+					MusaExecao be = getBusinessException(throwable);
 					if (ObjetoUtil.notBlank(be)) {
 						List<String> msgList = be.getMensagemList(); 
 						if (ObjetoUtil.isBlank(msgList)) {
@@ -70,9 +70,9 @@ public class ExceptionHandlerCustom extends ExceptionHandlerWrapper {
 		getWrapped().handle();
 	}
 	
-	private BusinessException getBusinessException(Throwable throwable) {
-		if (throwable instanceof BusinessException) {
-			return (BusinessException) throwable;
+	private MusaExecao getBusinessException(Throwable throwable) {
+		if (throwable instanceof MusaExecao) {
+			return (MusaExecao) throwable;
 		} else if (ObjetoUtil.notBlank(throwable.getCause())) {
 			return getBusinessException(throwable.getCause());
 		} else {

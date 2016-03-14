@@ -29,3 +29,13 @@ h2 {
 .espacamento20Px {
 	margin-bottom: 20px;
 }
+
+.espacamento10PxDireita {
+	padding-right: 10px;
+}
+
+.botoesSalvarCancelar {
+	marginbottom: 50px;
+	paddingbottom: 10px;
+	text-align: center;
+}

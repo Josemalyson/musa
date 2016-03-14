@@ -19,7 +19,7 @@ import com.br.musa.entidades.Cliente;
 import com.br.musa.entidades.Contato;
 import com.br.musa.entidades.Endereco;
 import com.br.musa.entidades.Estado;
-import com.br.musa.exeption.BusinessException;
+import com.br.musa.exeption.MusaExecao;
 import com.br.musa.servicos.CidadeServico;
 import com.br.musa.servicos.ClienteServico;
 import com.br.musa.servicos.EstadoServico;
@@ -97,7 +97,7 @@ public class ClienteControlador extends CoreControlador {
 			adicionarMensagem(MsgConstantes.MSG_SUCESSO);
 			return sendRedirect(Constantes.PAGINA_LISTAR_CLIENTES);
 
-		} catch (BusinessException e) {
+		} catch (MusaExecao e) {
 			logger.error(e.getMessage(),e);
 			adicionarErro(e.getMessage());
 		}
@@ -111,7 +111,7 @@ public class ClienteControlador extends CoreControlador {
 			RequestContext.getCurrentInstance().update("contatosCliente");
 			RequestContext.getCurrentInstance().execute("PF('incluirContato').hide()");
 			adicionarMensagem(MsgConstantes.MSG_SUCESSO);
-		} catch (BusinessException e) {
+		} catch (MusaExecao e) {
 			logger.error(e.getMessage(),e);
 			adicionarErro(e.getMessage());
 		}

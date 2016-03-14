@@ -5,26 +5,26 @@ import java.util.List;
 
 import com.br.musa.constantes.Constantes;
 
-public class BusinessException extends RuntimeException {
+public class MusaExecao extends RuntimeException {
 
 	private static final long serialVersionUID = 1L;
 	
 	private final List<String> mensagemList;
 	private final String message;
 
-	public BusinessException() {
+	public MusaExecao() {
 		super();
 		this.mensagemList = new ArrayList<String>();
 		this.message = new String();
 		
 	}
 	
-	public BusinessException(String mensagem){
+	public MusaExecao(String mensagem){
 		this.message = mensagem;
 		this.mensagemList = new ArrayList<String>();
 	}
 	
-	public BusinessException(List<String> mensagemList) {
+	public MusaExecao(List<String> mensagemList) {
 		StringBuilder sb = new StringBuilder();
 		for (String msg : mensagemList) {
 			sb.append(msg+Constantes.PONTO_E_VIRGULA+Constantes.ESPACO_EM_BRANCO);
