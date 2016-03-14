@@ -8,6 +8,7 @@ import javax.faces.bean.ViewScoped;
 import javax.inject.Inject;
 
 import org.jboss.logging.Logger;
+import org.primefaces.context.RequestContext;
 
 import com.br.musa.constantes.MsgConstantes;
 import com.br.musa.entidades.Produto;
@@ -54,6 +55,8 @@ public class ManterProdutoControlador extends CoreControlador {
 			produtoServico.salvarProduto(produto);
 			inicializarObjeto();
 			listarProdutos();
+			RequestContext.getCurrentInstance().update("tabelaProduto");
+			RequestContext.getCurrentInstance().execute("PF('incluirProduto').hide();");
 			adicionarMensagem(MsgConstantes.MSG_SUCESSO);
 		} catch (MusaExecao e) {
 			logger.error(e.getMessage(), e);

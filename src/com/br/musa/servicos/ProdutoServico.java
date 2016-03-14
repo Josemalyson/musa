@@ -29,7 +29,7 @@ public class ProdutoServico {
 
 			if (produto.getDescricaoProduto() == null || produto.getDescricaoProduto().isEmpty()) {
 				erro.append("Preencha o campo Descrição do Produto.").append(Constantes.TAG_BR);
-				JavaScriptUtil.marcarCampoObrigatorio("descricao");
+				JavaScriptUtil.marcarCampoObrigatorio("produto");
 			}
 			
 			if (produto.getPrecoCusto() == null) {
