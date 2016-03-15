@@ -65,6 +65,7 @@
 
 			<div class="text-right">
 				<p:commandButton id="btAdicionarProduto" value="Adiconar Produto"
+					styleClass="btn btn-success btn-sm"
 					actionListener="#{pedidoControlador.adicionarProduto()}"
 					disabled="#{pedidoControlador.flBotaoAdicionarPedido}"
 					update="tabelaProdutoVO btAdicionarProduto">
@@ -77,8 +78,14 @@
 			<fieldset>
 				<legend>Lista de Produtos</legend>
 
+				<div class="espacamento20Px" />
+
 				<p:dataTable var="produtoVO" id="tabelaProdutoVO"
-					value="#{pedidoControlador.pedidoVO.produtoVOList}">
+					emptyMessage="Sem produtos"
+					value="#{pedidoControlador.pedidoVO.produtoVOList}"
+					tableStyleClass="table table-hover" paginator="true"
+					paginatorAlwaysVisible="true" pageLinks="10" rows="10"
+					rowsPerPageTemplate="10,30,50" paginatorPosition="bottom">
 
 					<p:column headerText="Quantidade">
 						<h:inputText id="quantidadeId" styleClass="text-center"
@@ -176,6 +183,22 @@
 				</p:dataTable>
 
 			</fieldset>
+
+			<div class="espacamento20Px" />
+
+			<div class="form-inline row botoesSalvarCancelar">
+				<div class="form-group">
+					<label class="col-sm-2 control-label"></label>
+					<div class="col-sm-2">
+						<p:commandButton id="btSalvar" value="Salvar"
+							styleClass="btn btn-success btn-sm" />
+					</div>
+					<label class="col-sm-2 control-label"></label>
+					<div class="col-sm-2">
+						<p:commandButton value="Cancelar" styleClass="btn btn-danger btn-sm" />
+					</div>
+				</div>
+			</div>
 
 			<div class="espacamento20Px" />
 
