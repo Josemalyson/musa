@@ -22,11 +22,13 @@
 			<div class="panel panel-default" style="width: 50%;">
 				<div class="panel-body row">
 					<div class="col-sm-4">
-						<label class="control-label">Número do Pedido:</label>
-						<h:outputText value="123" />
+						<label class="control-label espacamento10PxDireita">Número
+							do Pedido:</label>
+						<h:outputText value="#{pedidoControlador.pedidoVO.pedido.id}" />
 					</div>
 					<div class="col-sm-8">
-						<label class="control-label"> Data do Pedido: </label>
+						<label class="control-label espacamento10PxDireita"> Data
+							do Pedido: </label>
 						<h:outputText
 							value="#{pedidoControlador.pedidoVO.pedido.dtPedido}">
 							<f:convertDateTime pattern="dd/MM/yyyy" />
@@ -91,25 +93,26 @@
 						<h:inputText id="quantidadeId" styleClass="text-center"
 							style="margin-left: 62px;" value="#{produtoVO.quantidadeProduto}"
 							converterMessage="Digite um número válido." size="2">
+							<p:ajax listener="#{pedidoControlador.ajustarTela(produtoVO)}"
+								event="keyup" process="tabelaProdutoVO" />
 							<f:convertNumber type="number" maxIntegerDigits="9"
 								groupingUsed="false" />
 						</h:inputText>
 					</p:column>
 
 					<p:column headerText="Descrição Produto">
-						<h:selectOneMenu onchange="ativarBotaoAdiconar();" id="produtoID"
+						<h:selectOneMenu id="produtoID"
 							styleClass="width full form-control" value="#{produtoVO.produto}"
 							converter="genericConverter">
 							<f:selectItem itemLabel="Selecione um produto"
 								noSelectionOption="true" itemDisabled="true" />
 							<f:selectItems value="#{pedidoControlador.produtoList}"
-								var="produto" itemLabel="#{produto.descricaoProduto}"
+								var="produto"
+								itemLabel="#{produto.descricaoProduto.toUpperCase()}"
 								itemValue="#{produto}" />
+							<p:ajax listener="#{pedidoControlador.ajustarTela(produtoVO)}"
+								process="tabelaProdutoVO" />
 						</h:selectOneMenu>
-
-						<p:remoteCommand name="ativarBotaoAdiconar"
-							update="tabelaProdutoVO btAdicionarProduto"
-							actionListener="#{pedidoControlador.ajustarTela()}" />
 					</p:column>
 
 
@@ -181,7 +184,6 @@
 						</p:row>
 					</p:columnGroup>
 				</p:dataTable>
-
 			</fieldset>
 
 			<div class="espacamento20Px" />
@@ -195,7 +197,8 @@
 					</div>
 					<label class="col-sm-2 control-label"></label>
 					<div class="col-sm-2">
-						<p:commandButton value="Cancelar" styleClass="btn btn-danger btn-sm" />
+						<p:commandButton value="Cancelar"
+							styleClass="btn btn-danger btn-sm" />
 					</div>
 				</div>
 			</div>

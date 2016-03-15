@@ -11,6 +11,7 @@ import javax.faces.bean.ViewScoped;
 import javax.inject.Inject;
 
 import org.jboss.logging.Logger;
+import org.primefaces.context.RequestContext;
 
 import com.br.musa.entidades.Cliente;
 import com.br.musa.entidades.Pedido;
@@ -18,7 +19,9 @@ import com.br.musa.entidades.Produto;
 import com.br.musa.entidades.ProdutoPedido;
 import com.br.musa.entidades.Vo.PedidoVO;
 import com.br.musa.entidades.Vo.ProdutoVO;
+import com.br.musa.exeption.MusaExecao;
 import com.br.musa.servicos.ClienteServico;
+import com.br.musa.servicos.PedidoServico;
 import com.br.musa.servicos.ProdutoServico;
 
 @ManagedBean
@@ -29,16 +32,18 @@ public class PedidoControlador extends CoreControlador {
 	// SERVICOS
 	@Inject
 	private ClienteServico clienteServico;
-
 	@Inject
 	private ProdutoServico produtoServico;
-
+	@Inject
+	private PedidoServico pedidoServico;
+	
+	
 	// OBJETOS
 	private Cliente cliente;
 	private Pedido pedido;
 	private Produto produto;
 	private PedidoVO pedidoVO;
-	private boolean flBotaoAdicionarPedido; 
+	private boolean flBotaoAdicionarPedido;
 
 	// LISTA
 	private List<Cliente> clienteList;
@@ -66,6 +71,7 @@ public class PedidoControlador extends CoreControlador {
 	private void montarPedido() {
 		pedidoVO = new PedidoVO();
 		pedidoVO.setCliente(cliente);
+		pedido.setId(pedidoServico.obterNumerorDoProximoPedido());
 		pedidoVO.setPedido(pedido);
 		pedidoVO.setProdutoVOList(new ArrayList<ProdutoVO>());
 
@@ -110,12 +116,12 @@ public class PedidoControlador extends CoreControlador {
 
 	public void salvarPedido() {
 	}
-	
-	public void adicionarProduto(){
-	
+
+	public void adicionarProduto() {
+
 		if (pedidoVO != null && pedidoVO.getProdutoVOList() != null) {
 			ProdutoVO produtoVO = new ProdutoVO();
-			produtoVO.setQuantidadeProduto(new Long(0));
+			produtoVO.setQuantidadeProduto(new Long(1));
 			getProduto().setPrecoCusto(new BigDecimal(0));
 			getProduto().setPrecoVenda(new BigDecimal(0));
 			produtoVO.setProduto(getProduto());
@@ -130,18 +136,33 @@ public class PedidoControlador extends CoreControlador {
 	}
 
 	private void calcularTotalCusto() {
-		pedidoVO.setTotalCusto(pedidoVO.getProdutoVOList().stream().mapToDouble(p -> p.getQuantidadeProduto() * (p.getProduto().getPrecoCusto()).doubleValue()).sum());
+		pedidoVO.setTotalCusto(pedidoVO.getProdutoVOList().stream()
+				.mapToDouble(p -> p.getQuantidadeProduto() * (p.getProduto().getPrecoCusto()).doubleValue()).sum());
 	}
 
 	private void calcularTotalVenda() {
-		pedidoVO.setTotalVenda(pedidoVO.getProdutoVOList().stream().mapToDouble(p -> p.getQuantidadeProduto() * (p.getProduto().getPrecoVenda()).doubleValue()).sum());
+		pedidoVO.setTotalVenda(pedidoVO.getProdutoVOList().stream()
+				.mapToDouble(p -> p.getQuantidadeProduto() * (p.getProduto().getPrecoVenda()).doubleValue()).sum());
 	}
 
-	public void ajustarTela(){
-		calcularTotal();
-		flBotaoAdicionarPedido = false;
+	public void ajustarTela(ProdutoVO produtoVO) {
+		
+		try {
+			pedidoServico.validarQuantidadeDoProduto(produtoVO);
+			if (produtoVO.getQuantidadeProduto() == null) {
+				produtoVO.setQuantidadeProduto(new Long(1));
+			}
+			calcularTotal();
+			flBotaoAdicionarPedido = false;
+			RequestContext.getCurrentInstance().update("tabelaProdutoVO");
+			RequestContext.getCurrentInstance().update("btAdicionarProduto");
+		} catch (MusaExecao e) {
+			logger.error(e.getMessage(),e);
+			adicionarErro(e.getMessage());
+			return;
+		}
 	}
-	
+
 	public List<Cliente> getClienteList() {
 		return clienteList;
 	}
