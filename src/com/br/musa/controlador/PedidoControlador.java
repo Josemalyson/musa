@@ -49,7 +49,6 @@ public class PedidoControlador extends CoreControlador {
 	private List<Cliente> clienteList;
 	private List<Produto> produtoList;
 	private List<Produto> produtoListPedido;
-	private List<ProdutoPedido> produtoPedidoList;
 
 	private static final Logger logger = Logger.getLogger(PedidoControlador.class);
 
@@ -60,7 +59,6 @@ public class PedidoControlador extends CoreControlador {
 		produto = new Produto();
 		pedido = new Pedido();
 		pedido.setDtPedido(new Date());
-		produtoPedidoList = new ArrayList<ProdutoPedido>();
 		flBotaoAdicionarPedido = false;
 		listarProdutosAtivos();
 		totalPrecoDeCusto();
@@ -194,14 +192,6 @@ public class PedidoControlador extends CoreControlador {
 
 	public void setProdutoList(List<Produto> produtoList) {
 		this.produtoList = produtoList;
-	}
-
-	public List<ProdutoPedido> getProdutoPedidoList() {
-		return produtoPedidoList;
-	}
-
-	public void setProdutoPedidoList(List<ProdutoPedido> produtoPedidoList) {
-		this.produtoPedidoList = produtoPedidoList;
 	}
 
 	public Produto getProduto() {

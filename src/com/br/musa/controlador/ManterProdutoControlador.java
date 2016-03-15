@@ -38,7 +38,7 @@ public class ManterProdutoControlador extends CoreControlador {
 	}
 
 	private void listarProdutos() {
-		produtoList = produtoServico.listar();
+		produtoList = produtoServico.listarProdutosAtivos();
 	}
 
 	public void inicializarObjeto() {
