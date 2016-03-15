@@ -27,7 +27,8 @@
 					</div>
 					<div class="col-sm-8">
 						<label class="control-label"> Data do Pedido: </label>
-						<h:outputText value="#{pedidoControlador.pedido.dtPedido}">
+						<h:outputText
+							value="#{pedidoControlador.pedidoVO.pedido.dtPedido}">
 							<f:convertDateTime pattern="dd/MM/yyyy" />
 						</h:outputText>
 					</div>
@@ -40,19 +41,23 @@
 					<legend>Cliente</legend>
 					<div class="panel-body row">
 						<div class="col-sm-4">
-							<label class="control-label">Nome Cliente:</label>
+							<label class="control-label espacamento10PxDireita ">Nome
+								Cliente:</label>
 							<p:autoComplete id="clienteId"
 								completeMethod="#{pedidoControlador.autoCompleteCliente}"
-								converter="entityConverter" value="#{pedidoControlador.cliente}"
-								dropdown="true" forceSelection="true" var="cliente"
-								itemValue="#{cliente}" itemLabel="#{cliente.nome}">
+								converter="entityConverter"
+								value="#{pedidoControlador.pedidoVO.cliente}" dropdown="true"
+								forceSelection="true" var="cliente" itemValue="#{cliente}"
+								itemLabel="#{cliente.nome}">
 								<p:ajax update="cpf" event="itemSelect"
 									listener="#{pedidoControlador.atualizarCliente()}" />
 							</p:autoComplete>
 						</div>
 						<div class="col-sm-4">
-							<label class="control-label">CPF: </label>
-							<h:outputText id="cpf" value="#{pedidoControlador.cliente.cpf}" />
+							<label class="control-label espacamento10PxDireita ">CPF:
+							</label>
+							<h:outputText id="cpf"
+								value="#{pedidoControlador.pedidoVO.cliente.cpf}" />
 						</div>
 					</div>
 				</fieldset>
@@ -61,27 +66,49 @@
 			<fieldset>
 				<legend>Lista de Produtos</legend>
 
-				<p:dataTable var="produto" value="#{pedidoControlador.produtoList}">
+				<p:dataTable var="produtoVO" id="tabelaProdutoVO"
+					value="#{pedidoControlador.pedidoVO.produtoVOList}">
+
 					<p:column headerText="Quantidade">
-						<h:outputText value="#" />
+						<h:inputText id="quantidadeId"
+							value="#{produtoVO.quantidadeProduto}" converterMessage="Digite um número válido.">
+							<f:convertNumber type="number" maxIntegerDigits="9" groupingUsed="false" />
+						</h:inputText >
 					</p:column>
+
 					<p:column headerText="Descrição Produto">
-						<h:outputText value="#{produto.descricaoProduto}" />
+						<h:selectOneMenu id="produtoID"
+							styleClass="width full form-control" value="#{produtoVO.produto}"
+							converter="genericConverter">
+							<f:selectItem itemLabel="Selecione um produto"
+								noSelectionOption="true" itemDisabled="true" />
+							<f:selectItems value="#{pedidoControlador.produtoList}"
+								var="produto" itemLabel="#{produto.descricaoProduto}"
+								itemValue="#{produto}" />
+							<p:ajax listener="#{pedidoControlador.adicionarProduto()}"
+								update="tabelaProdutoVO" process="produtoID quantidadeId" />
+						</h:selectOneMenu>
+
 					</p:column>
+
 					<p:column headerText="Preço de Custo">
-						<h:outputText value="#{produto.precoCusto}" />
+						<h:outputText value="#{produtoVO.produto.precoCusto}">
+							<f:convertNumber currencySymbol="R$" groupingUsed="true"
+								maxFractionDigits="2" type="currency" locale="pt_BR" />
+						</h:outputText>
 					</p:column>
 					<p:column headerText="Preço de Venda">
-						<h:outputText value="#{produto.precoVenda}" />
+						<h:outputText value="#{produtoVO.produto.precoVenda}">
+							<f:convertNumber currencySymbol="R$" groupingUsed="true"
+								maxFractionDigits="2" type="currency" locale="pt_BR" />
+						</h:outputText>
 					</p:column>
 
 					<p:columnGroup type="footer">
 						<p:row>
-							<p:column colspan="2" style="text-align:right"
-								footerText="Total" />
-							<p:column footerText="#{pedidoControlador.totalCusto}" />
-							<p:column footerText="#{pedidoControlador.totalVenda}" />
-							
+							<p:column colspan="2" style="text-align:right" footerText="Total" />
+							<p:column footerText="#{pedidoControlador.pedidoVO.totalCusto}"  />
+							<p:column footerText="#{pedidoControlador.pedidoVO.totalVenda}"  />
 						</p:row>
 					</p:columnGroup>
 				</p:dataTable>

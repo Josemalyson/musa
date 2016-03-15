@@ -15,7 +15,11 @@ import org.jboss.logging.Logger;
 import com.br.musa.entidades.Cliente;
 import com.br.musa.entidades.Pedido;
 import com.br.musa.entidades.Produto;
+import com.br.musa.entidades.ProdutoPedido;
+import com.br.musa.entidades.Vo.PedidoVO;
+import com.br.musa.entidades.Vo.ProdutoVO;
 import com.br.musa.servicos.ClienteServico;
+import com.br.musa.servicos.ProdutoServico;
 
 @ManagedBean
 @ViewScoped
@@ -26,15 +30,21 @@ public class PedidoControlador extends CoreControlador {
 	@Inject
 	private ClienteServico clienteServico;
 
+	@Inject
+	private ProdutoServico produtoServico;
+
 	// OBJETOS
 	private Cliente cliente;
 	private Pedido pedido;
-	private Double totalCusto;
-	private Double totalVenda;
+	private Produto produto;
+	private PedidoVO pedidoVO;
+	private BigDecimal totalCusto; 
 
 	// LISTA
 	private List<Cliente> clienteList;
 	private List<Produto> produtoList;
+	private List<Produto> produtoListPedido;
+	private List<ProdutoPedido> produtoPedidoList;
 
 	private static final Logger logger = Logger.getLogger(PedidoControlador.class);
 
@@ -42,13 +52,30 @@ public class PedidoControlador extends CoreControlador {
 	public void init() {
 		listarCliente();
 		cliente = new Cliente();
-		totalCusto = new Double(0);
-		totalVenda = new Double(0);
+		produto = new Produto();
 		pedido = new Pedido();
 		pedido.setDtPedido(new Date());
-		produtoList = new ArrayList<>();
+		listarProdutosAtivos();
+		produtoPedidoList = new ArrayList<ProdutoPedido>();
 		totalPrecoDeCusto();
+		montarPedido();
 
+	}
+
+	private void montarPedido() {
+		pedidoVO = new PedidoVO();
+		pedidoVO.setCliente(cliente);
+		pedidoVO.setPedido(pedido);
+
+		List<ProdutoVO> produtoVOList = new ArrayList<ProdutoVO>();
+		produtoVOList.add(new ProdutoVO());
+		pedidoVO.setProdutoVOList(produtoVOList);
+
+	}
+
+	private void listarProdutosAtivos() {
+		produtoList = new ArrayList<Produto>();
+		produtoList = produtoServico.listarProdutosAtivos();
 	}
 
 	private void listarCliente() {
@@ -70,31 +97,45 @@ public class PedidoControlador extends CoreControlador {
 		return clienteFiltradosList;
 	}
 
-	public void atualizarCliente(){
-		if (this.cliente.getId() != null) {
-			this.cliente = clienteServico.buscarPorCodigo(cliente);
-			this.cliente.setCpf(clienteServico.adicionarMascaraCpf(cliente));
-			this.pedido.setCliente(this.cliente);
-		}else {
-			this.cliente = new Cliente();
+	public void atualizarCliente() {
+		if (this.pedidoVO.getCliente().getId() != null) {
+			this.pedidoVO.setCliente(clienteServico.buscarPorCodigo(this.pedidoVO.getCliente()));
+			this.pedidoVO.getCliente().setCpf(clienteServico.adicionarMascaraCpf(this.pedidoVO.getCliente()));
+		} else {
+			this.pedidoVO.setCliente(new Cliente());
 		}
 	}
-	
-	
-	public void totalPrecoDeCusto(){
-		Produto e = new Produto();
-		e.setPrecoCusto(new BigDecimal(100));
-		e.setPrecoVenda(new BigDecimal(100));
-		Produto e1 = new Produto();
-		e1.setPrecoCusto(new BigDecimal(200));
-		e1.setPrecoVenda(new BigDecimal(200));
-		produtoList = new ArrayList<>();
-		produtoList.add(e);
-		produtoList.add(e1);
-		totalCusto = produtoList.stream().mapToDouble(produto -> produto.getPrecoCusto().longValueExact()).sum();
-		totalVenda = produtoList.stream().mapToDouble(produto -> produto.getPrecoVenda().longValueExact()).sum();
+
+	public void totalPrecoDeCusto() {
+
+	}
+
+	public void salvarPedido() {
 	}
 	
+	public void adicionarProduto(){
+	
+		if (pedidoVO != null && pedidoVO.getProdutoVOList() != null) {
+			ProdutoVO produtoVO = new ProdutoVO();
+			produtoVO.setQuantidadeProduto(new Long(0));
+			getProduto().setPrecoCusto(new BigDecimal(0));
+			getProduto().setPrecoVenda(new BigDecimal(0));
+			produtoVO.setProduto(getProduto());
+			pedidoVO.getProdutoVOList().add(0, produtoVO);
+		}
+		
+		calcularTotalCusto();
+		calcularTotalVenda();
+	}
+
+	private void calcularTotalCusto() {
+		pedidoVO.setTotalCusto(pedidoVO.getProdutoVOList().stream().mapToDouble(p -> p.getQuantidadeProduto() * (p.getProduto().getPrecoCusto()).doubleValue()).sum());
+	}
+
+	private void calcularTotalVenda() {
+		pedidoVO.setTotalVenda(pedidoVO.getProdutoVOList().stream().mapToDouble(p -> p.getQuantidadeProduto() * (p.getProduto().getPrecoVenda()).doubleValue()).sum());
+	}
+
 	public List<Cliente> getClienteList() {
 		return clienteList;
 	}
@@ -109,7 +150,7 @@ public class PedidoControlador extends CoreControlador {
 
 	public void setCliente(Cliente cliente) {
 		this.cliente = cliente;
-		
+
 	}
 
 	public Pedido getPedido() {
@@ -128,20 +169,44 @@ public class PedidoControlador extends CoreControlador {
 		this.produtoList = produtoList;
 	}
 
-	public Double getTotalCusto() {
+	public List<ProdutoPedido> getProdutoPedidoList() {
+		return produtoPedidoList;
+	}
+
+	public void setProdutoPedidoList(List<ProdutoPedido> produtoPedidoList) {
+		this.produtoPedidoList = produtoPedidoList;
+	}
+
+	public Produto getProduto() {
+		return produto;
+	}
+
+	public void setProduto(Produto produto) {
+		this.produto = produto;
+	}
+
+	public PedidoVO getPedidoVO() {
+		return pedidoVO;
+	}
+
+	public void setPedidoVO(PedidoVO pedidoVO) {
+		this.pedidoVO = pedidoVO;
+	}
+
+	public List<Produto> getProdutoListPedido() {
+		return produtoListPedido;
+	}
+
+	public void setProdutoListPedido(List<Produto> produtoListPedido) {
+		this.produtoListPedido = produtoListPedido;
+	}
+
+	public BigDecimal getTotalCusto() {
 		return totalCusto;
 	}
 
-	public void setTotalCusto(Double totalCusto) {
+	public void setTotalCusto(BigDecimal totalCusto) {
 		this.totalCusto = totalCusto;
-	}
-
-	public Double getTotalVenda() {
-		return totalVenda;
-	}
-
-	public void setTotalVenda(Double totalVenda) {
-		this.totalVenda = totalVenda;
 	}
 
 }

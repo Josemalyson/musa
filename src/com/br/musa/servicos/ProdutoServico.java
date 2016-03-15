@@ -51,7 +51,7 @@ public class ProdutoServico {
 
 	public List<Produto> listar() {
 		List<Produto> produtoList = produtoRepositorio.listar();
-		produtoList.sort((p1, p2) -> p1.getDescricaoProduto().compareToIgnoreCase(p2.getDescricaoProduto()));
+		ordenarListaProdutos(produtoList);
 		return produtoList;
 	}
 
@@ -61,6 +61,16 @@ public class ProdutoServico {
 	public void excluirProduto(Produto produto) {
 		produtoRepositorio.excluir(produto);
 		//SE NAO produto.setFlExcluido(true); salvarProduto(produto);
+	}
+
+	public List<Produto> listarProdutosAtivos() {
+		List<Produto> produtoList = produtoRepositorio.listarProdutosAtivos();
+		ordenarListaProdutos(produtoList);
+		return produtoList;
+	}
+
+	private void ordenarListaProdutos(List<Produto> produtoList) {
+		produtoList.sort((p1,p2) -> p1.getDescricaoProduto().compareToIgnoreCase(p2.getDescricaoProduto()));
 	}
 	
 }
