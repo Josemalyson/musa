@@ -63,6 +63,17 @@
 				</fieldset>
 			</div>
 
+			<div class="text-right">
+				<p:commandButton id="btAdicionarProduto" value="Adiconar Produto"
+					actionListener="#{pedidoControlador.adicionarProduto()}"
+					disabled="#{pedidoControlador.flBotaoAdicionarPedido}"
+					update="tabelaProdutoVO btAdicionarProduto">
+					<f:actionListener
+						binding="#{pedidoControlador.setFlBotaoAdicionarPedido(true)}" />
+				</p:commandButton>
+			</div>
+
+
 			<fieldset>
 				<legend>Lista de Produtos</legend>
 
@@ -70,14 +81,16 @@
 					value="#{pedidoControlador.pedidoVO.produtoVOList}">
 
 					<p:column headerText="Quantidade">
-						<h:inputText id="quantidadeId"
-							value="#{produtoVO.quantidadeProduto}" converterMessage="Digite um número válido.">
-							<f:convertNumber type="number" maxIntegerDigits="9" groupingUsed="false" />
-						</h:inputText >
+						<h:inputText id="quantidadeId" styleClass="text-center"
+							style="margin-left: 62px;" value="#{produtoVO.quantidadeProduto}"
+							converterMessage="Digite um número válido." size="2">
+							<f:convertNumber type="number" maxIntegerDigits="9"
+								groupingUsed="false" />
+						</h:inputText>
 					</p:column>
 
 					<p:column headerText="Descrição Produto">
-						<h:selectOneMenu id="produtoID"
+						<h:selectOneMenu onchange="ativarBotaoAdiconar();" id="produtoID"
 							styleClass="width full form-control" value="#{produtoVO.produto}"
 							converter="genericConverter">
 							<f:selectItem itemLabel="Selecione um produto"
@@ -85,20 +98,39 @@
 							<f:selectItems value="#{pedidoControlador.produtoList}"
 								var="produto" itemLabel="#{produto.descricaoProduto}"
 								itemValue="#{produto}" />
-							<p:ajax listener="#{pedidoControlador.adicionarProduto()}"
-								update="tabelaProdutoVO" process="produtoID quantidadeId" />
 						</h:selectOneMenu>
 
+						<p:remoteCommand name="ativarBotaoAdiconar"
+							update="tabelaProdutoVO btAdicionarProduto"
+							actionListener="#{pedidoControlador.ajustarTela()}" />
 					</p:column>
 
-					<p:column headerText="Preço de Custo">
+
+					<p:column headerText="Preço de Custo" styleClass="text-right">
 						<h:outputText value="#{produtoVO.produto.precoCusto}">
 							<f:convertNumber currencySymbol="R$" groupingUsed="true"
 								maxFractionDigits="2" type="currency" locale="pt_BR" />
 						</h:outputText>
 					</p:column>
-					<p:column headerText="Preço de Venda">
+
+					<p:column headerText="Preço Total de Custo" styleClass="text-right">
+						<h:outputText
+							value="#{produtoVO.produto.precoCusto * produtoVO.quantidadeProduto}">
+							<f:convertNumber currencySymbol="R$" groupingUsed="true"
+								maxFractionDigits="2" type="currency" locale="pt_BR" />
+						</h:outputText>
+					</p:column>
+
+					<p:column headerText="Preço de Venda" styleClass="text-right">
 						<h:outputText value="#{produtoVO.produto.precoVenda}">
+							<f:convertNumber currencySymbol="R$" groupingUsed="true"
+								maxFractionDigits="2" type="currency" locale="pt_BR" />
+						</h:outputText>
+					</p:column>
+
+					<p:column headerText="Preço Total de Venda" styleClass="text-right">
+						<h:outputText
+							value="#{produtoVO.produto.precoVenda * produtoVO.quantidadeProduto}">
 							<f:convertNumber currencySymbol="R$" groupingUsed="true"
 								maxFractionDigits="2" type="currency" locale="pt_BR" />
 						</h:outputText>
@@ -106,9 +138,39 @@
 
 					<p:columnGroup type="footer">
 						<p:row>
-							<p:column colspan="2" style="text-align:right" footerText="Total" />
-							<p:column footerText="#{pedidoControlador.pedidoVO.totalCusto}"  />
-							<p:column footerText="#{pedidoControlador.pedidoVO.totalVenda}"  />
+							<p:column colspan="3" style="text-align:right">
+								<f:facet name="footer">
+									<strong> <h:outputText value="Totais" />
+									</strong>
+								</f:facet>
+							</p:column>
+
+
+							<p:column style="text-align:right">
+								<f:facet name="footer">
+									<strong> <h:outputText
+											value="#{pedidoControlador.pedidoVO.totalCusto}">
+											<f:convertNumber currencySymbol="R$" groupingUsed="true"
+												maxFractionDigits="2" type="currency" locale="pt_BR" />
+										</h:outputText>
+									</strong>
+								</f:facet>
+							</p:column>
+
+							<p:column footerText="----" />
+
+
+							<p:column style="text-align:right">
+								<f:facet name="footer">
+									<strong> <h:outputText
+											value="#{pedidoControlador.pedidoVO.totalVenda}">
+											<f:convertNumber currencySymbol="R$" groupingUsed="true"
+												maxFractionDigits="2" type="currency" locale="pt_BR" />
+										</h:outputText>
+									</strong>
+								</f:facet>
+							</p:column>
+
 						</p:row>
 					</p:columnGroup>
 				</p:dataTable>

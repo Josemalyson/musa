@@ -38,7 +38,7 @@ public class PedidoControlador extends CoreControlador {
 	private Pedido pedido;
 	private Produto produto;
 	private PedidoVO pedidoVO;
-	private BigDecimal totalCusto; 
+	private boolean flBotaoAdicionarPedido; 
 
 	// LISTA
 	private List<Cliente> clienteList;
@@ -55,8 +55,9 @@ public class PedidoControlador extends CoreControlador {
 		produto = new Produto();
 		pedido = new Pedido();
 		pedido.setDtPedido(new Date());
-		listarProdutosAtivos();
 		produtoPedidoList = new ArrayList<ProdutoPedido>();
+		flBotaoAdicionarPedido = false;
+		listarProdutosAtivos();
 		totalPrecoDeCusto();
 		montarPedido();
 
@@ -66,10 +67,7 @@ public class PedidoControlador extends CoreControlador {
 		pedidoVO = new PedidoVO();
 		pedidoVO.setCliente(cliente);
 		pedidoVO.setPedido(pedido);
-
-		List<ProdutoVO> produtoVOList = new ArrayList<ProdutoVO>();
-		produtoVOList.add(new ProdutoVO());
-		pedidoVO.setProdutoVOList(produtoVOList);
+		pedidoVO.setProdutoVOList(new ArrayList<ProdutoVO>());
 
 	}
 
@@ -123,7 +121,10 @@ public class PedidoControlador extends CoreControlador {
 			produtoVO.setProduto(getProduto());
 			pedidoVO.getProdutoVOList().add(0, produtoVO);
 		}
-		
+		calcularTotal();
+	}
+
+	public void calcularTotal() {
 		calcularTotalCusto();
 		calcularTotalVenda();
 	}
@@ -136,6 +137,11 @@ public class PedidoControlador extends CoreControlador {
 		pedidoVO.setTotalVenda(pedidoVO.getProdutoVOList().stream().mapToDouble(p -> p.getQuantidadeProduto() * (p.getProduto().getPrecoVenda()).doubleValue()).sum());
 	}
 
+	public void ajustarTela(){
+		calcularTotal();
+		flBotaoAdicionarPedido = false;
+	}
+	
 	public List<Cliente> getClienteList() {
 		return clienteList;
 	}
@@ -201,12 +207,12 @@ public class PedidoControlador extends CoreControlador {
 		this.produtoListPedido = produtoListPedido;
 	}
 
-	public BigDecimal getTotalCusto() {
-		return totalCusto;
+	public boolean isFlBotaoAdicionarPedido() {
+		return flBotaoAdicionarPedido;
 	}
 
-	public void setTotalCusto(BigDecimal totalCusto) {
-		this.totalCusto = totalCusto;
+	public void setFlBotaoAdicionarPedido(boolean flBotaoAdicionarPedido) {
+		this.flBotaoAdicionarPedido = flBotaoAdicionarPedido;
 	}
 
 }
