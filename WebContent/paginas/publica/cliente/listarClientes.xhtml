@@ -63,12 +63,14 @@
 
 					<p:column headerText="Opções" styleClass="text-center">
 						<div class="form-inline">
-							<p:commandButton icon="ui-icon-pencil" title="Editar"
-								action="#{manterClienteControlador.editarCliente(clienteVO.cliente)}" />
+							<span class="btn-group"> <p:commandButton
+									icon="ui-icon-pencil" title="Editar"
+									action="#{manterClienteControlador.editarCliente(clienteVO.cliente)}" />
 
-							<p:commandButton icon="ui-icon-trash" title="Excluir"
-								oncomplete="PF('confirmarExclusaoCliente').show();"
-								actionListener="#{manterClienteControlador.setCliente(clienteVO.cliente)}" />
+								<p:commandButton icon="ui-icon-trash" title="Excluir"
+									oncomplete="PF('confirmarExclusaoCliente').show();"
+									actionListener="#{manterClienteControlador.setCliente(clienteVO.cliente)}" />
+							</span>
 						</div>
 					</p:column>
 

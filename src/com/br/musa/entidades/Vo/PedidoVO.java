@@ -11,8 +11,7 @@ public class PedidoVO {
 	private Cliente cliente;
 	private List<ProdutoVO> produtoVOList;
 	private Double totalPedio = new Double(0);
-	private Double totalVenda = new Double(0);
-	private Double totalCusto = new Double(0);
+	private String numeroPedido;
 
 	public List<ProdutoVO> getProdutoVOList() {
 		return produtoVOList;
@@ -46,20 +45,12 @@ public class PedidoVO {
 		this.pedido = pedido;
 	}
 
-	public Double getTotalVenda() {
-		return totalVenda;
+	public String getNumeroPedido() {
+		return numeroPedido;
 	}
 
-	public void setTotalVenda(Double totalVenda) {
-		this.totalVenda = totalVenda;
-	}
-
-	public Double getTotalCusto() {
-		return totalCusto;
-	}
-
-	public void setTotalCusto(Double totalCusto) {
-		this.totalCusto = totalCusto;
+	public void setNumeroPedido(String numeroPedido) {
+		this.numeroPedido = numeroPedido;
 	}
 
 }

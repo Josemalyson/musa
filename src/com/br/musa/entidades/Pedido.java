@@ -1,6 +1,7 @@
 package com.br.musa.entidades;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
@@ -40,6 +41,12 @@ public class Pedido extends GenericEntity {
 	@Column(name = "DT_PEDIDO")
 	private Date dtPedido;
 
+	@Column(name = "NU_TOTAL_CUSTO")
+	private BigDecimal nuTotalCusto;
+
+	@Column(name = "NU_TOTAL_VENDA")
+	private BigDecimal nuTotalVenda;
+
 	// RELACIONAMENTOS
 
 	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
@@ -48,6 +55,10 @@ public class Pedido extends GenericEntity {
 
 	@OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL)
 	private List<Pagamento> pagamentoList;
+
+	@ManyToOne
+	@JoinColumn(name = "FK_TIPO_PEDIDO")
+	private TipoPedido tipoPedido;
 
 	// CONSTRUTORES
 
@@ -126,6 +137,30 @@ public class Pedido extends GenericEntity {
 
 	public static long getSerialversionuid() {
 		return serialVersionUID;
+	}
+
+	public BigDecimal getNuTotalCusto() {
+		return nuTotalCusto;
+	}
+
+	public void setNuTotalCusto(BigDecimal nuTotalCusto) {
+		this.nuTotalCusto = nuTotalCusto;
+	}
+
+	public BigDecimal getNuTotalVenda() {
+		return nuTotalVenda;
+	}
+
+	public void setNuTotalVenda(BigDecimal nuTotalVenda) {
+		this.nuTotalVenda = nuTotalVenda;
+	}
+
+	public TipoPedido getTipoPedido() {
+		return tipoPedido;
+	}
+
+	public void setTipoPedido(TipoPedido tipoPedido) {
+		this.tipoPedido = tipoPedido;
 	}
 
 }

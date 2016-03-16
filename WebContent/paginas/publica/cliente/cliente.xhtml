@@ -92,12 +92,13 @@
 
 							<p:column headerText="Opções" styleClass="text-center"
 								style="width: 98px;">
-								<p:commandButton title="Editar" icon="ui-icon-pencil"
-									process="@this" update="incluirContato"
-									actionListener="#{clienteControlador.editarContato(contato)}" />
-								<p:commandButton title="Excluir" icon="ui-icon-trash"
-									actionListener="#{clienteControlador.setContato(contato)}"
-									oncomplete="PF('dialogExcluirCliente').show();" />
+								<span class="btn-group"> <p:commandButton title="Editar"
+										icon="ui-icon-pencil" process="@this" update="incluirContato"
+										actionListener="#{clienteControlador.editarContato(contato)}" />
+									<p:commandButton title="Excluir" icon="ui-icon-trash"
+										actionListener="#{clienteControlador.setContato(contato)}"
+										oncomplete="PF('dialogExcluirCliente').show();" />
+								</span>
 							</p:column>
 
 						</p:dataTable>

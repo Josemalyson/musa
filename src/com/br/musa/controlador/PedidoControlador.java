@@ -16,13 +16,14 @@ import org.primefaces.context.RequestContext;
 import com.br.musa.entidades.Cliente;
 import com.br.musa.entidades.Pedido;
 import com.br.musa.entidades.Produto;
-import com.br.musa.entidades.ProdutoPedido;
+import com.br.musa.entidades.TipoPedido;
 import com.br.musa.entidades.Vo.PedidoVO;
 import com.br.musa.entidades.Vo.ProdutoVO;
 import com.br.musa.exeption.MusaExecao;
 import com.br.musa.servicos.ClienteServico;
 import com.br.musa.servicos.PedidoServico;
 import com.br.musa.servicos.ProdutoServico;
+import com.br.musa.servicos.TipoPedidoServico;
 
 @ManagedBean
 @ViewScoped
@@ -36,8 +37,9 @@ public class PedidoControlador extends CoreControlador {
 	private ProdutoServico produtoServico;
 	@Inject
 	private PedidoServico pedidoServico;
-	
-	
+	@Inject
+	private TipoPedidoServico tipoPedidoServico;
+
 	// OBJETOS
 	private Cliente cliente;
 	private Pedido pedido;
@@ -49,6 +51,7 @@ public class PedidoControlador extends CoreControlador {
 	private List<Cliente> clienteList;
 	private List<Produto> produtoList;
 	private List<Produto> produtoListPedido;
+	private List<TipoPedido> tipoPedidoList;
 
 	private static final Logger logger = Logger.getLogger(PedidoControlador.class);
 
@@ -61,15 +64,19 @@ public class PedidoControlador extends CoreControlador {
 		pedido.setDtPedido(new Date());
 		flBotaoAdicionarPedido = false;
 		listarProdutosAtivos();
-		totalPrecoDeCusto();
 		montarPedido();
+		listarTipoPedido();
 
+	}
+
+	private void listarTipoPedido() {
+		tipoPedidoList = tipoPedidoServico.listar();
 	}
 
 	private void montarPedido() {
 		pedidoVO = new PedidoVO();
 		pedidoVO.setCliente(cliente);
-		pedido.setId(pedidoServico.obterNumerorDoProximoPedido());
+		pedidoVO.setNumeroPedido(pedidoServico.obterNumerorDoProximoPedido().toString());
 		pedidoVO.setPedido(pedido);
 		pedidoVO.setProdutoVOList(new ArrayList<ProdutoVO>());
 
@@ -108,13 +115,6 @@ public class PedidoControlador extends CoreControlador {
 		}
 	}
 
-	public void totalPrecoDeCusto() {
-
-	}
-
-	public void salvarPedido() {
-	}
-
 	public void adicionarProduto() {
 
 		if (pedidoVO != null && pedidoVO.getProdutoVOList() != null) {
@@ -134,17 +134,17 @@ public class PedidoControlador extends CoreControlador {
 	}
 
 	private void calcularTotalCusto() {
-		pedidoVO.setTotalCusto(pedidoVO.getProdutoVOList().stream()
-				.mapToDouble(p -> p.getQuantidadeProduto() * (p.getProduto().getPrecoCusto()).doubleValue()).sum());
+		pedidoVO.getPedido().setNuTotalCusto(new BigDecimal(pedidoVO.getProdutoVOList().stream()
+				.mapToDouble(p -> p.getQuantidadeProduto() * (p.getProduto().getPrecoCusto()).doubleValue()).sum()));
 	}
 
 	private void calcularTotalVenda() {
-		pedidoVO.setTotalVenda(pedidoVO.getProdutoVOList().stream()
-				.mapToDouble(p -> p.getQuantidadeProduto() * (p.getProduto().getPrecoVenda()).doubleValue()).sum());
+		pedidoVO.getPedido().setNuTotalVenda(new BigDecimal(pedidoVO.getProdutoVOList().stream()
+				.mapToDouble(p -> p.getQuantidadeProduto() * (p.getProduto().getPrecoVenda()).doubleValue()).sum()));
 	}
 
 	public void ajustarTela(ProdutoVO produtoVO) {
-		
+
 		try {
 			pedidoServico.validarQuantidadeDoProduto(produtoVO);
 			if (produtoVO.getQuantidadeProduto() == null) {
@@ -155,7 +155,19 @@ public class PedidoControlador extends CoreControlador {
 			RequestContext.getCurrentInstance().update("tabelaProdutoVO");
 			RequestContext.getCurrentInstance().update("btAdicionarProduto");
 		} catch (MusaExecao e) {
-			logger.error(e.getMessage(),e);
+			logger.error(e.getMessage(), e);
+			adicionarErro(e.getMessage());
+			return;
+		}
+	}
+
+	public void salvarPedido() {
+		try {
+			pedidoVO.getProdutoVOList();
+			pedido.setCliente(pedidoVO.getCliente());
+			pedidoServico.salvar(pedido);
+		} catch (MusaExecao e) {
+			logger.error(e.getMessage(), e);
 			adicionarErro(e.getMessage());
 			return;
 		}
@@ -224,6 +236,14 @@ public class PedidoControlador extends CoreControlador {
 
 	public void setFlBotaoAdicionarPedido(boolean flBotaoAdicionarPedido) {
 		this.flBotaoAdicionarPedido = flBotaoAdicionarPedido;
+	}
+
+	public List<TipoPedido> getTipoPedidoList() {
+		return tipoPedidoList;
+	}
+
+	public void setTipoPedidoList(List<TipoPedido> tipoPedidoList) {
+		this.tipoPedidoList = tipoPedidoList;
 	}
 
 }
