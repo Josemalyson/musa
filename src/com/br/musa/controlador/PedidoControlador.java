@@ -13,6 +13,7 @@ import javax.inject.Inject;
 import org.jboss.logging.Logger;
 import org.primefaces.context.RequestContext;
 
+import com.br.musa.constantes.MsgConstantes;
 import com.br.musa.entidades.Cliente;
 import com.br.musa.entidades.Pedido;
 import com.br.musa.entidades.Produto;
@@ -62,6 +63,7 @@ public class PedidoControlador extends CoreControlador {
 		produto = new Produto();
 		pedido = new Pedido();
 		pedido.setDtPedido(new Date());
+		pedido.setFlExcluido(false);
 		flBotaoAdicionarPedido = false;
 		listarProdutosAtivos();
 		montarPedido();
@@ -163,9 +165,8 @@ public class PedidoControlador extends CoreControlador {
 
 	public void salvarPedido() {
 		try {
-			pedidoVO.getProdutoVOList();
-			pedido.setCliente(pedidoVO.getCliente());
-			pedidoServico.salvar(pedido);
+			pedidoServico.salvar(pedidoVO);
+			adicionarMensagem(MsgConstantes.MSG_SUCESSO);
 		} catch (MusaExecao e) {
 			logger.error(e.getMessage(), e);
 			adicionarErro(e.getMessage());

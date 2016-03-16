@@ -1,5 +1,7 @@
 package com.br.musa.repositorio;
 
+import java.math.BigInteger;
+
 import javax.ejb.Stateless;
 import javax.persistence.NoResultException;
 import javax.persistence.NonUniqueResultException;
@@ -19,13 +21,13 @@ public class PedidoRepositorio extends CustomGenericDAOImpl<Pedido> {
 		return Pedido.class;
 	}
 
-	public Long obterNumeroDoProximoPedido() {
+	public BigInteger obterNumeroDoProximoPedido() {
 		StringBuilder consulta = new StringBuilder();
 		consulta.append(" SELECT MAX(P.ID_PEDIDO) FROM TB_MUSA_PEDIDO P ");
 		Query query = obterEntityManager().createNativeQuery(consulta.toString());
 		
 		try {
-			return (Long) query.getSingleResult();
+			return (BigInteger) query.getSingleResult();
 		} catch (NoResultException | NonUniqueResultException e) {
 			return null;
 		}

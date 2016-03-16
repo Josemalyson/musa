@@ -16,9 +16,27 @@ public class ProdutoPedidoPK implements Serializable {
 	@Column(name = "FK_PEDIDO")
 	private Long idPedido;
 
+	public ProdutoPedidoPK() {
+	}
+	
 	public ProdutoPedidoPK(Long idProduto, Long idPedido) {
-		super();
 		this.idProduto = idProduto;
+		this.idPedido = idPedido;
+	}
+
+	public Long getIdProduto() {
+		return idProduto;
+	}
+
+	public void setIdProduto(Long idProduto) {
+		this.idProduto = idProduto;
+	}
+
+	public Long getIdPedido() {
+		return idPedido;
+	}
+
+	public void setIdPedido(Long idPedido) {
 		this.idPedido = idPedido;
 	}
 

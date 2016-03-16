@@ -56,7 +56,7 @@ public class Pedido extends GenericEntity {
 	@OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL)
 	private List<Pagamento> pagamentoList;
 
-	@ManyToOne
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	@JoinColumn(name = "FK_TIPO_PEDIDO")
 	private TipoPedido tipoPedido;
 

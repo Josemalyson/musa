@@ -41,7 +41,7 @@
 							do Pedido: </label>
 						<p:selectOneRadio id="tipoPedidoId"
 							value="#{pedidoControlador.pedidoVO.pedido.tipoPedido}"
-							styleClass="checkbox-inline" converter="genericConverter" >
+							styleClass="checkbox-inline" converter="genericConverter">
 							<p:ajax update="tipoPedidoId" />
 							<f:selectItems value="#{pedidoControlador.tipoPedidoList}"
 								var="tipoPedido" itemLabel="#{tipoPedido.descricao}"
