@@ -36,8 +36,7 @@ public class PedidoServico {
 
 	@Transactional
 	public void salvar(PedidoVO pedidoVO) {
-		//TODO ESTAR SALVANDO O CLIENTE COMO NULO
-		pedidoVO.setCliente(clienteServico.buscarPorCodigo(pedidoVO.getCliente()));	
+		pedidoVO.getPedido().setCliente(clienteServico.buscarPorCodigo(pedidoVO.getCliente()));	
 		Pedido pedidoBD = pedidoRepositorio.salvar(pedidoVO.getPedido());
 		
 		for (ProdutoVO produtoVO : pedidoVO.getProdutoVOList()) {
@@ -48,4 +47,5 @@ public class PedidoServico {
 		}
 		
 	}
+	
 }

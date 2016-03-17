@@ -15,6 +15,8 @@ public class ProdutoServico {
 
 	@Inject
 	private ProdutoRepositorio produtoRepositorio;
+	@Inject
+	private ProdutoPedidoServico produtoPedidoServico; 
 	
 	@Transactional
 	public void salvarProduto(Produto produto){
@@ -55,12 +57,15 @@ public class ProdutoServico {
 		return produtoList;
 	}
 
-	//TODO SÓ PODERÁ SER EXCLUIDO SE NÃO TIVER EM NENHUM PEDIDO
-	// CASO CONTRARIO A FLAG DE STATUS É UTILIZADA.
 	@Transactional
 	public void excluirProduto(Produto produto) {
-		produtoRepositorio.excluir(produto);
-		//SE NAO produto.setFlExcluido(true); salvarProduto(produto);
+		
+		if (produtoPedidoServico.buscarPedidoPorProduto(produto.getId()) == null) {
+			produtoRepositorio.excluir(produto);
+		}else {
+			produto.setFlExcluido(true); 
+			salvarProduto(produto);
+		}
 	}
 
 	public List<Produto> listarProdutosAtivos() {
