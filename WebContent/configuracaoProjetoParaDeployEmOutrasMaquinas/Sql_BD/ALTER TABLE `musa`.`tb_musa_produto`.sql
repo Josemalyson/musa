@@ -41,3 +41,24 @@ INSERT INTO `musa`.`tb_musa_tipo_pedido` (`ID_TIPO_PEDIDO`, `DS_DESCRICAO_TIPO_P
 
 ALTER TABLE `musa`.`tb_musa_tipo_pedido` 
 CHANGE COLUMN `DS_DESCRICAO_TIPO_PEDIDO` `DS_TIPO_PEDIDO` VARCHAR(45) NULL DEFAULT NULL ;
+
+CREATE TABLE `musa`.`tb_status_pedido` (
+  `ID_STATUS` BIGINT(20) NOT NULL,
+  `DS_DESCRICAO` VARCHAR(45) NULL,
+  PRIMARY KEY (`ID_STATUS`));
+
+  ALTER TABLE `musa`.`tb_musa_pedido` 
+ADD COLUMN `FK_STATUS_PEDIDO` BIGINT(20) NULL AFTER `FK_TIPO_PEDIDO`,
+ADD INDEX `FK_STATUS_PEDIDO_idx` (`FK_STATUS_PEDIDO` ASC);
+ALTER TABLE `musa`.`tb_musa_pedido` 
+ADD CONSTRAINT `FK_STATUS_PEDIDO`
+  FOREIGN KEY (`FK_STATUS_PEDIDO`)
+  REFERENCES `musa`.`tb_status_pedido` (`ID_STATUS`)
+  ON DELETE NO ACTION
+  ON UPDATE NO ACTION;
+
+  ALTER TABLE `musa`.`tb_status_pedido` 
+RENAME TO  `musa`.`tb_musa_status_pedido` ;
+
+INSERT INTO `musa`.`tb_musa_status_pedido` (`ID_STATUS`, `DS_DESCRICAO`) VALUES ('1', 'PAGO');
+INSERT INTO `musa`.`tb_musa_status_pedido` (`ID_STATUS`, `DS_DESCRICAO`) VALUES ('2', 'NAO PAGO');

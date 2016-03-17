@@ -17,6 +17,7 @@ import com.br.musa.constantes.MsgConstantes;
 import com.br.musa.entidades.Cliente;
 import com.br.musa.entidades.Pedido;
 import com.br.musa.entidades.Produto;
+import com.br.musa.entidades.StatusPedido;
 import com.br.musa.entidades.TipoPedido;
 import com.br.musa.entidades.Vo.PedidoVO;
 import com.br.musa.entidades.Vo.ProdutoVO;
@@ -24,6 +25,7 @@ import com.br.musa.exeption.MusaExecao;
 import com.br.musa.servicos.ClienteServico;
 import com.br.musa.servicos.PedidoServico;
 import com.br.musa.servicos.ProdutoServico;
+import com.br.musa.servicos.StatusPedidoServico;
 import com.br.musa.servicos.TipoPedidoServico;
 
 @ManagedBean
@@ -40,6 +42,8 @@ public class PedidoControlador extends CoreControlador {
 	private PedidoServico pedidoServico;
 	@Inject
 	private TipoPedidoServico tipoPedidoServico;
+	@Inject
+	private StatusPedidoServico statusPedidoServico;
 
 	// OBJETOS
 	private Cliente cliente;
@@ -53,6 +57,7 @@ public class PedidoControlador extends CoreControlador {
 	private List<Produto> produtoList;
 	private List<Produto> produtoListPedido;
 	private List<TipoPedido> tipoPedidoList;
+	private List<StatusPedido> statusPedidoList;
 
 	private static final Logger logger = Logger.getLogger(PedidoControlador.class);
 
@@ -68,11 +73,14 @@ public class PedidoControlador extends CoreControlador {
 		listarProdutosAtivos();
 		montarPedido();
 		listarTipoPedido();
-
+		listarStatusPedido();
 	}
 
 	private void listarTipoPedido() {
 		tipoPedidoList = tipoPedidoServico.listar();
+	}
+	private void listarStatusPedido() {
+		statusPedidoList = statusPedidoServico.listar();
 	}
 
 	private void montarPedido() {
@@ -245,6 +253,14 @@ public class PedidoControlador extends CoreControlador {
 
 	public void setTipoPedidoList(List<TipoPedido> tipoPedidoList) {
 		this.tipoPedidoList = tipoPedidoList;
+	}
+
+	public List<StatusPedido> getStatusPedidoList() {
+		return statusPedidoList;
+	}
+
+	public void setStatusPedidoList(List<StatusPedido> statusPedidoList) {
+		this.statusPedidoList = statusPedidoList;
 	}
 
 }

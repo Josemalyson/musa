@@ -60,6 +60,10 @@ public class Pedido extends GenericEntity {
 	@JoinColumn(name = "FK_TIPO_PEDIDO")
 	private TipoPedido tipoPedido;
 
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	@JoinColumn(name = "FK_STATUS_PEDIDO")
+	private StatusPedido statusPedido;
+
 	// CONSTRUTORES
 
 	public Pedido() {
@@ -161,6 +165,14 @@ public class Pedido extends GenericEntity {
 
 	public void setTipoPedido(TipoPedido tipoPedido) {
 		this.tipoPedido = tipoPedido;
+	}
+
+	public StatusPedido getStatusPedido() {
+		return statusPedido;
+	}
+
+	public void setStatusPedido(StatusPedido statusPedido) {
+		this.statusPedido = statusPedido;
 	}
 
 }
