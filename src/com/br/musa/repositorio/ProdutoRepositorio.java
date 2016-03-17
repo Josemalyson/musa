@@ -27,5 +27,13 @@ public class ProdutoRepositorio extends CustomGenericDAOImpl<Produto> {
 		return query.getResultList();
 	}
 
+	public List<Produto> listarProdutosPorPededido(Long id) {
+		StringBuilder consulta = new StringBuilder();
+		consulta.append(" SELECT P.* FROM TB_MUSA_PRODUTO P INNER JOIN TB_MUSA_PRODUTO_PEDIDO PP ON P.ID_PRODUTO = PP.FK_PRODUTO WHERE PP.FK_PEDIDO = :id ");
+		Query query = obterEntityManager().createNativeQuery(consulta.toString(), Produto.class);
+		query.setParameter("id", id);
+		return query.getResultList();
+	}
+
 
 }

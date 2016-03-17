@@ -23,4 +23,9 @@ public class ProdutoPedidoServico {
 		return produtoPedidoRepositorio.buscarPedidoPorProduto(codigoProdudo);
 		
 	}
+
+	public ProdutoPedido buscarPedidoPorPedido(Long codigoPedido, Long codigoProdudo){
+		return produtoPedidoRepositorio.buscarPedidoPorPedido(codigoPedido, codigoProdudo);
+		
+	}
 }

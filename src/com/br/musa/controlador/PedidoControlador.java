@@ -13,6 +13,7 @@ import javax.inject.Inject;
 import org.jboss.logging.Logger;
 import org.primefaces.context.RequestContext;
 
+import com.br.musa.constantes.Constantes;
 import com.br.musa.constantes.MsgConstantes;
 import com.br.musa.entidades.Cliente;
 import com.br.musa.entidades.Pedido;
@@ -24,6 +25,7 @@ import com.br.musa.entidades.Vo.ProdutoVO;
 import com.br.musa.exeption.MusaExecao;
 import com.br.musa.servicos.ClienteServico;
 import com.br.musa.servicos.PedidoServico;
+import com.br.musa.servicos.ProdutoPedidoServico;
 import com.br.musa.servicos.ProdutoServico;
 import com.br.musa.servicos.StatusPedidoServico;
 import com.br.musa.servicos.TipoPedidoServico;
@@ -38,6 +40,8 @@ public class PedidoControlador extends CoreControlador {
 	private ClienteServico clienteServico;
 	@Inject
 	private ProdutoServico produtoServico;
+	@Inject
+	private ProdutoPedidoServico produtoPedidoServico;
 	@Inject
 	private PedidoServico pedidoServico;
 	@Inject
@@ -63,32 +67,63 @@ public class PedidoControlador extends CoreControlador {
 
 	@PostConstruct
 	public void init() {
-		listarCliente();
-		cliente = new Cliente();
-		produto = new Produto();
-		pedido = new Pedido();
-		pedido.setDtPedido(new Date());
-		pedido.setFlExcluido(false);
-		flBotaoAdicionarPedido = false;
-		listarProdutosAtivos();
-		montarPedido();
+
+		pedido = (Pedido) obterAtributoFlash("pedido");
+
+		if (pedido == null) {
+			cliente = new Cliente();
+			produto = new Produto();
+			pedido = new Pedido();
+			pedido.setDtPedido(new Date());
+			pedido.setFlExcluido(false);
+		}
+
 		listarTipoPedido();
 		listarStatusPedido();
+		listarProdutosAtivos();
+		flBotaoAdicionarPedido = false;
+		listarCliente();
+		montarPedido();
+
 	}
 
 	private void listarTipoPedido() {
 		tipoPedidoList = tipoPedidoServico.listar();
 	}
+
 	private void listarStatusPedido() {
 		statusPedidoList = statusPedidoServico.listar();
 	}
 
 	private void montarPedido() {
 		pedidoVO = new PedidoVO();
-		pedidoVO.setCliente(cliente);
-		pedidoVO.setNumeroPedido(pedidoServico.obterNumerorDoProximoPedido().toString());
-		pedidoVO.setPedido(pedido);
-		pedidoVO.setProdutoVOList(new ArrayList<ProdutoVO>());
+
+		if (pedido.getId() == null) {
+			pedidoVO.setCliente(cliente);
+			pedidoVO.setNumeroPedido(pedidoServico.obterNumerorDoProximoPedido().toString());
+			pedidoVO.setPedido(pedido);
+			pedidoVO.setProdutoVOList(new ArrayList<ProdutoVO>());
+		} else {
+			pedidoVO.setPedido(pedido);
+			pedidoVO.setCliente(pedido.getCliente());
+			pedidoVO.setNumeroPedido(pedido.getId().toString());
+
+			List<ProdutoVO> produtoVOList = new ArrayList<ProdutoVO>();
+
+			List<Produto> produtoBDList = new ArrayList<Produto>();
+			produtoBDList = produtoServico.listarProdutosPorPedido(pedido.getId());
+
+			for (Produto produto : produtoBDList) {
+				ProdutoVO produtoVO = new ProdutoVO();
+				produtoVO.setProduto(produto);
+				produtoVO.setQuantidadeProduto(
+						produtoPedidoServico.buscarPedidoPorPedido(pedido.getId(), produto.getId()).getQtdProduto());
+				produtoVOList.add(produtoVO);
+
+			}
+
+			pedidoVO.setProdutoVOList(produtoVOList);
+		}
 
 	}
 
@@ -171,14 +206,15 @@ public class PedidoControlador extends CoreControlador {
 		}
 	}
 
-	public void salvarPedido() {
+	public String salvarPedido() {
 		try {
 			pedidoServico.salvar(pedidoVO);
 			adicionarMensagem(MsgConstantes.MSG_SUCESSO);
+			return sendRedirect(Constantes.PAGINA_LISTAR_PEDIDOS);
 		} catch (MusaExecao e) {
 			logger.error(e.getMessage(), e);
 			adicionarErro(e.getMessage());
-			return;
+			return Constantes.STRING_VAZIA;
 		}
 	}
 

@@ -43,6 +43,7 @@ public class PedidoServico {
 
 		for (ProdutoVO produtoVO : pedidoVO.getProdutoVOList()) {
 			ProdutoPedido produtoPedido = new ProdutoPedido();
+			produtoPedido.setQtdProduto(produtoVO.getQuantidadeProduto());
 			ProdutoPedidoPK id = new ProdutoPedidoPK(produtoVO.getProduto().getId(), pedidoBD.getId());
 			produtoPedido.setId(id);
 			produtoPedidoServico.salvarProdutoPedido(produtoPedido);

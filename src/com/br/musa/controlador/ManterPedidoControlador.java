@@ -10,6 +10,7 @@ import javax.inject.Inject;
 
 import org.jboss.logging.Logger;
 
+import com.br.musa.constantes.Constantes;
 import com.br.musa.entidades.Cliente;
 import com.br.musa.entidades.Pedido;
 import com.br.musa.entidades.Vo.PedidoVO;
@@ -104,6 +105,11 @@ public class ManterPedidoControlador extends CoreControlador {
 			logger.error(e.getMessage(), e);
 			adicionarErro(e.getMessage());
 		}
+	}
+	
+	public String editarPedido(Pedido pedido){
+		adicionarAtributoFlash("pedido", pedido);
+		return sendRedirect(Constantes.PAGINA_PEDIDO);
 	}
 	
 	public List<PedidoVO> getPedidoVOlist() {

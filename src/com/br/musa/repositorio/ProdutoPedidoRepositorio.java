@@ -3,6 +3,8 @@ package com.br.musa.repositorio;
 import java.util.List;
 
 import javax.ejb.Stateless;
+import javax.persistence.NoResultException;
+import javax.persistence.NonUniqueResultException;
 import javax.persistence.Query;
 
 import com.br.musa.dao.CustomGenericDAOImpl;
@@ -24,6 +26,23 @@ public class ProdutoPedidoRepositorio extends CustomGenericDAOImpl<ProdutoPedido
 		StringBuilder consulta = new StringBuilder();
 		consulta.append(" SELECT PP.* FROM MUSA.TB_MUSA_PRODUTO_PEDIDO PP WHERE PP.FK_PRODUTO=:codigoProdudo ");
 		Query query = obterEntityManager().createNativeQuery(consulta.toString(), ProdutoPedido.class);
+		query.setParameter("codigoProdudo", codigoProdudo);
 		return query.getResultList();
 	}
+
+	public ProdutoPedido buscarPedidoPorPedido(Long codigoPedido, Long codigoProdudo) {
+		StringBuilder consulta = new StringBuilder();
+		consulta.append(
+				" SELECT PP.* FROM MUSA.TB_MUSA_PRODUTO_PEDIDO PP WHERE PP.FK_PEDIDO = :codigoPedido AND PP.FK_PRODUTO = :codigoProdudo");
+		Query query = obterEntityManager().createNativeQuery(consulta.toString(), ProdutoPedido.class);
+		query.setParameter("codigoPedido", codigoPedido);
+		query.setParameter("codigoProdudo", codigoProdudo);
+		try {
+			return (ProdutoPedido) query.getSingleResult();
+		} catch (NoResultException | NonUniqueResultException  e) {
+			return null;
+		}
+
+	}
+
 }

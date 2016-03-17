@@ -81,19 +81,19 @@
 						<h:outputText value="#{pedidoVO.pedido.statusPedido.descricao}" />
 					</p:column>
 
-					<p:column headerText="Data do Pedido" styleClass="text-center">
+					<p:column headerText="Data do Pedido" styleClass="text-center" sortBy="#{pedidoVO.pedido.dtPedido}">
 						<h:outputText value="#{pedidoVO.pedido.dtPedido}">
 							<f:convertDateTime locale="pt_br" />
 						</h:outputText>
 					</p:column>
 
-					<p:column headerText="Último Pagamento" styleClass="text-center">
+					<p:column headerText="Último Pagamento" styleClass="text-center" sortBy="#">
 						<h:outputText value="MOCADO 10/01/2015 - Juliana Mesquita" />
 					</p:column>
 
 					<p:column headerText="Opções" styleClass="text-center">
 						<div class="form-inline">
-							<p:commandButton icon="ui-icon-pencil" title="Editar" />
+							<p:commandButton icon="ui-icon-pencil" title="Editar" action="#{manterPedidoControlador.editarPedido(pedidoVO.pedido)}" />
 							<p:commandButton icon="ui-icon-trash" title="Excluir" />
 							<p:commandButton icon="ui-icon-check" title="Efetuar Pagamento" />
 						</div>

@@ -135,7 +135,9 @@
 								value="#{produtoVO.quantidadeProduto}"
 								converterMessage="Digite um número válido." size="2">
 								<p:ajax listener="#{pedidoControlador.ajustarTela(produtoVO)}"
-									event="keyup" process="tabelaProdutoVO" />
+									event="keyup" process="tabelaProdutoVO" delay="2000" />
+								<p:ajax listener="#{pedidoControlador.ajustarTela(produtoVO)}"
+									event="blur" process="tabelaProdutoVO" global="false" />
 								<f:convertNumber type="number" maxIntegerDigits="9"
 									groupingUsed="false" />
 							</h:inputText>
@@ -241,8 +243,8 @@
 					</div>
 					<label class="col-sm-2 control-label"></label>
 					<div class="col-sm-2">
-						<p:commandButton value="Cancelar"
-							styleClass="btn btn-danger btn-sm" />
+						<p:commandButton value="Cancelar" styleClass="btn btn-danger btn-sm" ajax="false"
+							action="listarPedidos.jsf" />
 					</div>
 				</div>
 			</div>

@@ -77,5 +77,9 @@ public class ProdutoServico {
 	private void ordenarListaProdutos(List<Produto> produtoList) {
 		produtoList.sort((p1,p2) -> p1.getDescricaoProduto().compareToIgnoreCase(p2.getDescricaoProduto()));
 	}
+
+	public List<Produto> listarProdutosPorPedido(Long id) {
+		return produtoRepositorio.listarProdutosPorPededido(id);
+	}
 	
 }
