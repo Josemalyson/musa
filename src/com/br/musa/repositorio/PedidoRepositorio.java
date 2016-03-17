@@ -38,8 +38,17 @@ public class PedidoRepositorio extends CustomGenericDAOImpl<Pedido> {
 
 	public List<Pedido> buscarPedidoPorProduto(Long codigoProdudo) {
 		StringBuilder consulta = new StringBuilder();
-		consulta.append(" SELECT PP.* FROM MUSA.TB_MUSA_PRODUTO_PEDIDO PP WHERE PP.FK_PRODUTO=:codigoProdudo ");
+		consulta.append(" SELECT PP.* FROM MUSA.TB_MUSA_PRODUTO_PEDIDO PP WHERE PP.FK_PRODUTO = :codigoProdudo ");
 		Query query = obterEntityManager().createNativeQuery(consulta.toString(), Pedido.class);
+		query.setParameter("codigoProdudo", codigoProdudo);
+		return query.getResultList();
+	}
+
+	public List<Pedido> listarPedidosPorCliente(Long id) {
+		StringBuilder consulta = new StringBuilder();
+		consulta.append(" SELECT P.* FROM MUSA.TB_MUSA_PEDIDO P WHERE P.FK_CLIENTE = :id ");
+		Query query = obterEntityManager().createNativeQuery(consulta.toString(), Pedido.class);
+		query.setParameter("id", id);
 		return query.getResultList();
 	}
 

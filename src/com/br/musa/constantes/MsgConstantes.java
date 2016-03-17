@@ -11,4 +11,5 @@ public abstract class MsgConstantes {
 	public static final String CPF_INVALIDO = "CPF inválido";
 	public static final String MSG_EXCLUSAO_SUCESSO = "Exclusão realizada com sucesso.";
 	public static final String ERRO_QUANTIDADE_ZERO = "O valor do campor quantidade não pode ter valor zero. (0)";
+	public static final String NAO_HA_PEDIDOS_PARA_CLIENTE = "Não existe pedidos cadastrados para esse cliente.";
 }

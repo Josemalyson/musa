@@ -30,12 +30,19 @@
 					<div class="col-sm-6">
 						<label class="control-label espacamento10PxDireita ">Nome
 							Cliente:</label>
-						<p:autoComplete id="clienteId" size="55">
+						<p:autoComplete id="clienteId"
+							completeMethod="#{manterPedidoControlador.autoCompleteCliente}"
+							converter="entityConverter" size="50"
+							value="#{manterPedidoControlador.cliente}" dropdown="true"
+							forceSelection="true" var="cliente" itemValue="#{cliente}"
+							itemLabel="#{cliente.nome}">
 						</p:autoComplete>
 					</div>
 					<div>
 						<p:commandButton value="Listar Pedidos"
-							styleClass="btn btn-success btn-sm" />
+							styleClass="btn btn-success btn-sm"
+							actionListener="#{manterPedidoControlador.buscarPedidosPorCliente()}"
+							update="tabelaPedido" />
 					</div>
 				</div>
 			</div>
@@ -43,39 +50,45 @@
 			<div class="espacamento20Px" />
 
 			<div id="tabelaPedido">
-				<p:dataTable widgetVar="tabelaCliente" id="tabelaCliente"
-					tableStyleClass="table table-hover table-bordered" value="#"
+				<p:dataTable widgetVar="tabelaPedido" id="tabelaPedido"
+					var="pedidoVO" tableStyleClass="table table-hover table-bordered"
+					value="#{manterPedidoControlador.pedidoVOlist}"
 					emptyMessage="Nenhum pedido encontrado." paginator="true"
 					paginatorAlwaysVisible="true" pageLinks="10" rows="10"
 					rowsPerPageTemplate="10,30,50" paginatorPosition="bottom">
 
 
 					<p:column headerText="Código Pedido" styleClass="text-center">
-						<h:outputText value="1" />
+						<h:outputText value="#{pedidoVO.pedido.id}" />
 					</p:column>
 
 					<p:column headerText="Cliente" styleClass="text-center">
-						<h:outputText value="Josemalyson Antonio - 123.456.789-00" />
+						<h:outputText value="#{pedidoVO.cliente.nome}" />
 					</p:column>
 
 					<p:column headerText="Tipo do Pedido" styleClass="text-center">
-						<h:outputText value="ATACADO/VAREJO" />
+						<h:outputText value="#{pedidoVO.pedido.tipoPedido.descricao}" />
 					</p:column>
 
 					<p:column headerText="Valor Do Pedido" styleClass="text-center">
-						<h:outputText value="R$ 1.000,00" />
+						<h:outputText value="#{pedidoVO.totalPedio}">
+							<f:convertNumber currencySymbol="R$" groupingUsed="true"
+								maxFractionDigits="2" type="currency" locale="pt_BR" />
+						</h:outputText>
 					</p:column>
 
 					<p:column headerText="Status" styleClass="text-center">
-						<h:outputText value="PAGO/NAO PAGO" />
+						<h:outputText value="#{pedidoVO.pedido.statusPedido.descricao}" />
 					</p:column>
 
 					<p:column headerText="Data do Pedido" styleClass="text-center">
-						<h:outputText value="10/01/2015" />
+						<h:outputText value="#{pedidoVO.pedido.dtPedido}">
+							<f:convertDateTime locale="pt_br" />
+						</h:outputText>
 					</p:column>
 
 					<p:column headerText="Último Pagamento" styleClass="text-center">
-						<h:outputText value="10/01/2015 - Juliana Mesquita" />
+						<h:outputText value="MOCADO 10/01/2015 - Juliana Mesquita" />
 					</p:column>
 
 					<p:column headerText="Opções" styleClass="text-center">
