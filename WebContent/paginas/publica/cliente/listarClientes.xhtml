@@ -24,61 +24,67 @@
 
 		<h:form prependId="false" id="listarClientes">
 
-			<div class="table-responsive">
-				<p:dataTable widgetVar="tabelaCliente" id="tabelaCliente"
-					var="clienteVO" tableStyleClass="table table-hover"
-					value="#{manterClienteControlador.clienteVOlist}"
-					emptyMessage="Nenhum cliente encontrado." paginator="true"
-					paginatorAlwaysVisible="true" pageLinks="10" rows="10"
-					rowsPerPageTemplate="10,30,50" paginatorPosition="bottom"
-					filteredValue="#{manterClienteControlador.clientesListFiltrados}">
+
+			<div class="espacamento20Px" />
+
+			<h3>Gerenciar Clientes</h3>
+
+			<div class="espacamento20Px" />
+
+			<p:dataTable widgetVar="tabelaCliente" id="tabelaCliente"
+				var="clienteVO" tableStyleClass="table table-hover table-bordered"
+				value="#{manterClienteControlador.clienteVOlist}"
+				emptyMessage="Nenhum cliente encontrado." paginator="true"
+				paginatorAlwaysVisible="true" pageLinks="10" rows="10"
+				rowsPerPageTemplate="10,30,50" paginatorPosition="bottom"
+				filteredValue="#{manterClienteControlador.clientesListFiltrados}">
 
 
-					<p:column headerText="Código" styleClass="text-center"
-						style="width: 10%;">
-						<h:outputText value="#{clienteVO.codigo}" />
-					</p:column>
+				<p:column headerText="Código" styleClass="text-center"
+					style="width: 10%;">
+					<h:outputText value="#{clienteVO.codigo}" />
+				</p:column>
 
-					<p:column headerText="Nome" styleClass="text-center"
-						sortBy="#{clienteVO.nome}" filterBy="#{clienteVO.nome}"
-						filterStyle="width:100%" filterMatchMode="contains">
-						<h:outputText value="#{clienteVO.nome}" />
-					</p:column>
-
-
-					<!-- VERIFICAR FORMA DE AO LIMPAR O FILTRO A TABELA SER LISTADA NOVAMENTE -->
-					<p:column id="cpf" headerText="CPF" styleClass="text-center"
-						sortBy="#{clienteVO.cpf}" filterBy="#{clienteVO.cpf}"
-						filterMatchMode="contains" filterStyle="width:100%">
-						<h:outputText value="#{clienteVO.cpf}" />
-					</p:column>
-
-					<p:column headerText="RG" styleClass="text-center">
-						<h:outputText value="#{clienteVO.rg}" />
-					</p:column>
-
-					<p:column headerText="Data de Nascimento" styleClass="text-center">
-						<h:outputText value="#{clienteVO.dataNascimento}" />
-					</p:column>
-
-					<p:column headerText="Opções" styleClass="text-center">
-						<div class="form-inline">
-							<span class="btn-group"> <p:commandButton
-									icon="ui-icon-pencil" title="Editar"
-									action="#{manterClienteControlador.editarCliente(clienteVO.cliente)}" />
-
-								<p:commandButton icon="ui-icon-trash" title="Excluir"
-									oncomplete="PF('confirmarExclusaoCliente').show();"
-									actionListener="#{manterClienteControlador.setCliente(clienteVO.cliente)}" />
-							</span>
-						</div>
-					</p:column>
+				<p:column headerText="Nome" styleClass="text-center"
+					sortBy="#{clienteVO.nome}" filterBy="#{clienteVO.nome}"
+					filterStyle="width:100%" filterMatchMode="contains">
+					<h:outputText value="#{clienteVO.nome}" />
+				</p:column>
 
 
-				</p:dataTable>
-			</div>
+				<!-- VERIFICAR FORMA DE AO LIMPAR O FILTRO A TABELA SER LISTADA NOVAMENTE -->
+				<p:column id="cpf" headerText="CPF" styleClass="text-center"
+					sortBy="#{clienteVO.cpf}" filterBy="#{clienteVO.cpf}"
+					filterMatchMode="contains" filterStyle="width:100%">
+					<h:outputText value="#{clienteVO.cpf}" />
+				</p:column>
 
-			<br />
+				<p:column headerText="RG" styleClass="text-center">
+					<h:outputText value="#{clienteVO.rg}" />
+				</p:column>
+
+				<p:column headerText="Data de Nascimento" styleClass="text-center">
+					<h:outputText value="#{clienteVO.dataNascimento}" />
+				</p:column>
+
+				<p:column headerText="Opções" styleClass="text-center">
+					<div class="form-inline">
+						<span class="btn-group"> <p:commandButton
+								icon="ui-icon-pencil" title="Editar"
+								action="#{manterClienteControlador.editarCliente(clienteVO.cliente)}" />
+
+							<p:commandButton icon="ui-icon-trash" title="Excluir"
+								oncomplete="PF('confirmarExclusaoCliente').show();"
+								actionListener="#{manterClienteControlador.setCliente(clienteVO.cliente)}" />
+						</span>
+					</div>
+				</p:column>
+
+
+			</p:dataTable>
+
+
+			<div class="espacamento20Px" />
 
 			<p:confirmDialog widgetVar="confirmarExclusaoCliente"
 				id="confirmarExclusaoCliente"

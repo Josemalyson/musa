@@ -37,6 +37,7 @@ h2 {
 .espacamento10PxEsquerda {
 	padding-left: 10px;
 }
+
 .espacamentoCentro {
 	padding-left: 10px;
 	padding-right: 10px;
@@ -46,4 +47,9 @@ h2 {
 	marginbottom: 50px;
 	paddingbottom: 10px;
 	text-align: center;
+}
+
+.adiconarLink {
+	text-decoration: underline;
+	color: #0088CC!important;
 }

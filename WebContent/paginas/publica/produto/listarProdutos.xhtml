@@ -22,9 +22,11 @@
 
 			<h3>Gerenciar Produtos</h3>
 
+			<div class="espacamento	20Px" />
+
 			<div class="text-right">
 				<p:commandButton title="Novo Produto" value="Novo Produto"
-					styleClass="btn btn-default"
+					styleClass="btn btn-success btn-sm"
 					oncomplete="PF('incluirProduto').show();"
 					actionListener="#{manterProdutoControlador.inicializarObjeto()}"
 					update="incluirProduto" />
@@ -35,7 +37,7 @@
 
 			<div class="table-responsive">
 				<p:dataTable widgetVar="tabelaProduto" id="tabelaProduto"
-					var="produto" tableStyleClass="table table-hover"
+					var="produto" tableStyleClass="table table-hover table-bordered"
 					value="#{manterProdutoControlador.produtoList}"
 					emptyMessage="Nenhum produto encontrado." paginator="true"
 					paginatorAlwaysVisible="true" pageLinks="10" rows="10"
