@@ -1,6 +1,8 @@
 package com.br.musa.controlador;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -65,6 +67,7 @@ public class PedidoControlador extends CoreControlador {
 	private List<Produto> produtoListPedido;
 	private List<TipoPedido> tipoPedidoList;
 	private List<StatusPedido> statusPedidoList;
+	private List<BigDecimal> listDesconto;
 
 
 
@@ -89,7 +92,12 @@ public class PedidoControlador extends CoreControlador {
 		habilitarTodosOsCamposParaEdicao();
 		listarCliente();
 		montarPedido();
+		montarListaDesconto();
 
+	}
+
+	private void montarListaDesconto() {
+		listDesconto = Arrays.asList(new BigDecimal(0),new BigDecimal(5),new BigDecimal(10),new BigDecimal(15),new BigDecimal(20));
 	}
 
 	private void habilitarTodosOsCamposParaEdicao() {
@@ -315,6 +323,14 @@ public class PedidoControlador extends CoreControlador {
 
 	public void setFlAutoCompleteCliente(boolean flAutoCompleteCliente) {
 		this.flAutoCompleteCliente = flAutoCompleteCliente;
+	}
+
+	public List<BigDecimal> getListDesconto() {
+		return listDesconto;
+	}
+
+	public void setListDesconto(List<BigDecimal> listDesconto) {
+		this.listDesconto = listDesconto;
 	}
 
 }

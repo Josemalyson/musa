@@ -127,7 +127,8 @@
 
 			<div class="panel panel-default">
 				<fieldset>
-					<legend class="espacamento10PxEsquerda obrigatorio">Lista de Produtos</legend>
+					<legend class="espacamento10PxEsquerda obrigatorio">Lista
+						de Produtos</legend>
 
 					<div class="espacamento20Px" />
 
@@ -240,11 +241,16 @@
 					</p:dataTable>
 				</fieldset>
 			</div>
-			
-			<div id="desconto">
-				<label>Desconto:</label>
+
+			<div id="desconto" class="clearfix">
+				<label class="espacamento10PxDireita" >Desconto:</label>
+
+				<p:selectOneButton value="#" >
+					<f:selectItems value="#{pedidoControlador.listDesconto}"
+						var="desconto" itemValue="desconto" itemLabel="#{desconto} % " />
+				</p:selectOneButton>
 			</div>
-			
+
 
 			<div class="espacamento20Px" />
 
