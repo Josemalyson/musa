@@ -1,6 +1,5 @@
 package com.br.musa.controlador;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -25,7 +24,6 @@ import com.br.musa.entidades.Vo.ProdutoVO;
 import com.br.musa.exeption.MusaExecao;
 import com.br.musa.servicos.ClienteServico;
 import com.br.musa.servicos.PedidoServico;
-import com.br.musa.servicos.ProdutoPedidoServico;
 import com.br.musa.servicos.ProdutoServico;
 import com.br.musa.servicos.StatusPedidoServico;
 import com.br.musa.servicos.TipoPedidoServico;
@@ -41,8 +39,6 @@ public class PedidoControlador extends CoreControlador {
 	@Inject
 	private ProdutoServico produtoServico;
 	@Inject
-	private ProdutoPedidoServico produtoPedidoServico;
-	@Inject
 	private PedidoServico pedidoServico;
 	@Inject
 	private TipoPedidoServico tipoPedidoServico;
@@ -54,7 +50,14 @@ public class PedidoControlador extends CoreControlador {
 	private Pedido pedido;
 	private Produto produto;
 	private PedidoVO pedidoVO;
+	
+	//FLAGS
 	private boolean flBotaoAdicionarPedido;
+	private boolean fltabelaPedido;
+	private boolean flbotaoSalvar;
+	private boolean flTipoPedido;
+	private boolean flStatusPedido;
+	private boolean flAutoCompleteCliente;
 
 	// LISTA
 	private List<Cliente> clienteList;
@@ -62,6 +65,8 @@ public class PedidoControlador extends CoreControlador {
 	private List<Produto> produtoListPedido;
 	private List<TipoPedido> tipoPedidoList;
 	private List<StatusPedido> statusPedidoList;
+
+
 
 	private static final Logger logger = Logger.getLogger(PedidoControlador.class);
 
@@ -81,10 +86,39 @@ public class PedidoControlador extends CoreControlador {
 		listarTipoPedido();
 		listarStatusPedido();
 		listarProdutosAtivos();
-		flBotaoAdicionarPedido = false;
+		habilitarTodosOsCamposParaEdicao();
 		listarCliente();
 		montarPedido();
 
+	}
+
+	private void habilitarTodosOsCamposParaEdicao() {
+		flBotaoAdicionarPedido = false;
+		fltabelaPedido = false;
+		flbotaoSalvar = false;
+		flTipoPedido = false;
+		flAutoCompleteCliente = false;
+	}
+
+	private void verificarSeExisteProdutosCadastrados() {
+		try {
+			pedidoServico.verificarSeExisteProdutosCadastrados();
+		} catch (MusaExecao e) {
+			desabilitarTodosOsCampos();
+			RequestContext.getCurrentInstance().update("pedido");
+			logger.error(e.getMessage(), e);
+			adicionarErro(e.getMessage());
+			return;
+		}
+	}
+
+	private void desabilitarTodosOsCampos() {
+		fltabelaPedido = true;
+		flBotaoAdicionarPedido = true;
+		flbotaoSalvar = true;
+		flTipoPedido = true;
+		flStatusPedido = true;
+		flAutoCompleteCliente = true;
 	}
 
 	private void listarTipoPedido() {
@@ -96,34 +130,7 @@ public class PedidoControlador extends CoreControlador {
 	}
 
 	private void montarPedido() {
-		pedidoVO = new PedidoVO();
-
-		if (pedido.getId() == null) {
-			pedidoVO.setCliente(cliente);
-			pedidoVO.setNumeroPedido(pedidoServico.obterNumerorDoProximoPedido().toString());
-			pedidoVO.setPedido(pedido);
-			pedidoVO.setProdutoVOList(new ArrayList<ProdutoVO>());
-		} else {
-			pedidoVO.setPedido(pedido);
-			pedidoVO.setCliente(pedido.getCliente());
-			pedidoVO.setNumeroPedido(pedido.getId().toString());
-
-			List<ProdutoVO> produtoVOList = new ArrayList<ProdutoVO>();
-
-			List<Produto> produtoBDList = new ArrayList<Produto>();
-			produtoBDList = produtoServico.listarProdutosPorPedido(pedido.getId());
-
-			for (Produto produto : produtoBDList) {
-				ProdutoVO produtoVO = new ProdutoVO();
-				produtoVO.setProduto(produto);
-				produtoVO.setQuantidadeProduto(
-						produtoPedidoServico.buscarPedidoPorPedido(pedido.getId(), produto.getId()).getQtdProduto());
-				produtoVOList.add(produtoVO);
-
-			}
-
-			pedidoVO.setProdutoVOList(produtoVOList);
-		}
+		pedidoVO = pedidoServico.montarPedidoNovoEdicao(pedido,cliente);
 
 	}
 
@@ -139,17 +146,9 @@ public class PedidoControlador extends CoreControlador {
 	}
 
 	public List<Cliente> autoCompleteCliente(String query) {
-		List<Cliente> clienteFiltradosList = new ArrayList<Cliente>();
-
-		for (int i = 0; i < clienteList.size(); i++) {
-			Cliente cliente = clienteList.get(i);
-			if (cliente.getNome().toLowerCase().startsWith(query)) {
-				clienteFiltradosList.add(cliente);
-			}
-		}
-
-		return clienteFiltradosList;
+		return clienteServico.autoCompleteClienteServico(query, clienteList);
 	}
+
 
 	public void atualizarCliente() {
 		if (this.pedidoVO.getCliente().getId() != null) {
@@ -161,40 +160,18 @@ public class PedidoControlador extends CoreControlador {
 	}
 
 	public void adicionarProduto() {
-
-		if (pedidoVO != null && pedidoVO.getProdutoVOList() != null) {
-			ProdutoVO produtoVO = new ProdutoVO();
-			produtoVO.setQuantidadeProduto(new Long(1));
-			getProduto().setPrecoCusto(new BigDecimal(0));
-			getProduto().setPrecoVenda(new BigDecimal(0));
-			produtoVO.setProduto(getProduto());
-			pedidoVO.getProdutoVOList().add(0, produtoVO);
-		}
-		calcularTotal();
+		verificarSeExisteProdutosCadastrados();
+		pedidoServico.adicionarProduto(pedidoVO, produto);
 	}
 
 	public void calcularTotal() {
-		calcularTotalCusto();
-		calcularTotalVenda();
-	}
-
-	private void calcularTotalCusto() {
-		pedidoVO.getPedido().setNuTotalCusto(new BigDecimal(pedidoVO.getProdutoVOList().stream()
-				.mapToDouble(p -> p.getQuantidadeProduto() * (p.getProduto().getPrecoCusto()).doubleValue()).sum()));
-	}
-
-	private void calcularTotalVenda() {
-		pedidoVO.getPedido().setNuTotalVenda(new BigDecimal(pedidoVO.getProdutoVOList().stream()
-				.mapToDouble(p -> p.getQuantidadeProduto() * (p.getProduto().getPrecoVenda()).doubleValue()).sum()));
+		pedidoServico.calcularTotal(pedidoVO);
 	}
 
 	public void ajustarTela(ProdutoVO produtoVO) {
 
 		try {
 			pedidoServico.validarQuantidadeDoProduto(produtoVO);
-			if (produtoVO.getQuantidadeProduto() == null) {
-				produtoVO.setQuantidadeProduto(new Long(1));
-			}
 			calcularTotal();
 			flBotaoAdicionarPedido = false;
 			RequestContext.getCurrentInstance().update("tabelaProdutoVO");
@@ -208,6 +185,7 @@ public class PedidoControlador extends CoreControlador {
 
 	public String salvarPedido() {
 		try {
+			verificarSeExisteProdutosCadastrados();
 			pedidoServico.salvar(pedidoVO);
 			adicionarMensagem(MsgConstantes.MSG_SUCESSO);
 			return sendRedirect(Constantes.PAGINA_LISTAR_PEDIDOS);
@@ -297,6 +275,46 @@ public class PedidoControlador extends CoreControlador {
 
 	public void setStatusPedidoList(List<StatusPedido> statusPedidoList) {
 		this.statusPedidoList = statusPedidoList;
+	}
+
+	public boolean isFltabelaPedido() {
+		return fltabelaPedido;
+	}
+
+	public void setFltabelaPedido(boolean fltabelaPedido) {
+		this.fltabelaPedido = fltabelaPedido;
+	}
+
+	public boolean isFlbotaoSalvar() {
+		return flbotaoSalvar;
+	}
+
+	public void setFlbotaoSalvar(boolean flbotaoSalvar) {
+		this.flbotaoSalvar = flbotaoSalvar;
+	}
+
+	public boolean isFlTipoPedido() {
+		return flTipoPedido;
+	}
+
+	public void setFlTipoPedido(boolean flTipoPedido) {
+		this.flTipoPedido = flTipoPedido;
+	}
+
+	public boolean isFlStatusPedido() {
+		return flStatusPedido;
+	}
+
+	public void setFlStatusPedido(boolean flStatusPedido) {
+		this.flStatusPedido = flStatusPedido;
+	}
+
+	public boolean isFlAutoCompleteCliente() {
+		return flAutoCompleteCliente;
+	}
+
+	public void setFlAutoCompleteCliente(boolean flAutoCompleteCliente) {
+		this.flAutoCompleteCliente = flAutoCompleteCliente;
 	}
 
 }

@@ -14,8 +14,6 @@ import com.br.musa.constantes.Constantes;
 import com.br.musa.entidades.Cliente;
 import com.br.musa.entidades.Pedido;
 import com.br.musa.entidades.Vo.PedidoVO;
-import com.br.musa.entidades.Vo.ProdutoVO;
-import com.br.musa.enums.TipoPedidoEnum;
 import com.br.musa.exeption.MusaExecao;
 import com.br.musa.servicos.ClienteServico;
 import com.br.musa.servicos.PedidoServico;
@@ -58,47 +56,22 @@ public class ManterPedidoControlador extends CoreControlador {
 	}
 
 	private void montarPedidosVO() {
-		pedidoVOlist = new ArrayList<PedidoVO>();
-		for (Pedido pedido : pedidolist) {
-			PedidoVO pedidoVO = new PedidoVO();
-
-			pedidoVO.setPedido(pedido);
-			pedidoVO.setCliente(pedido.getCliente());
-			pedidoVO.setNumeroPedido(pedido.getId().toString());
-			pedidoVO.setProdutoVOList(new ArrayList<ProdutoVO>());
-
-			if (pedido.getTipoPedido().getId().equals(TipoPedidoEnum.ATACADO.getCodigo())) {
-				pedidoVO.setTotalPedio(new Double(pedido.getNuTotalCusto().toString()));
-			} else {
-				pedidoVO.setTotalPedio(new Double(pedido.getNuTotalVenda().toString()));
-			}
-
-			pedidoVOlist.add(pedidoVO);
-		}
+		pedidoVOlist = pedidoServico.montartPedidosVO(pedidolist);
 
 	}
 
 	public List<Cliente> autoCompleteCliente(String query) {
-		List<Cliente> clienteFiltradosList = new ArrayList<Cliente>();
-
-		for (int i = 0; i < clienteList.size(); i++) {
-			Cliente cliente = clienteList.get(i);
-			if (cliente.getNome().toLowerCase().startsWith(query)) {
-				clienteFiltradosList.add(cliente);
-			}
-		}
-
-		return clienteFiltradosList;
+		return clienteServico.autoCompleteClienteServico(query, clienteList);
 	}
 
-	public void buscarPedidosPorCliente(){
+	public void buscarPedidosPorCliente() {
 		try {
 			pedidolist = new ArrayList<Pedido>();
-			
+
 			if (cliente != null) {
 				pedidolist = pedidoServico.listarPedidosPorCliente(cliente.getId());
-			}else {
-				listarPedido();
+			} else {
+				pedidolist = pedidoServico.listarPedidosSemCliente();
 			}
 			montarPedidosVO();
 		} catch (MusaExecao e) {
@@ -106,12 +79,12 @@ public class ManterPedidoControlador extends CoreControlador {
 			adicionarErro(e.getMessage());
 		}
 	}
-	
-	public String editarPedido(Pedido pedido){
+
+	public String editarPedido(Pedido pedido) {
 		adicionarAtributoFlash("pedido", pedido);
 		return sendRedirect(Constantes.PAGINA_PEDIDO);
 	}
-	
+
 	public List<PedidoVO> getPedidoVOlist() {
 		return pedidoVOlist;
 	}

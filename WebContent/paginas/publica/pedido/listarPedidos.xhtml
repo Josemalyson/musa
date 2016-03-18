@@ -62,7 +62,7 @@
 						<h:outputText value="#{pedidoVO.pedido.id}" />
 					</p:column>
 
-					<p:column headerText="Cliente" styleClass="text-center">
+					<p:column headerText="Cliente" styleClass="text-center" sortBy="#{pedidoVO.cliente.nome}">
 						<h:outputText value="#{pedidoVO.cliente.nome}" />
 					</p:column>
 

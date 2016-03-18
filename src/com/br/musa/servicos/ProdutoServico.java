@@ -16,7 +16,7 @@ public class ProdutoServico {
 	@Inject
 	private ProdutoRepositorio produtoRepositorio;
 	@Inject
-	private ProdutoPedidoServico produtoPedidoServico; 
+	private ProdutoPedidoServico produtoPedidoServico;
 	
 	@Transactional
 	public void salvarProduto(Produto produto){

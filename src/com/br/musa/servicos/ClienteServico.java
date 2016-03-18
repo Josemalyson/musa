@@ -1,6 +1,7 @@
 package com.br.musa.servicos;
 
 import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -192,4 +193,16 @@ public class ClienteServico {
 		return clienteRepositorio.consultarPorId(cliente);
 	}
 
+	public List<Cliente> autoCompleteClienteServico(String query, List<Cliente> clienteList) {
+		List<Cliente> clienteFiltradosList = new ArrayList<Cliente>();
+
+		for (int i = 0; i < clienteList.size(); i++) {
+			Cliente cliente = clienteList.get(i);
+			if (cliente.getNome().toLowerCase().startsWith(query)) {
+				clienteFiltradosList.add(cliente);
+			}
+		}
+
+		return clienteFiltradosList;
+	}
 }

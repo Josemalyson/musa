@@ -52,5 +52,12 @@ public class PedidoRepositorio extends CustomGenericDAOImpl<Pedido> {
 		return query.getResultList();
 	}
 
+	public List<Pedido> listarPedidosSemCliente() {
+		StringBuilder consulta = new StringBuilder();
+		consulta.append(" SELECT P.* FROM TB_MUSA_PEDIDO P WHERE P.FK_CLIENTE IS NULL ");
+		Query query = obterEntityManager().createNativeQuery(consulta.toString(), Pedido.class);
+		return query.getResultList();
+	}
+
 
 }
