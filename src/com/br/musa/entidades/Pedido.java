@@ -47,6 +47,9 @@ public class Pedido extends GenericEntity {
 	@Column(name = "NU_TOTAL_VENDA")
 	private BigDecimal nuTotalVenda;
 
+	@Column(name = "NU_VALOR_DESCONTO")
+	private BigDecimal desconto;
+
 	// RELACIONAMENTOS
 
 	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
@@ -173,6 +176,14 @@ public class Pedido extends GenericEntity {
 
 	public void setStatusPedido(StatusPedido statusPedido) {
 		this.statusPedido = statusPedido;
+	}
+
+	public BigDecimal getDesconto() {
+		return desconto;
+	}
+
+	public void setDesconto(BigDecimal desconto) {
+		this.desconto = desconto;
 	}
 
 }

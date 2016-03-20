@@ -8,6 +8,8 @@ import java.util.List;
 import javax.inject.Inject;
 import javax.transaction.Transactional;
 
+import org.jboss.logging.Logger;
+
 import com.br.musa.constantes.Constantes;
 import com.br.musa.constantes.MsgConstantes;
 import com.br.musa.entidades.Cliente;
@@ -18,8 +20,10 @@ import com.br.musa.entidades.ProdutoPedidoPK;
 import com.br.musa.entidades.Vo.PedidoVO;
 import com.br.musa.entidades.Vo.ProdutoVO;
 import com.br.musa.enums.TipoPedidoEnum;
+import com.br.musa.exeption.CalculadoraExecao;
 import com.br.musa.exeption.MusaExecao;
 import com.br.musa.repositorio.PedidoRepositorio;
+import com.br.musa.util.CalcularUtil;
 import com.br.musa.util.JavaScriptUtil;
 
 public class PedidoServico {
@@ -32,6 +36,8 @@ public class PedidoServico {
 	private ClienteServico clienteServico;
 	@Inject
 	private ProdutoServico produtoServico;
+	
+	private static final Logger logger = Logger.getLogger(PedidoServico.class);
 
 	public void validarQuantidadeDoProduto(ProdutoVO produtoVO) {
 		if (produtoVO != null && produtoVO.getQuantidadeProduto() != null && produtoVO.getQuantidadeProduto() <= 0) {
@@ -124,13 +130,13 @@ public class PedidoServico {
 
 	@Transactional
 	public void salvar(PedidoVO pedidoVO) {
-		
+
 		verificarCampoObrigatorios(pedidoVO);
-		
+
 		if (pedidoVO.getCliente() != null) {
 			pedidoVO.getPedido().setCliente(clienteServico.buscarPorCodigo(pedidoVO.getCliente()));
 		}
-		
+
 		Pedido pedidoBD = pedidoRepositorio.salvar(pedidoVO.getPedido());
 
 		for (ProdutoVO produtoVO : pedidoVO.getProdutoVOList()) {
@@ -146,7 +152,7 @@ public class PedidoServico {
 	private void verificarCampoObrigatorios(PedidoVO pedidoVO) {
 
 		StringBuilder erro = new StringBuilder();
-		
+
 		if (pedidoVO.getPedido() != null && pedidoVO.getPedido().getTipoPedido() == null) {
 			JavaScriptUtil.marcarCampoObrigatorio("tipoPedidoId");
 			erro.append("Preencher campo Tipo Pedido").append(Constantes.TAG_BR);
@@ -161,7 +167,7 @@ public class PedidoServico {
 			JavaScriptUtil.marcarCampoObrigatorio("statusPedido");
 			erro.append("Preencher campo Produto").append(Constantes.TAG_BR);
 		}
-		
+
 		if (!erro.toString().isEmpty()) {
 			throw new MusaExecao(erro.toString());
 		}
@@ -194,9 +200,23 @@ public class PedidoServico {
 	}
 
 	public void verificarSeExisteProdutosCadastrados() {
-		if (produtoServico.listarProdutosAtivos() == null || produtoServico.listarProdutosAtivos().isEmpty() || produtoServico.listarProdutosAtivos().size() < 0) {
+		if (produtoServico.listarProdutosAtivos() == null || produtoServico.listarProdutosAtivos().isEmpty()
+				|| produtoServico.listarProdutosAtivos().size() < 0) {
 			throw new MusaExecao(MsgConstantes.NAO_EXISTE_PRODUTOS_CADASTRADOS);
 		}
-		
+
+	}
+
+	public void calcularDesconto(PedidoVO pedidoVO) {
+		try {
+			pedidoVO.getPedido().setNuTotalCusto(CalcularUtil.calcularDesconto(pedidoVO.getPedido().getNuTotalCusto(),
+					pedidoVO.getPedido().getDesconto()));
+			pedidoVO.getPedido().setNuTotalVenda(CalcularUtil.calcularDesconto(pedidoVO.getPedido().getNuTotalVenda(),
+					pedidoVO.getPedido().getDesconto()));
+		} catch (CalculadoraExecao e) {
+			logger.error(e.getMessage(), e);
+			throw new MusaExecao(MsgConstantes.PEDIDO_COM_VALOR_ZER0);
+			
+		}
 	}
 }

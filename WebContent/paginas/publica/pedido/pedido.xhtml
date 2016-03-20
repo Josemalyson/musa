@@ -243,11 +243,14 @@
 			</div>
 
 			<div id="desconto" class="clearfix">
-				<label class="espacamento10PxDireita" >Desconto:</label>
+				<label class="espacamento10PxDireita">Desconto:</label>
 
-				<p:selectOneButton value="#" >
+				<p:selectOneButton
+					value="#{pedidoControlador.pedidoVO.pedido.desconto}">
 					<f:selectItems value="#{pedidoControlador.listDesconto}"
-						var="desconto" itemValue="desconto" itemLabel="#{desconto} % " />
+						var="desconto" itemValue="#{desconto}" itemLabel="#{desconto} % " />
+					<p:ajax listener="#{pedidoControlador.calcularDesconto()}"
+						update="tabelaProdutoVO" />
 				</p:selectOneButton>
 			</div>
 

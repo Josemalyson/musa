@@ -2,7 +2,6 @@ package com.br.musa.controlador;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -69,8 +68,6 @@ public class PedidoControlador extends CoreControlador {
 	private List<StatusPedido> statusPedidoList;
 	private List<BigDecimal> listDesconto;
 
-
-
 	private static final Logger logger = Logger.getLogger(PedidoControlador.class);
 
 	@PostConstruct
@@ -97,7 +94,10 @@ public class PedidoControlador extends CoreControlador {
 	}
 
 	private void montarListaDesconto() {
-		listDesconto = Arrays.asList(new BigDecimal(0),new BigDecimal(5),new BigDecimal(10),new BigDecimal(15),new BigDecimal(20));
+		listDesconto = new ArrayList<BigDecimal>();
+		listDesconto.add(new BigDecimal(0));
+		listDesconto.add(new BigDecimal(10));
+		listDesconto.add(new BigDecimal(20));
 	}
 
 	private void habilitarTodosOsCamposParaEdicao() {
@@ -174,6 +174,16 @@ public class PedidoControlador extends CoreControlador {
 
 	public void calcularTotal() {
 		pedidoServico.calcularTotal(pedidoVO);
+	}
+
+	public void calcularDesconto() {
+		try {
+			pedidoServico.calcularDesconto(pedidoVO);
+		} catch (MusaExecao e) {
+			logger.error(e.getMessage(),e);
+			adicionarErro(e.getMessage());
+		}
+		
 	}
 
 	public void ajustarTela(ProdutoVO produtoVO) {
