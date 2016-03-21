@@ -49,16 +49,20 @@ public class PedidoServico {
 	private static final Logger logger = Logger.getLogger(PedidoServico.class);
 
 	public void validarQuantidadeDoProduto(ProdutoVO produtoVO) {
-		if (produtoVO != null && produtoVO.getQuantidadeProduto() != null && produtoVO.getQuantidadeProduto() <= 0) {
+		if (produtoVO != null && !isQuantidadeNula(produtoVO) && produtoVO.getQuantidadeProduto() <= 0) {
 			// JavaScriptUtil.marcarCampoObrigatorio("tabelaProdutoVO:0:quantidadeId");
 			throw new MusaExecao(MsgConstantes.ERRO_QUANTIDADE_ZERO);
 		} else {
 			produtoVO = new ProdutoVO();
 		}
 
-		if (produtoVO.getQuantidadeProduto() == null) {
+		if (isQuantidadeNula(produtoVO)) {
 			produtoVO.setQuantidadeProduto(new Integer(1));
 		}
+	}
+
+	private boolean isQuantidadeNula(ProdutoVO produtoVO) {
+		return produtoVO.getQuantidadeProduto() == null;
 	}
 
 	public BigInteger obterNumerorDoProximoPedido() {
@@ -83,36 +87,43 @@ public class PedidoServico {
 		PedidoVO pedidoVO = new PedidoVO();
 
 		if (isPedidoValido(pedido)) {
-			pedidoVO.setCliente(cliente);
-			pedidoVO.setNumeroPedido(obterNumerorDoProximoPedido().toString());
-			pedidoVO.setPedido(pedido);
-			pedidoVO.setProdutoVOList(new ArrayList<ProdutoVO>());
-			pedidoVO.getPedido()
-					.setTipoPedido(montarTipoPedidoNovo() != null ? montarTipoPedidoNovo() : new TipoPedido());
-			pedidoVO.getPedido()
-					.setStatusPedido(montarStatusPedidoNovo() != null ? montarStatusPedidoNovo() : new StatusPedido());
+			montarNovoPedido(pedido, cliente, pedidoVO);
 		} else {
-			pedidoVO.setPedido(pedido);
-			pedidoVO.setCliente(pedido.getCliente());
-			pedidoVO.setNumeroPedido(pedido.getId().toString());
-
-			List<ProdutoVO> produtoVOList = new ArrayList<ProdutoVO>();
-
-			List<Produto> produtoBDList = new ArrayList<Produto>();
-			produtoBDList = produtoServico.listarProdutosPorPedido(pedido.getId());
-
-			for (Produto produto : produtoBDList) {
-				ProdutoVO produtoVO = new ProdutoVO();
-				produtoVO.setProduto(produto);
-				produtoVO.setQuantidadeProduto(
-						produtoPedidoServico.buscarPedidoPorPedido(pedido.getId(), produto.getId()).getQtdProduto());
-				produtoVOList.add(produtoVO);
-
-			}
-
-			pedidoVO.setProdutoVOList(produtoVOList);
+			montarPedidoEdicao(pedido, pedidoVO);
 		}
 		return pedidoVO;
+	}
+
+	private void montarPedidoEdicao(Pedido pedido, PedidoVO pedidoVO) {
+		pedidoVO.setPedido(pedido);
+		pedidoVO.setCliente(pedido.getCliente());
+		pedidoVO.setNumeroPedido(pedido.getId().toString());
+
+		List<ProdutoVO> produtoVOList = new ArrayList<ProdutoVO>();
+
+		List<Produto> produtoBDList = new ArrayList<Produto>();
+		produtoBDList = produtoServico.listarProdutosPorPedido(pedido.getId());
+
+		for (Produto produto : produtoBDList) {
+			ProdutoVO produtoVO = new ProdutoVO();
+			produtoVO.setProduto(produto);
+			produtoVO.setQuantidadeProduto(
+					produtoPedidoServico.buscarPedidoPorPedido(pedido.getId(), produto.getId()).getQtdProduto());
+			produtoVOList.add(produtoVO);
+
+		}
+
+		pedidoVO.setProdutoVOList(produtoVOList);
+	}
+
+	private void montarNovoPedido(Pedido pedido, Cliente cliente, PedidoVO pedidoVO) {
+		pedidoVO.setCliente(cliente);
+		pedidoVO.setNumeroPedido(obterNumerorDoProximoPedido().toString());
+		pedidoVO.setPedido(pedido);
+		pedidoVO.setProdutoVOList(new ArrayList<ProdutoVO>());
+		pedidoVO.getPedido().setTipoPedido(montarTipoPedidoNovo() != null ? montarTipoPedidoNovo() : new TipoPedido());
+		pedidoVO.getPedido()
+				.setStatusPedido(montarStatusPedidoNovo() != null ? montarStatusPedidoNovo() : new StatusPedido());
 	}
 
 	private boolean isPedidoValido(Pedido pedido) {
