@@ -59,6 +59,8 @@ public class PedidoControlador extends CoreControlador {
 	private boolean flTipoPedido;
 	private boolean flStatusPedido;
 	private boolean flAutoCompleteCliente;
+	private boolean flDesconto;
+	private boolean flEditarAutoCompleteCliente;
 
 	// LISTA
 	private List<Cliente> clienteList;
@@ -86,11 +88,22 @@ public class PedidoControlador extends CoreControlador {
 		listarTipoPedido();
 		listarStatusPedido();
 		listarProdutosAtivos();
-		habilitarTodosOsCamposParaEdicao();
 		listarCliente();
 		montarPedido();
 		montarListaDesconto();
+		isPedidoNovoOuEditado();
+		
+		flEditarAutoCompleteCliente = true;
 
+	}
+
+	private void isPedidoNovoOuEditado() {
+		if (pedido.getId() == null) {
+			habilitarTodosOsCamposParaEdicao();
+		}else {
+			desabilitarTodosOsCampos();
+		}
+		
 	}
 
 	private void montarListaDesconto() {
@@ -103,6 +116,7 @@ public class PedidoControlador extends CoreControlador {
 		flbotaoSalvar = false;
 		flTipoPedido = false;
 		flAutoCompleteCliente = false;
+		flDesconto = false;
 	}
 
 	private void verificarSeExisteProdutosCadastrados() {
@@ -124,6 +138,7 @@ public class PedidoControlador extends CoreControlador {
 		flTipoPedido = true;
 		flStatusPedido = true;
 		flAutoCompleteCliente = true;
+		flDesconto = true;
 	}
 
 	private void listarTipoPedido() {
@@ -158,9 +173,14 @@ public class PedidoControlador extends CoreControlador {
 		if (this.pedidoVO.getCliente().getId() != null) {
 			this.pedidoVO.setCliente(clienteServico.buscarPorCodigo(this.pedidoVO.getCliente()));
 			this.pedidoVO.getCliente().setCpf(clienteServico.adicionarMascaraCpf(this.pedidoVO.getCliente()));
+			flEditarAutoCompleteCliente = true;
+			flAutoCompleteCliente = true;
 		} else {
 			this.pedidoVO.setCliente(new Cliente());
+			flEditarAutoCompleteCliente = false;
 		}
+		
+		RequestContext.getCurrentInstance().update("cpf clienteId botaoEditarCliente");
 	}
 
 	public void adicionarProduto() {
@@ -341,6 +361,22 @@ public class PedidoControlador extends CoreControlador {
 
 	public void setListDesconto(List<BigDecimal> listDesconto) {
 		this.listDesconto = listDesconto;
+	}
+
+	public boolean isFlDesconto() {
+		return flDesconto;
+	}
+
+	public void setFlDesconto(boolean flDesconto) {
+		this.flDesconto = flDesconto;
+	}
+
+	public boolean isFlEditarAutoCompleteCliente() {
+		return flEditarAutoCompleteCliente;
+	}
+
+	public void setFlEditarAutoCompleteCliente(boolean flEditarAutoCompleteCliente) {
+		this.flEditarAutoCompleteCliente = flEditarAutoCompleteCliente;
 	}
 
 }

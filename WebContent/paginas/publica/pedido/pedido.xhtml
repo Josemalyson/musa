@@ -54,8 +54,7 @@
 							styleClass="clearfix" converter="genericConverter"
 							disabled="#{pedidoControlador.flTipoPedido}">
 							<p:ajax listener="#{pedidoControlador.ajustarTela(produtoVO)}"
-								process="tabelaProdutoVO tipoPedidoId"
-								update="tabelaProdutoVO" />
+								process="tabelaProdutoVO tipoPedidoId" update="tabelaProdutoVO" />
 
 							<f:selectItems value="#{pedidoControlador.tipoPedidoList}"
 								var="tipoPedido" itemLabel="#{tipoPedido.descricao}"
@@ -97,11 +96,14 @@
 									converter="entityConverter"
 									value="#{pedidoControlador.pedidoVO.cliente}" dropdown="true"
 									forceSelection="true" var="cliente" itemValue="#{cliente}"
-									itemLabel="#{cliente.nome}"
+									itemLabel="#{cliente.nome}" 
 									disabled="#{pedidoControlador.flAutoCompleteCliente}">
-									<p:ajax update="cpf" event="itemSelect"
+									<p:ajax event="itemSelect"
 										listener="#{pedidoControlador.atualizarCliente()}" />
 								</p:autoComplete>
+							</div>
+							<div class="col-sm-1">
+								<p:commandButton id="botaoEditarCliente" icon="ui-icon-pencil" disabled="#{pedidoControlador.flEditarAutoCompleteCliente}"/>
 							</div>
 							<div class="col-sm-4">
 								<label class="control-label espacamento10PxDireita ">CPF:
@@ -209,14 +211,17 @@
 
 						<p:columnGroup type="footer">
 							<p:row>
-								<p:column colspan="#{pedidoControlador.isTipoPedidoAtacado() ? 2:3}" style="text-align:right">
+								<p:column
+									colspan="#{pedidoControlador.isTipoPedidoAtacado() ? 2:3}"
+									style="text-align:right">
 									<f:facet name="footer">
 										<strong> <h:outputText value="Totais" />
 										</strong>
 									</f:facet>
 								</p:column>
 
-								<p:column style="text-align:right" rendered="#{!pedidoControlador.isTipoPedidoAtacado()}" >
+								<p:column style="text-align:right"
+									rendered="#{!pedidoControlador.isTipoPedidoAtacado()}">
 									<f:facet name="footer">
 										<strong> <h:outputText
 												value="#{pedidoControlador.pedidoVO.pedido.nuTotalCusto}">
@@ -243,7 +248,9 @@
 
 							</p:row>
 							<p:row>
-								<p:column colspan="#{pedidoControlador.isTipoPedidoAtacado() ? 3:5}" style="text-align:right">
+								<p:column
+									colspan="#{pedidoControlador.isTipoPedidoAtacado() ? 3:5}"
+									style="text-align:right">
 									<f:facet name="footer">
 										<strong> <h:outputText value="Total do Pedido" />
 										</strong>
@@ -271,7 +278,8 @@
 				<label class="espacamento10PxDireita">Desconto:</label>
 
 				<h:selectOneMenu
-					value="#{pedidoControlador.pedidoVO.pedido.desconto}">
+					value="#{pedidoControlador.pedidoVO.pedido.desconto}"
+					disabled="#{pedidoControlador.flDesconto}">
 					<f:selectItems value="#{pedidoControlador.listDesconto}"
 						var="desconto" itemValue="#{desconto}" itemLabel="#{desconto} % " />
 					<p:ajax listener="#{pedidoControlador.calcularDesconto()}"

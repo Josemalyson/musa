@@ -198,7 +198,7 @@ public class ClienteServico {
 
 		for (int i = 0; i < clienteList.size(); i++) {
 			Cliente cliente = clienteList.get(i);
-			if (cliente.getNome().toLowerCase().startsWith(query)) {
+			if (cliente.getNome().toLowerCase().startsWith(query.toLowerCase())) {
 				clienteFiltradosList.add(cliente);
 			}
 		}
