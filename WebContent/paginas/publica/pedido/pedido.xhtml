@@ -53,7 +53,9 @@
 							value="#{pedidoControlador.pedidoVO.pedido.tipoPedido}"
 							styleClass="clearfix" converter="genericConverter"
 							disabled="#{pedidoControlador.flTipoPedido}">
-							<p:ajax update="tipoPedidoId" />
+							<p:ajax listener="#{pedidoControlador.ajustarTela(produtoVO)}"
+									process="tabelaProdutoVO tipoPedidoId" />
+									
 							<f:selectItems value="#{pedidoControlador.tipoPedidoList}"
 								var="tipoPedido" itemLabel="#{tipoPedido.descricao}"
 								itemValue="#{tipoPedido}" />
@@ -236,6 +238,26 @@
 									</f:facet>
 								</p:column>
 
+							</p:row>
+							<p:row>
+								<p:column colspan="5" style="text-align:right">
+									<f:facet name="footer">
+										<strong> <h:outputText value="Total do Pedido" />
+										</strong>
+									</f:facet>
+								</p:column>
+
+
+								<p:column style="text-align:right">
+									<f:facet name="footer">
+										<strong> <h:outputText
+												value="#{pedidoControlador.pedidoVO.pedido.valorTotal}">
+												<f:convertNumber currencySymbol="R$" groupingUsed="true"
+													maxFractionDigits="2" type="currency" locale="pt_BR" />
+											</h:outputText>
+										</strong>
+									</f:facet>
+								</p:column>
 							</p:row>
 						</p:columnGroup>
 					</p:dataTable>

@@ -16,6 +16,7 @@ public abstract class MsgConstantes {
 	public static final String NAO_HA_PEDIDOS_PARA_CLIENTE = "Não existe pedidos cadastrados para esse cliente.";
 	public static final String NAO_EXISTE_PRODUTOS_CADASTRADOS = "Não é possível efetuar um pedido sem produtos cadastrados, por favor efetue o cadastrao de pelo menos um produto.";
 	public static final String PEDIDO_COM_VALOR_ZER0 = "Não se pode aplicar desconto a pedido com valor total zero";
+	public static final String DESCONTO_JA_FOI_APLICADO = "Esse pedido já possui um valor de desconto.";
 	
 	
 	

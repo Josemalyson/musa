@@ -49,6 +49,9 @@ public class Pedido extends GenericEntity {
 
 	@Column(name = "NU_VALOR_DESCONTO")
 	private BigDecimal desconto;
+	
+	@Column(name = "NU_TOTAL_COMPRA")
+	private BigDecimal valorTotal;
 
 	// RELACIONAMENTOS
 
@@ -184,6 +187,14 @@ public class Pedido extends GenericEntity {
 
 	public void setDesconto(BigDecimal desconto) {
 		this.desconto = desconto;
+	}
+
+	public BigDecimal getValorTotal() {
+		return valorTotal;
+	}
+
+	public void setValorTotal(BigDecimal valorTotal) {
+		this.valorTotal = valorTotal;
 	}
 
 }

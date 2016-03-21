@@ -10,7 +10,6 @@ public class PedidoVO {
 	private Pedido pedido;
 	private Cliente cliente;
 	private List<ProdutoVO> produtoVOList;
-	private Double totalPedio = new Double(0);
 	private String numeroPedido;
 
 	public List<ProdutoVO> getProdutoVOList() {
@@ -19,14 +18,6 @@ public class PedidoVO {
 
 	public void setProdutoVOList(List<ProdutoVO> produtoVOList) {
 		this.produtoVOList = produtoVOList;
-	}
-
-	public Double getTotalPedio() {
-		return totalPedio;
-	}
-
-	public void setTotalPedio(Double totalPedio) {
-		this.totalPedio = totalPedio;
 	}
 
 	public Cliente getCliente() {

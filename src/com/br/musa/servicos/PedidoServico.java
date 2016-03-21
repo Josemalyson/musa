@@ -18,9 +18,12 @@ import com.br.musa.entidades.Pedido;
 import com.br.musa.entidades.Produto;
 import com.br.musa.entidades.ProdutoPedido;
 import com.br.musa.entidades.ProdutoPedidoPK;
+import com.br.musa.entidades.StatusPedido;
+import com.br.musa.entidades.TipoPedido;
 import com.br.musa.entidades.Vo.PedidoVO;
 import com.br.musa.entidades.Vo.ProdutoVO;
 import com.br.musa.enums.DescontoEnum;
+import com.br.musa.enums.StatusPedidoEnum;
 import com.br.musa.enums.TipoPedidoEnum;
 import com.br.musa.exeption.CalculadoraExecao;
 import com.br.musa.exeption.MusaExecao;
@@ -38,6 +41,10 @@ public class PedidoServico {
 	private ClienteServico clienteServico;
 	@Inject
 	private ProdutoServico produtoServico;
+	@Inject
+	private TipoPedidoServico tipoPedidoServico;
+	@Inject
+	private StatusPedidoServico statusPedidoServico;
 
 	private static final Logger logger = Logger.getLogger(PedidoServico.class);
 
@@ -45,6 +52,8 @@ public class PedidoServico {
 		if (produtoVO != null && produtoVO.getQuantidadeProduto() != null && produtoVO.getQuantidadeProduto() <= 0) {
 			// JavaScriptUtil.marcarCampoObrigatorio("tabelaProdutoVO:0:quantidadeId");
 			throw new MusaExecao(MsgConstantes.ERRO_QUANTIDADE_ZERO);
+		}else {
+			produtoVO = new ProdutoVO();
 		}
 
 		if (produtoVO.getQuantidadeProduto() == null) {
@@ -78,6 +87,8 @@ public class PedidoServico {
 			pedidoVO.setNumeroPedido(obterNumerorDoProximoPedido().toString());
 			pedidoVO.setPedido(pedido);
 			pedidoVO.setProdutoVOList(new ArrayList<ProdutoVO>());
+			pedidoVO.getPedido().setTipoPedido(montarTipoPedidoNovo() != null ? montarTipoPedidoNovo() : new TipoPedido());
+			pedidoVO.getPedido().setStatusPedido(montarStatusPedidoNovo() != null ? montarStatusPedidoNovo() : new StatusPedido());
 		} else {
 			pedidoVO.setPedido(pedido);
 			pedidoVO.setCliente(pedido.getCliente());
@@ -102,6 +113,18 @@ public class PedidoServico {
 		return pedidoVO;
 	}
 
+	private StatusPedido montarStatusPedidoNovo() {
+		StatusPedido statusPedido = new StatusPedido();
+		statusPedido = statusPedidoServico.buscarPorCodigo(StatusPedidoEnum.NAO_PAGO);
+		return statusPedido;
+	}
+
+	private TipoPedido montarTipoPedidoNovo() {
+		TipoPedido tipoPedido = new TipoPedido();
+		tipoPedido = tipoPedidoServico.buscarPorCodigo(TipoPedidoEnum.ATACADO);
+		return tipoPedido;
+	}
+
 	public void adicionarProduto(PedidoVO pedidoVO, Produto produto) {
 
 		if (pedidoVO != null && pedidoVO.getProdutoVOList() != null) {
@@ -118,6 +141,17 @@ public class PedidoServico {
 	public void calcularTotal(PedidoVO pedidoVO) {
 		calcularTotalCusto(pedidoVO);
 		calcularTotalVenda(pedidoVO);
+		calcularTotalPedido(pedidoVO);
+	}
+
+	private void calcularTotalPedido(PedidoVO pedidoVO) {
+		if (pedidoVO.getPedido().getTipoPedido().getId().equals(TipoPedidoEnum.ATACADO.getCodigo())) {
+			pedidoVO.getPedido().setValorTotal(pedidoVO.getPedido().getNuTotalCusto());
+		} else {
+			pedidoVO.getPedido().setValorTotal(pedidoVO.getPedido().getNuTotalVenda());
+		}
+
+		
 	}
 
 	private void calcularTotalCusto(PedidoVO pedidoVO) {
@@ -184,13 +218,6 @@ public class PedidoServico {
 			pedidoVO.setCliente(pedido.getCliente());
 			pedidoVO.setNumeroPedido(pedido.getId().toString());
 			pedidoVO.setProdutoVOList(new ArrayList<ProdutoVO>());
-
-			if (pedido.getTipoPedido().getId().equals(TipoPedidoEnum.ATACADO.getCodigo())) {
-				pedidoVO.setTotalPedio(new Double(pedido.getNuTotalCusto().toString()));
-			} else {
-				pedidoVO.setTotalPedio(new Double(pedido.getNuTotalVenda().toString()));
-			}
-
 			pedidoVOlist.add(pedidoVO);
 		}
 
@@ -211,15 +238,37 @@ public class PedidoServico {
 
 	public void calcularDesconto(PedidoVO pedidoVO) {
 		try {
-			pedidoVO.getPedido().setNuTotalCusto(CalcularUtil.calcularDesconto(pedidoVO.getPedido().getNuTotalCusto(),
-					pedidoVO.getPedido().getDesconto()));
-			pedidoVO.getPedido().setNuTotalVenda(CalcularUtil.calcularDesconto(pedidoVO.getPedido().getNuTotalVenda(),
-					pedidoVO.getPedido().getDesconto()));
+			verificarSeDescontoFoiAplicado(pedidoVO);
+			calcularDescontoTotalCusto(pedidoVO);
+			calcularDescontoTotalVenda(pedidoVO);
 		} catch (CalculadoraExecao e) {
 			logger.error(e.getMessage(), e);
 			throw new MusaExecao(MsgConstantes.PEDIDO_COM_VALOR_ZER0);
 
 		}
+	}
+
+	private void verificarSeDescontoFoiAplicado(PedidoVO pedidoVO) {
+		
+		
+		if (pedidoVO.getPedido().getId() != null) {
+			Pedido pedidoBD = pedidoRepositorio.consultarPorId(pedidoVO.getPedido());	
+			if (pedidoBD.getDesconto() != null) {
+				throw new MusaExecao(MsgConstantes.DESCONTO_JA_FOI_APLICADO);
+			}
+		}else {
+			
+		}
+	}
+
+	private void calcularDescontoTotalVenda(PedidoVO pedidoVO) {
+		pedidoVO.getPedido().setNuTotalVenda(CalcularUtil.calcularDesconto(pedidoVO.getPedido().getNuTotalVenda(),
+				pedidoVO.getPedido().getDesconto()));
+	}
+
+	private void calcularDescontoTotalCusto(PedidoVO pedidoVO) {
+		pedidoVO.getPedido().setNuTotalCusto(CalcularUtil.calcularDesconto(pedidoVO.getPedido().getNuTotalCusto(),
+				pedidoVO.getPedido().getDesconto()));
 	}
 
 	public List<BigDecimal> montarListaDesconto() {

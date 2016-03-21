@@ -71,7 +71,7 @@
 					</p:column>
 
 					<p:column headerText="Valor Do Pedido" styleClass="text-center">
-						<h:outputText value="#{pedidoVO.totalPedio}">
+						<h:outputText value="#{pedidoVO.pedido.valorTotal}">
 							<f:convertNumber currencySymbol="R$" groupingUsed="true"
 								maxFractionDigits="2" type="currency" locale="pt_BR" />
 						</h:outputText>
