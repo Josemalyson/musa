@@ -57,7 +57,7 @@ public class PedidoServico {
 		}
 
 		if (produtoVO.getQuantidadeProduto() == null) {
-			produtoVO.setQuantidadeProduto(new Long(1));
+			produtoVO.setQuantidadeProduto(new Integer(1));
 		}
 	}
 
@@ -129,7 +129,7 @@ public class PedidoServico {
 
 		if (pedidoVO != null && pedidoVO.getProdutoVOList() != null) {
 			ProdutoVO produtoVO = new ProdutoVO();
-			produtoVO.setQuantidadeProduto(new Long(1));
+			produtoVO.setQuantidadeProduto(new Integer(1));
 			produto.setPrecoCusto(new BigDecimal(0));
 			produto.setPrecoVenda(new BigDecimal(0));
 			produtoVO.setProduto(produto);

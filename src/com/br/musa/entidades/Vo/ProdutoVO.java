@@ -4,14 +4,14 @@ import com.br.musa.entidades.Produto;
 
 public class ProdutoVO {
 
-	private Long quantidadeProduto;
+	private Integer quantidadeProduto;
 	private Produto produto;
 
-	public Long getQuantidadeProduto() {
+	public Integer getQuantidadeProduto() {
 		return quantidadeProduto;
 	}
 
-	public void setQuantidadeProduto(Long quantidadeProduto) {
+	public void setQuantidadeProduto(Integer quantidadeProduto) {
 		this.quantidadeProduto = quantidadeProduto;
 	}
 

@@ -26,7 +26,7 @@ public class ProdutoPedido extends GenericEntity {
 	private Pedido pedido;
 
 	@Column(name="NU_QTD_PRODUTO")
-	private Long qtdProduto;
+	private Integer qtdProduto;
 	
 	@EmbeddedId
 	private ProdutoPedidoPK id;
@@ -46,11 +46,11 @@ public class ProdutoPedido extends GenericEntity {
 		this.id = id;
 	}
 
-	public Long getQtdProduto() {
+	public Integer getQtdProduto() {
 		return qtdProduto;
 	}
 
-	public void setQtdProduto(Long qtdProduto) {
+	public void setQtdProduto(Integer qtdProduto) {
 		this.qtdProduto = qtdProduto;
 	}
 
