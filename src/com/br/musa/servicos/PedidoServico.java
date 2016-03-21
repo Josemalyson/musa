@@ -52,7 +52,7 @@ public class PedidoServico {
 		if (produtoVO != null && produtoVO.getQuantidadeProduto() != null && produtoVO.getQuantidadeProduto() <= 0) {
 			// JavaScriptUtil.marcarCampoObrigatorio("tabelaProdutoVO:0:quantidadeId");
 			throw new MusaExecao(MsgConstantes.ERRO_QUANTIDADE_ZERO);
-		}else {
+		} else {
 			produtoVO = new ProdutoVO();
 		}
 
@@ -82,13 +82,15 @@ public class PedidoServico {
 	public PedidoVO montarPedidoNovoEdicao(Pedido pedido, Cliente cliente) {
 		PedidoVO pedidoVO = new PedidoVO();
 
-		if (pedido.getId() == null) {
+		if (isPedidoValido(pedido)) {
 			pedidoVO.setCliente(cliente);
 			pedidoVO.setNumeroPedido(obterNumerorDoProximoPedido().toString());
 			pedidoVO.setPedido(pedido);
 			pedidoVO.setProdutoVOList(new ArrayList<ProdutoVO>());
-			pedidoVO.getPedido().setTipoPedido(montarTipoPedidoNovo() != null ? montarTipoPedidoNovo() : new TipoPedido());
-			pedidoVO.getPedido().setStatusPedido(montarStatusPedidoNovo() != null ? montarStatusPedidoNovo() : new StatusPedido());
+			pedidoVO.getPedido()
+					.setTipoPedido(montarTipoPedidoNovo() != null ? montarTipoPedidoNovo() : new TipoPedido());
+			pedidoVO.getPedido()
+					.setStatusPedido(montarStatusPedidoNovo() != null ? montarStatusPedidoNovo() : new StatusPedido());
 		} else {
 			pedidoVO.setPedido(pedido);
 			pedidoVO.setCliente(pedido.getCliente());
@@ -113,6 +115,10 @@ public class PedidoServico {
 		return pedidoVO;
 	}
 
+	private boolean isPedidoValido(Pedido pedido) {
+		return pedido.getId() == null;
+	}
+
 	private StatusPedido montarStatusPedidoNovo() {
 		StatusPedido statusPedido = new StatusPedido();
 		statusPedido = statusPedidoServico.buscarPorCodigo(StatusPedidoEnum.NAO_PAGO);
@@ -127,7 +133,7 @@ public class PedidoServico {
 
 	public void adicionarProduto(PedidoVO pedidoVO, Produto produto) {
 
-		if (pedidoVO != null && pedidoVO.getProdutoVOList() != null) {
+		if (isListaProdutoValida(pedidoVO)) {
 			ProdutoVO produtoVO = new ProdutoVO();
 			produtoVO.setQuantidadeProduto(new Integer(1));
 			produto.setPrecoCusto(new BigDecimal(0));
@@ -138,6 +144,10 @@ public class PedidoServico {
 		calcularTotal(pedidoVO);
 	}
 
+	private boolean isListaProdutoValida(PedidoVO pedidoVO) {
+		return pedidoVO != null && pedidoVO.getProdutoVOList() != null;
+	}
+
 	public void calcularTotal(PedidoVO pedidoVO) {
 		calcularTotalCusto(pedidoVO);
 		calcularTotalVenda(pedidoVO);
@@ -145,13 +155,16 @@ public class PedidoServico {
 	}
 
 	private void calcularTotalPedido(PedidoVO pedidoVO) {
-		if (pedidoVO.getPedido().getTipoPedido().getId().equals(TipoPedidoEnum.ATACADO.getCodigo())) {
+		if (isTipoPedidoAtacado(pedidoVO)) {
 			pedidoVO.getPedido().setValorTotal(pedidoVO.getPedido().getNuTotalCusto());
 		} else {
 			pedidoVO.getPedido().setValorTotal(pedidoVO.getPedido().getNuTotalVenda());
 		}
 
-		
+	}
+
+	private boolean isTipoPedidoAtacado(PedidoVO pedidoVO) {
+		return pedidoVO.getPedido().getTipoPedido().getId().equals(TipoPedidoEnum.ATACADO.getCodigo());
 	}
 
 	private void calcularTotalCusto(PedidoVO pedidoVO) {
@@ -249,15 +262,15 @@ public class PedidoServico {
 	}
 
 	private void verificarSeDescontoFoiAplicado(PedidoVO pedidoVO) {
-		
-		
-		if (pedidoVO.getPedido().getId() != null) {
-			Pedido pedidoBD = pedidoRepositorio.consultarPorId(pedidoVO.getPedido());	
-			if (pedidoBD.getDesconto() != null) {
+
+		if (isTipoPedidoAtacado(pedidoVO)) {
+			if (pedidoVO.getPedido().getNuTotalCusto().intValue() < pedidoVO.getPedido().getValorTotal().intValue()) {
 				throw new MusaExecao(MsgConstantes.DESCONTO_JA_FOI_APLICADO);
 			}
-		}else {
-			
+		} else {
+			if (pedidoVO.getPedido().getNuTotalVenda().intValue() < pedidoVO.getPedido().getValorTotal().intValue()) {
+				throw new MusaExecao(MsgConstantes.DESCONTO_JA_FOI_APLICADO);
+			}
 		}
 	}
 
@@ -272,9 +285,11 @@ public class PedidoServico {
 	}
 
 	public List<BigDecimal> montarListaDesconto() {
-		List<BigDecimal> listBiDecimal = Arrays.asList(DescontoEnum.DESCONTO_0.getCodigo(),DescontoEnum.DESCONTO_10.getCodigo(), DescontoEnum.DESCONTO_20.getCodigo(),
-				DescontoEnum.DESCONTO_30.getCodigo(), DescontoEnum.DESCONTO_40.getCodigo(), DescontoEnum.DESCONTO_50.getCodigo(),
-				DescontoEnum.DESCONTO_60.getCodigo(), DescontoEnum.DESCONTO_70.getCodigo(), DescontoEnum.DESCONTO_80.getCodigo(),
+		List<BigDecimal> listBiDecimal = Arrays.asList(DescontoEnum.DESCONTO_0.getCodigo(),
+				DescontoEnum.DESCONTO_10.getCodigo(), DescontoEnum.DESCONTO_20.getCodigo(),
+				DescontoEnum.DESCONTO_30.getCodigo(), DescontoEnum.DESCONTO_40.getCodigo(),
+				DescontoEnum.DESCONTO_50.getCodigo(), DescontoEnum.DESCONTO_60.getCodigo(),
+				DescontoEnum.DESCONTO_70.getCodigo(), DescontoEnum.DESCONTO_80.getCodigo(),
 				DescontoEnum.DESCONTO_90.getCodigo(), DescontoEnum.DESCONTO_100.getCodigo());
 		return listBiDecimal;
 	}
