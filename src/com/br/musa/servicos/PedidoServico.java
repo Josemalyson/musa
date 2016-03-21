@@ -163,7 +163,7 @@ public class PedidoServico {
 
 	}
 
-	private boolean isTipoPedidoAtacado(PedidoVO pedidoVO) {
+	public boolean isTipoPedidoAtacado(PedidoVO pedidoVO) {
 		return pedidoVO.getPedido().getTipoPedido().getId().equals(TipoPedidoEnum.ATACADO.getCodigo());
 	}
 
@@ -252,8 +252,11 @@ public class PedidoServico {
 	public void calcularDesconto(PedidoVO pedidoVO) {
 		try {
 			verificarSeDescontoFoiAplicado(pedidoVO);
-			calcularDescontoTotalCusto(pedidoVO);
-			calcularDescontoTotalVenda(pedidoVO);
+			if (isTipoPedidoAtacado(pedidoVO)) {
+				calcularDescontoTotalCusto(pedidoVO);
+			} else {
+				calcularDescontoTotalVenda(pedidoVO);
+			}
 		} catch (CalculadoraExecao e) {
 			logger.error(e.getMessage(), e);
 			throw new MusaExecao(MsgConstantes.PEDIDO_COM_VALOR_ZER0);
@@ -263,24 +266,29 @@ public class PedidoServico {
 
 	private void verificarSeDescontoFoiAplicado(PedidoVO pedidoVO) {
 
-		if (isTipoPedidoAtacado(pedidoVO)) {
-			if (pedidoVO.getPedido().getNuTotalCusto().intValue() < pedidoVO.getPedido().getValorTotal().intValue()) {
-				throw new MusaExecao(MsgConstantes.DESCONTO_JA_FOI_APLICADO);
-			}
-		} else {
-			if (pedidoVO.getPedido().getNuTotalVenda().intValue() < pedidoVO.getPedido().getValorTotal().intValue()) {
-				throw new MusaExecao(MsgConstantes.DESCONTO_JA_FOI_APLICADO);
+		if (pedidoVO.getPedido().getId() != null) {
+
+			if (isTipoPedidoAtacado(pedidoVO)) {
+				if (pedidoVO.getPedido().getNuTotalCusto().intValue() < pedidoVO.getPedido().getValorTotal()
+						.intValue()) {
+					throw new MusaExecao(MsgConstantes.DESCONTO_JA_FOI_APLICADO);
+				}
+			} else {
+				if (pedidoVO.getPedido().getNuTotalVenda().intValue() < pedidoVO.getPedido().getValorTotal()
+						.intValue()) {
+					throw new MusaExecao(MsgConstantes.DESCONTO_JA_FOI_APLICADO);
+				}
 			}
 		}
 	}
 
 	private void calcularDescontoTotalVenda(PedidoVO pedidoVO) {
-		pedidoVO.getPedido().setNuTotalVenda(CalcularUtil.calcularDesconto(pedidoVO.getPedido().getNuTotalVenda(),
+		pedidoVO.getPedido().setValorTotal(CalcularUtil.calcularDesconto(pedidoVO.getPedido().getNuTotalVenda(),
 				pedidoVO.getPedido().getDesconto()));
 	}
 
 	private void calcularDescontoTotalCusto(PedidoVO pedidoVO) {
-		pedidoVO.getPedido().setNuTotalCusto(CalcularUtil.calcularDesconto(pedidoVO.getPedido().getNuTotalCusto(),
+		pedidoVO.getPedido().setValorTotal(CalcularUtil.calcularDesconto(pedidoVO.getPedido().getNuTotalCusto(),
 				pedidoVO.getPedido().getDesconto()));
 	}
 

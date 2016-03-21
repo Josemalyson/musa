@@ -210,6 +210,10 @@ public class PedidoControlador extends CoreControlador {
 		}
 	}
 
+	public boolean isTipoPedidoAtacado(){
+		return !pedidoServico.isTipoPedidoAtacado(pedidoVO);
+	}
+	
 	public List<Cliente> getClienteList() {
 		return clienteList;
 	}

@@ -54,8 +54,9 @@
 							styleClass="clearfix" converter="genericConverter"
 							disabled="#{pedidoControlador.flTipoPedido}">
 							<p:ajax listener="#{pedidoControlador.ajustarTela(produtoVO)}"
-									process="tabelaProdutoVO tipoPedidoId" />
-									
+								process="tabelaProdutoVO tipoPedidoId"
+								update="tabelaProdutoVO" />
+
 							<f:selectItems value="#{pedidoControlador.tipoPedidoList}"
 								var="tipoPedido" itemLabel="#{tipoPedido.descricao}"
 								itemValue="#{tipoPedido}" />
@@ -148,7 +149,7 @@
 								converterMessage="Digite um número válido." size="2"
 								disabled="#{pedidoControlador.fltabelaPedido}">
 								<p:ajax listener="#{pedidoControlador.ajustarTela(produtoVO)}"
-									event="keyup" process="tabelaProdutoVO" delay="2000" />
+									event="keyup" process="tabelaProdutoVO" delay="1000" />
 								<f:convertNumber type="number" maxIntegerDigits="9"
 									groupingUsed="false" />
 							</h:inputText>
@@ -171,7 +172,8 @@
 						</p:column>
 
 
-						<p:column headerText="Preço de Custo" styleClass="text-right">
+						<p:column headerText="Preço de Custo" styleClass="text-right"
+							rendered="#{!pedidoControlador.isTipoPedidoAtacado()}">
 							<h:outputText value="#{produtoVO.produto.precoCusto}">
 								<f:convertNumber currencySymbol="R$" groupingUsed="true"
 									maxFractionDigits="2" type="currency" locale="pt_BR" />
@@ -179,13 +181,15 @@
 						</p:column>
 
 						<p:column headerText="Preço Total de Custo"
-							styleClass="text-right">
+							styleClass="text-right"
+							rendered="#{!pedidoControlador.isTipoPedidoAtacado()}">
 							<h:outputText
 								value="#{produtoVO.produto.precoCusto * produtoVO.quantidadeProduto}">
 								<f:convertNumber currencySymbol="R$" groupingUsed="true"
 									maxFractionDigits="2" type="currency" locale="pt_BR" />
 							</h:outputText>
 						</p:column>
+
 
 						<p:column headerText="Preço de Venda" styleClass="text-right">
 							<h:outputText value="#{produtoVO.produto.precoVenda}">
@@ -205,15 +209,14 @@
 
 						<p:columnGroup type="footer">
 							<p:row>
-								<p:column colspan="3" style="text-align:right">
+								<p:column colspan="#{pedidoControlador.isTipoPedidoAtacado() ? 2:3}" style="text-align:right">
 									<f:facet name="footer">
 										<strong> <h:outputText value="Totais" />
 										</strong>
 									</f:facet>
 								</p:column>
 
-
-								<p:column style="text-align:right">
+								<p:column style="text-align:right" rendered="#{!pedidoControlador.isTipoPedidoAtacado()}" >
 									<f:facet name="footer">
 										<strong> <h:outputText
 												value="#{pedidoControlador.pedidoVO.pedido.nuTotalCusto}">
@@ -240,7 +243,7 @@
 
 							</p:row>
 							<p:row>
-								<p:column colspan="5" style="text-align:right">
+								<p:column colspan="#{pedidoControlador.isTipoPedidoAtacado() ? 3:5}" style="text-align:right">
 									<f:facet name="footer">
 										<strong> <h:outputText value="Total do Pedido" />
 										</strong>
@@ -267,9 +270,9 @@
 			<div id="desconto" class="clearfix">
 				<label class="espacamento10PxDireita">Desconto:</label>
 
-				<h:selectOneMenu 
+				<h:selectOneMenu
 					value="#{pedidoControlador.pedidoVO.pedido.desconto}">
-					<f:selectItems value="#{pedidoControlador.listDesconto}" 
+					<f:selectItems value="#{pedidoControlador.listDesconto}"
 						var="desconto" itemValue="#{desconto}" itemLabel="#{desconto} % " />
 					<p:ajax listener="#{pedidoControlador.calcularDesconto()}"
 						update="tabelaProdutoVO" />
