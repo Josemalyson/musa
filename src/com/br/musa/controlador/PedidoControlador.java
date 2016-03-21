@@ -2,6 +2,7 @@ package com.br.musa.controlador;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -51,8 +52,8 @@ public class PedidoControlador extends CoreControlador {
 	private Pedido pedido;
 	private Produto produto;
 	private PedidoVO pedidoVO;
-	
-	//FLAGS
+
+	// FLAGS
 	private boolean flBotaoAdicionarPedido;
 	private boolean fltabelaPedido;
 	private boolean flbotaoSalvar;
@@ -94,10 +95,9 @@ public class PedidoControlador extends CoreControlador {
 	}
 
 	private void montarListaDesconto() {
-		listDesconto = new ArrayList<BigDecimal>();
-		listDesconto.add(new BigDecimal(0));
-		listDesconto.add(new BigDecimal(10));
-		listDesconto.add(new BigDecimal(20));
+		listDesconto = Arrays.asList(new BigDecimal(0), new BigDecimal(10), new BigDecimal(20), new BigDecimal(30),
+				new BigDecimal(40), new BigDecimal(50), new BigDecimal(60), new BigDecimal(70), new BigDecimal(80),
+				new BigDecimal(90), new BigDecimal(100));
 	}
 
 	private void habilitarTodosOsCamposParaEdicao() {
@@ -138,7 +138,7 @@ public class PedidoControlador extends CoreControlador {
 	}
 
 	private void montarPedido() {
-		pedidoVO = pedidoServico.montarPedidoNovoEdicao(pedido,cliente);
+		pedidoVO = pedidoServico.montarPedidoNovoEdicao(pedido, cliente);
 
 	}
 
@@ -156,7 +156,6 @@ public class PedidoControlador extends CoreControlador {
 	public List<Cliente> autoCompleteCliente(String query) {
 		return clienteServico.autoCompleteClienteServico(query, clienteList);
 	}
-
 
 	public void atualizarCliente() {
 		if (this.pedidoVO.getCliente().getId() != null) {
@@ -180,10 +179,10 @@ public class PedidoControlador extends CoreControlador {
 		try {
 			pedidoServico.calcularDesconto(pedidoVO);
 		} catch (MusaExecao e) {
-			logger.error(e.getMessage(),e);
+			logger.error(e.getMessage(), e);
 			adicionarErro(e.getMessage());
 		}
-		
+
 	}
 
 	public void ajustarTela(ProdutoVO produtoVO) {
