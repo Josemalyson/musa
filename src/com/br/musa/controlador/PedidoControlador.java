@@ -2,7 +2,6 @@ package com.br.musa.controlador;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -95,9 +94,7 @@ public class PedidoControlador extends CoreControlador {
 	}
 
 	private void montarListaDesconto() {
-		listDesconto = Arrays.asList(new BigDecimal(0), new BigDecimal(10), new BigDecimal(20), new BigDecimal(30),
-				new BigDecimal(40), new BigDecimal(50), new BigDecimal(60), new BigDecimal(70), new BigDecimal(80),
-				new BigDecimal(90), new BigDecimal(100));
+		listDesconto = pedidoServico.montarListaDesconto();
 	}
 
 	private void habilitarTodosOsCamposParaEdicao() {

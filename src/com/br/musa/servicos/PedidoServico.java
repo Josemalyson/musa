@@ -3,6 +3,7 @@ package com.br.musa.servicos;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -19,6 +20,7 @@ import com.br.musa.entidades.ProdutoPedido;
 import com.br.musa.entidades.ProdutoPedidoPK;
 import com.br.musa.entidades.Vo.PedidoVO;
 import com.br.musa.entidades.Vo.ProdutoVO;
+import com.br.musa.enums.DescontoEnum;
 import com.br.musa.enums.TipoPedidoEnum;
 import com.br.musa.exeption.CalculadoraExecao;
 import com.br.musa.exeption.MusaExecao;
@@ -36,7 +38,7 @@ public class PedidoServico {
 	private ClienteServico clienteServico;
 	@Inject
 	private ProdutoServico produtoServico;
-	
+
 	private static final Logger logger = Logger.getLogger(PedidoServico.class);
 
 	public void validarQuantidadeDoProduto(ProdutoVO produtoVO) {
@@ -216,7 +218,15 @@ public class PedidoServico {
 		} catch (CalculadoraExecao e) {
 			logger.error(e.getMessage(), e);
 			throw new MusaExecao(MsgConstantes.PEDIDO_COM_VALOR_ZER0);
-			
+
 		}
+	}
+
+	public List<BigDecimal> montarListaDesconto() {
+		List<BigDecimal> listBiDecimal = Arrays.asList(DescontoEnum.DESCONTO_0.getCodigo(),DescontoEnum.DESCONTO_10.getCodigo(), DescontoEnum.DESCONTO_20.getCodigo(),
+				DescontoEnum.DESCONTO_30.getCodigo(), DescontoEnum.DESCONTO_40.getCodigo(), DescontoEnum.DESCONTO_50.getCodigo(),
+				DescontoEnum.DESCONTO_60.getCodigo(), DescontoEnum.DESCONTO_70.getCodigo(), DescontoEnum.DESCONTO_80.getCodigo(),
+				DescontoEnum.DESCONTO_90.getCodigo(), DescontoEnum.DESCONTO_100.getCodigo());
+		return listBiDecimal;
 	}
 }
