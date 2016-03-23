@@ -46,8 +46,9 @@ public class ManterClienteControlador extends CoreControlador {
 	}
 
 	public void listarTodosOsClientes() {
-		clienteVOlist = new ArrayList<ClienteVO>();
+		clienteVOlist = new ArrayList<>();
 		clienteServico.montarClienteVO(clienteVOlist);
+		clienteVOlist.sort((c1,c2) -> c1.getCliente().getNome().compareToIgnoreCase(c2.getCliente().getNome()));
 	}
 
 	public String editarCliente(Cliente cliente) {
