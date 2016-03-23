@@ -59,5 +59,12 @@ public class PedidoRepositorio extends CustomGenericDAOImpl<Pedido> {
 		return query.getResultList();
 	}
 
+	public List<Pedido> listarNaoExcluidos() {
+		StringBuilder consulta = new StringBuilder();
+		consulta.append(" SELECT P.* FROM MUSA.TB_MUSA_PEDIDO P WHERE P.FL_EXCLUIDO = 0 ORDER BY P.DT_PEDIDO DESC ");
+		Query query = obterEntityManager().createNativeQuery(consulta.toString(), Pedido.class);
+		return query.getResultList();
+	}
+
 
 }

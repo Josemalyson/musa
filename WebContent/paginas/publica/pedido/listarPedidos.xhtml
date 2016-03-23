@@ -94,7 +94,7 @@
 					<p:column headerText="Opções" styleClass="text-center">
 						<div class="form-inline">
 							<p:commandButton icon="ui-icon-pencil" title="Editar" action="#{manterPedidoControlador.editarPedido(pedidoVO.pedido)}" />
-							<p:commandButton icon="ui-icon-trash" title="Excluir" />
+							<p:commandButton icon="ui-icon-trash" title="Excluir" actionListener="#{manterPedidoControlador.excluir(pedidoVO.pedido)}" update="tabelaPedido" />
 							<p:commandButton icon="ui-icon-check" title="Efetuar Pagamento" />
 						</div>
 					</p:column>

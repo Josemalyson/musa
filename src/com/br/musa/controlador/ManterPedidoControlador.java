@@ -11,6 +11,7 @@ import javax.inject.Inject;
 import org.jboss.logging.Logger;
 
 import com.br.musa.constantes.Constantes;
+import com.br.musa.constantes.MsgConstantes;
 import com.br.musa.entidades.Cliente;
 import com.br.musa.entidades.Pedido;
 import com.br.musa.entidades.Vo.PedidoVO;
@@ -52,7 +53,7 @@ public class ManterPedidoControlador extends CoreControlador {
 	}
 
 	private void listarPedido() {
-		pedidolist = pedidoServico.listar();
+		pedidolist = pedidoServico.listarNaoExcluidos();
 	}
 
 	private void montarPedidosVO() {
@@ -83,6 +84,19 @@ public class ManterPedidoControlador extends CoreControlador {
 	public String editarPedido(Pedido pedido) {
 		adicionarAtributoFlash("pedido", pedido);
 		return sendRedirect(Constantes.PAGINA_PEDIDO);
+	}
+	
+	public void excluir(Pedido pedido){
+		try {
+			pedidoServico.excluir(pedido);
+			listarPedido();
+			montarPedidosVO();
+			adicionarMensagem(MsgConstantes.MSG_SUCESSO);
+		} catch (MusaExecao e) {
+			logger.error(e.getMessage(), e);
+			adicionarErro(e.getMessage());
+		}
+		
 	}
 
 	public List<PedidoVO> getPedidoVOlist() {

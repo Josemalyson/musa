@@ -70,8 +70,8 @@ public class PedidoServico {
 				: pedidoRepositorio.obterNumeroDoProximoPedido().add(new BigInteger("1"));
 	}
 
-	public List<Pedido> listar() {
-		return pedidoRepositorio.listar();
+	public List<Pedido> listarNaoExcluidos() {
+		return pedidoRepositorio.listarNaoExcluidos();
 	}
 
 	public List<Pedido> listarPedidosPorCliente(Long id) {
@@ -303,5 +303,20 @@ public class PedidoServico {
 				DescontoEnum.DESCONTO_60.getCodigo(), DescontoEnum.DESCONTO_70.getCodigo(),
 				DescontoEnum.DESCONTO_80.getCodigo(), DescontoEnum.DESCONTO_90.getCodigo(),
 				DescontoEnum.DESCONTO_100.getCodigo());
+	}
+
+	@Transactional
+	public void excluir(Pedido pedido) {
+		
+		if (isPedidoComStatusNaoPago(pedido)) {
+			throw new MusaExecao(MsgConstantes.NAO_PODE_EXCLUIR_PEDIDO_NAO_PAGO);
+		}
+		
+		pedido.setFlExcluido(true);
+		pedidoRepositorio.salvar(pedido);
+	}
+
+	private boolean isPedidoComStatusNaoPago(Pedido pedido) {
+		return pedido.getStatusPedido().getId().equals(StatusPedidoEnum.NAO_PAGO.getCodigo());
 	}
 }
