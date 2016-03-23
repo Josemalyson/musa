@@ -28,6 +28,11 @@ h2 {
 	margin-bottom: 20px;
 }
 
+.espacamentoTopMargin20Px {
+	margin-bottom: 20px;
+	margin-top: 20px;
+}
+
 .espacamento10PxDireita {
 	padding-right: 10px;
 }

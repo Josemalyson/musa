@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE HTML>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	template="/WEB-INF/template/template.xhtml">
+
+
+	<ui:define name="conteudo">
+
+		<ol class="breadcrumb">
+			<li><a href="#">Inicio</a></li>
+			<li><a href="#">Pagamento</a></li>
+			<li class="active">Listar Pagamentos</li>
+		</ol>
+
+		<div class="espacamento20Px" />
+
+		<h:form prependId="false" id="listarPagamentos">
+
+			<h3>Listar Pagamentos</h3>
+
+			<div class="espacamentoTopMargin20Px" />
+
+			<div class="panel panel-default">
+				<div class="panel-body row">
+					<div class="col-sm-4">
+						<label class="control-label espacamento10PxDireita ">Filtros
+							de Data:</label>
+						<p:calendar pattern="dd/MM/yyyy" readonlyInput="true"
+							navigator="true" />
+					</div>
+					<div class="col-sm-4">
+						<label class="control-label espacamento10PxDireita ">Filtros
+							Por Cliente:</label>
+							<p:inputText />
+					</div>
+				</div>
+			</div>
+
+			<div class="espacamento20Px" />
+
+			<div class="text-right">
+				<p:commandButton value="Consultar"
+					styleClass="btn btn-success btn-sm" />
+			</div>
+
+			<div class="espacamento20Px" />
+
+			<div class="table-responsive">
+				<p:dataTable widgetVar="tabelaProduto" id="tabelaProduto"
+					var="pagamento" tableStyleClass="table table-hover table-bordered"
+					value="#{manterProdutoControlador.produtoList}"
+					emptyMessage="Nenhum Pagamento encontrado." paginator="true"
+					paginatorAlwaysVisible="true" pageLinks="10" rows="10"
+					rowsPerPageTemplate="10,30,50" paginatorPosition="bottom">
+
+
+					<p:column headerText="Data do Pagamento" styleClass="text-center">
+						<h:outputText value="10/12/2015" />
+					</p:column>
+
+					<p:column headerText="Observação" styleClass="text-center">
+						<h:outputText value="Paguei a última" />
+					</p:column>
+
+					<p:column headerText="Valor Pago" styleClass="text-center">
+						<h:outputText value="1234">
+							<!-- 							<f:convertNumber currencySymbol="R$" groupingUsed="true" -->
+							<!-- 								maxFractionDigits="2" type="currency" locale="pt_BR" /> -->
+						</h:outputText>
+					</p:column>
+
+					<p:column headerText="Valor Restante" styleClass="text-center">
+						<h:outputText value="1234">
+							<!-- 							<f:convertNumber currencySymbol="R$" groupingUsed="true" -->
+							<!-- 								maxFractionDigits="2" type="currency" locale="pt_BR" /> -->
+						</h:outputText>
+					</p:column>
+
+					<p:column headerText="Opções" styleClass="text-center">
+						<div class="form-inline">
+							<span class="btn-group"> <p:commandButton
+									icon="ui-icon-pencil" title="Editar"
+									oncomplete="PF('incluirProduto').show();"
+									actionListener="#{manterProdutoControlador.selecionarProduto(produto)}"
+									update="incluirProduto" /> <p:commandButton
+									icon="ui-icon-trash" title="Excluir"
+									actionListener="#{manterProdutoControlador.selecionarProduto(produto)}"
+									oncomplete="PF('confirmarExclusaoProduto').show();" />
+							</span>
+						</div>
+					</p:column>
+				</p:dataTable>
+			</div>
+
+			<div class="espacamento20Px" />
+
+		</h:form>
+
+
+		<!-- MODAL PRODUTO  -->
+
+		<p:dialog modal="true" widgetVar="incluirProduto" id="incluirProduto"
+			closable="true" draggable="false" width="700"
+			header="Incluir Novo Produto" resizable="false">
+			<h:form id="formModalIncluirProduto" prependId="false">
+
+				<div class="form-group row ">
+					<label class="col-sm-3 control-label obrigatorio">Descrição
+						Produto:</label>
+					<div class="col-sm-9">
+						<p:inputText id="produto" styleClass="form-control"
+							value="#{manterProdutoControlador.produto.descricaoProduto}" />
+					</div>
+				</div>
+
+				<div class="form-group row ">
+					<label class="col-sm-3 control-label obrigatorio">Preço de
+						Custo:</label>
+					<div class="col-sm-4">
+						<p:inputText id="precoCusto" placeholder="1200.00"
+							value="#{manterProdutoControlador.produto.precoCusto}" />
+					</div>
+				</div>
+
+				<div class="form-group row ">
+					<label class="col-sm-3 control-label obrigatorio">Preço de
+						Venda:</label>
+					<div class="col-sm-4">
+						<p:inputText id="precoVenda" placeholder="1200.00"
+							value="#{manterProdutoControlador.produto.precoVenda}" />
+					</div>
+				</div>
+
+
+				<div class="espacamento20Px" />
+
+				<div class="form-group text-center">
+					<p:commandButton id="btnConfirma" value="Confirmar"
+						styleClass="btn btn-success"
+						actionListener="#{manterProdutoControlador.salvarProduto()}"
+						update="tabelaProduto" />
+
+					<p:commandButton id="btnCancela" value="Cancelar"
+						styleClass="btn btn-danger"
+						oncomplete="PF('incluirProduto').hide();" />
+				</div>
+
+				<div class="espacamento20Px" />
+
+				<p class="obrigatorio">Campos Obrigatórios</p>
+			</h:form>
+		</p:dialog>
+
+
+		<!-- DIALOG EXCLUSAO PRODUTO -->
+
+		<h:form id="confirmExclusaoForm" prependId="false">
+			<p:confirmDialog widgetVar="confirmarExclusaoProduto"
+				header="Excluir Produto" icon="ui-icon-alert"
+				id="confirmarExclusaoProduto"
+				message="Confirmar Exclusão deste item?" closable="false">
+				<div class="form-inline botoesSalvarCancelar">
+					<p:commandButton id="btnConfirmaExclusaoProduto" value="Confirmar"
+						styleClass="btn btn-success"
+						actionListener="#{manterProdutoControlador.excluirProduto()}"
+						update="tabelaProduto" ajax="false"
+						oncomplete="PF('confirmarExclusaoProduto').hide();" />
+
+					<p:commandButton id="btnCancelaExclusaoProduto" value="Cancelar"
+						styleClass="btn btn-danger"
+						oncomplete="PF('confirmarExclusaoProduto').hide();" />
+
+				</div>
+			</p:confirmDialog>
+		</h:form>
+
+
+	</ui:define>
+</ui:composition>
