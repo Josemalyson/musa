@@ -155,12 +155,12 @@ public class PedidoControlador extends CoreControlador {
 	}
 
 	private void listarProdutosAtivos() {
-		produtoList = new ArrayList<Produto>();
+		produtoList = new ArrayList<>();
 		produtoList = produtoServico.listarProdutosAtivos();
 	}
 
 	private void listarCliente() {
-		clienteList = new ArrayList<Cliente>();
+		clienteList = new ArrayList<>();
 		clienteList = clienteServico.listarTodosClientes();
 
 	}

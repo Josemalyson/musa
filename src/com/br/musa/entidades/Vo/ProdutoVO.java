@@ -1,9 +1,12 @@
 package com.br.musa.entidades.Vo;
 
+import java.io.Serializable;
+
 import com.br.musa.entidades.Produto;
 
-public class ProdutoVO {
+public class ProdutoVO implements Serializable{
 
+	private static final long serialVersionUID = 6690312927916835680L;
 	private Integer quantidadeProduto;
 	private Produto produto;
 

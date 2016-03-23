@@ -49,20 +49,20 @@ public class PedidoServico {
 	private static final Logger logger = Logger.getLogger(PedidoServico.class);
 
 	public void validarQuantidadeDoProduto(ProdutoVO produtoVO) {
-		if (produtoVO != null && !isQuantidadeNula(produtoVO) && produtoVO.getQuantidadeProduto() <= 0) {
-			// JavaScriptUtil.marcarCampoObrigatorio("tabelaProdutoVO:0:quantidadeId");
-			throw new MusaExecao(MsgConstantes.ERRO_QUANTIDADE_ZERO);
-		} else {
-			produtoVO = new ProdutoVO();
-		}
+		isQuantidadeNula(produtoVO);
+		isQuantidadeZero(produtoVO);
+	}
 
-		if (isQuantidadeNula(produtoVO)) {
-			produtoVO.setQuantidadeProduto(new Integer(1));
+	private void isQuantidadeZero(ProdutoVO produtoVO) {
+		if (produtoVO.getQuantidadeProduto() <= 0 ) {
+			throw new MusaExecao(MsgConstantes.ERRO_QUANTIDADE_ZERO);
 		}
 	}
 
-	private boolean isQuantidadeNula(ProdutoVO produtoVO) {
-		return produtoVO.getQuantidadeProduto() == null;
+	private void isQuantidadeNula(ProdutoVO produtoVO) {
+		if (produtoVO.getQuantidadeProduto() == null) {
+			produtoVO.setQuantidadeProduto(new Integer(1));
+		}
 	}
 
 	public BigInteger obterNumerorDoProximoPedido() {
@@ -99,10 +99,8 @@ public class PedidoServico {
 		pedidoVO.setCliente(pedido.getCliente());
 		pedidoVO.setNumeroPedido(pedido.getId().toString());
 
-		List<ProdutoVO> produtoVOList = new ArrayList<ProdutoVO>();
-
-		List<Produto> produtoBDList = new ArrayList<Produto>();
-		produtoBDList = produtoServico.listarProdutosPorPedido(pedido.getId());
+		List<ProdutoVO> produtoVOList = new ArrayList<>();
+		List<Produto> produtoBDList = produtoServico.listarProdutosPorPedido(pedido.getId());
 
 		for (Produto produto : produtoBDList) {
 			ProdutoVO produtoVO = new ProdutoVO();
@@ -131,15 +129,11 @@ public class PedidoServico {
 	}
 
 	private StatusPedido montarStatusPedidoNovo() {
-		StatusPedido statusPedido = new StatusPedido();
-		statusPedido = statusPedidoServico.buscarPorCodigo(StatusPedidoEnum.NAO_PAGO);
-		return statusPedido;
+		return statusPedidoServico.buscarPorCodigo(StatusPedidoEnum.NAO_PAGO);
 	}
 
 	private TipoPedido montarTipoPedidoNovo() {
-		TipoPedido tipoPedido = new TipoPedido();
-		tipoPedido = tipoPedidoServico.buscarPorCodigo(TipoPedidoEnum.ATACADO);
-		return tipoPedido;
+		return tipoPedidoServico.buscarPorCodigo(TipoPedidoEnum.ATACADO);
 	}
 
 	public void adicionarProduto(PedidoVO pedidoVO, Produto produto) {
@@ -234,7 +228,7 @@ public class PedidoServico {
 	}
 
 	public List<PedidoVO> montartPedidosVO(List<Pedido> pedidolist) {
-		List<PedidoVO> pedidoVOlist = new ArrayList<PedidoVO>();
+		List<PedidoVO> pedidoVOlist = new ArrayList<>();
 		for (Pedido pedido : pedidolist) {
 			PedidoVO pedidoVO = new PedidoVO();
 
@@ -253,8 +247,7 @@ public class PedidoServico {
 	}
 
 	public void verificarSeExisteProdutosCadastrados() {
-		if (produtoServico.listarProdutosAtivos() == null || produtoServico.listarProdutosAtivos().isEmpty()
-				|| produtoServico.listarProdutosAtivos().size() < 0) {
+		if (produtoServico.listarProdutosAtivos() == null || produtoServico.listarProdutosAtivos().isEmpty()) {
 			throw new MusaExecao(MsgConstantes.NAO_EXISTE_PRODUTOS_CADASTRADOS);
 		}
 
@@ -304,12 +297,11 @@ public class PedidoServico {
 	}
 
 	public List<BigDecimal> montarListaDesconto() {
-		List<BigDecimal> listBiDecimal = Arrays.asList(DescontoEnum.DESCONTO_0.getCodigo(),
-				DescontoEnum.DESCONTO_10.getCodigo(), DescontoEnum.DESCONTO_20.getCodigo(),
-				DescontoEnum.DESCONTO_30.getCodigo(), DescontoEnum.DESCONTO_40.getCodigo(),
-				DescontoEnum.DESCONTO_50.getCodigo(), DescontoEnum.DESCONTO_60.getCodigo(),
-				DescontoEnum.DESCONTO_70.getCodigo(), DescontoEnum.DESCONTO_80.getCodigo(),
-				DescontoEnum.DESCONTO_90.getCodigo(), DescontoEnum.DESCONTO_100.getCodigo());
-		return listBiDecimal;
+		return Arrays.asList(DescontoEnum.DESCONTO_0.getCodigo(), DescontoEnum.DESCONTO_10.getCodigo(),
+				DescontoEnum.DESCONTO_20.getCodigo(), DescontoEnum.DESCONTO_30.getCodigo(),
+				DescontoEnum.DESCONTO_40.getCodigo(), DescontoEnum.DESCONTO_50.getCodigo(),
+				DescontoEnum.DESCONTO_60.getCodigo(), DescontoEnum.DESCONTO_70.getCodigo(),
+				DescontoEnum.DESCONTO_80.getCodigo(), DescontoEnum.DESCONTO_90.getCodigo(),
+				DescontoEnum.DESCONTO_100.getCodigo());
 	}
 }

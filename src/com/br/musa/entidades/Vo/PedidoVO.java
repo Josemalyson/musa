@@ -1,11 +1,14 @@
 package com.br.musa.entidades.Vo;
 
+import java.io.Serializable;
 import java.util.List;
 
 import com.br.musa.entidades.Cliente;
 import com.br.musa.entidades.Pedido;
 
-public class PedidoVO {
+public class PedidoVO implements Serializable {
+
+	private static final long serialVersionUID = 1L;
 
 	private Pedido pedido;
 	private Cliente cliente;
