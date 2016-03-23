@@ -93,17 +93,19 @@
 									Cliente:</label>
 								<p:autoComplete id="clienteId"
 									completeMethod="#{pedidoControlador.autoCompleteCliente}"
-									converter="entityConverter"
+									converter="entityConverter" cache="true" minQueryLength="3"
 									value="#{pedidoControlador.pedidoVO.cliente}" dropdown="true"
 									forceSelection="true" var="cliente" itemValue="#{cliente}"
-									itemLabel="#{cliente.nome}" 
+									itemLabel="#{cliente.nome}"
 									disabled="#{pedidoControlador.flAutoCompleteCliente}">
 									<p:ajax event="itemSelect"
 										listener="#{pedidoControlador.atualizarCliente()}" />
 								</p:autoComplete>
-							</div>
-							<div class="col-sm-1">
-								<p:commandButton id="botaoEditarCliente" icon="ui-icon-pencil" disabled="#{pedidoControlador.flEditarAutoCompleteCliente}"/>
+								<p:commandButton id="botaoEditarCliente" icon="ui-icon-pencil"
+									update="clienteId cpf" title="Novo Cliente"
+									disabled="#{pedidoControlador.flBotaoEditarAutocomplete}"
+									styleClass="btn btn-success btn-sm botaoSelectEditAutoComplete"
+									actionListener="#{pedidoControlador.limparCliente()}" />
 							</div>
 							<div class="col-sm-4">
 								<label class="control-label espacamento10PxDireita ">CPF:

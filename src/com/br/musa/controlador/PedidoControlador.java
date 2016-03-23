@@ -60,7 +60,7 @@ public class PedidoControlador extends CoreControlador {
 	private boolean flStatusPedido;
 	private boolean flAutoCompleteCliente;
 	private boolean flDesconto;
-	private boolean flEditarAutoCompleteCliente;
+	private boolean flBotaoEditarAutocomplete;
 
 	// LISTA
 	private List<Cliente> clienteList;
@@ -93,8 +93,6 @@ public class PedidoControlador extends CoreControlador {
 		montarListaDesconto();
 		isPedidoNovoOuEditado();
 		
-		flEditarAutoCompleteCliente = true;
-
 	}
 
 	private void isPedidoNovoOuEditado() {
@@ -117,6 +115,18 @@ public class PedidoControlador extends CoreControlador {
 		flTipoPedido = false;
 		flAutoCompleteCliente = false;
 		flDesconto = false;
+		flBotaoEditarAutocomplete = false;
+	}
+
+	private void desabilitarTodosOsCampos() {
+		fltabelaPedido = true;
+		flBotaoAdicionarPedido = true;
+		flbotaoSalvar = true;
+		flTipoPedido = true;
+		flStatusPedido = true;
+		flAutoCompleteCliente = true;
+		flDesconto = true;
+		flBotaoEditarAutocomplete = true;
 	}
 
 	private void verificarSeExisteProdutosCadastrados() {
@@ -131,15 +141,6 @@ public class PedidoControlador extends CoreControlador {
 		}
 	}
 
-	private void desabilitarTodosOsCampos() {
-		fltabelaPedido = true;
-		flBotaoAdicionarPedido = true;
-		flbotaoSalvar = true;
-		flTipoPedido = true;
-		flStatusPedido = true;
-		flAutoCompleteCliente = true;
-		flDesconto = true;
-	}
 
 	private void listarTipoPedido() {
 		tipoPedidoList = tipoPedidoServico.listar();
@@ -173,14 +174,11 @@ public class PedidoControlador extends CoreControlador {
 		if (this.pedidoVO.getCliente().getId() != null) {
 			this.pedidoVO.setCliente(clienteServico.buscarPorCodigo(this.pedidoVO.getCliente()));
 			this.pedidoVO.getCliente().setCpf(clienteServico.adicionarMascaraCpf(this.pedidoVO.getCliente()));
-			flEditarAutoCompleteCliente = true;
-			flAutoCompleteCliente = true;
 		} else {
 			this.pedidoVO.setCliente(new Cliente());
-			flEditarAutoCompleteCliente = false;
 		}
 		
-		RequestContext.getCurrentInstance().update("cpf clienteId botaoEditarCliente");
+		RequestContext.getCurrentInstance().update("cpf");
 	}
 
 	public void adicionarProduto() {
@@ -232,6 +230,10 @@ public class PedidoControlador extends CoreControlador {
 
 	public boolean isTipoPedidoAtacado(){
 		return !pedidoServico.isTipoPedidoAtacado(pedidoVO);
+	}
+	
+	public void limparCliente() {
+		pedidoVO.setCliente(new Cliente());
 	}
 	
 	public List<Cliente> getClienteList() {
@@ -371,12 +373,12 @@ public class PedidoControlador extends CoreControlador {
 		this.flDesconto = flDesconto;
 	}
 
-	public boolean isFlEditarAutoCompleteCliente() {
-		return flEditarAutoCompleteCliente;
+	public boolean isFlBotaoEditarAutocomplete() {
+		return flBotaoEditarAutocomplete;
 	}
 
-	public void setFlEditarAutoCompleteCliente(boolean flEditarAutoCompleteCliente) {
-		this.flEditarAutoCompleteCliente = flEditarAutoCompleteCliente;
+	public void setFlBotaoEditarAutocomplete(boolean flBotaoEditarAutocomplete) {
+		this.flBotaoEditarAutocomplete = flBotaoEditarAutocomplete;
 	}
 
 }
