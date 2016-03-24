@@ -32,7 +32,7 @@ public class Pagamento extends GenericEntity {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 
-	@Temporal(TemporalType.DATE)
+	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "DT_PAGAMENTO")
 	private Date dtPagamento;
 

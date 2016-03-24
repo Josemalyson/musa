@@ -194,7 +194,7 @@ public class ClienteServico {
 	}
 
 	public List<Cliente> autoCompleteClienteServico(String query, List<Cliente> clienteList) {
-		List<Cliente> clienteFiltradosList = new ArrayList<Cliente>();
+		List<Cliente> clienteFiltradosList = new ArrayList<>();
 
 		for (int i = 0; i < clienteList.size(); i++) {
 			Cliente cliente = clienteList.get(i);
