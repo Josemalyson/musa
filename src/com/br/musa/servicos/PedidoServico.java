@@ -49,6 +49,12 @@ public class PedidoServico {
 	private static final Logger logger = Logger.getLogger(PedidoServico.class);
 
 	public void validarQuantidadeDoProduto(ProdutoVO produtoVO) {
+		if (produtoVO == null) {
+			produtoVO = new ProdutoVO();
+			Produto produto = new Produto();
+			produtoVO.setProduto(produto);
+		}
+		
 		isQuantidadeNula(produtoVO);
 		isQuantidadeZero(produtoVO);
 	}
