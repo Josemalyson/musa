@@ -75,11 +75,11 @@
 					</p:column>
 
 					<p:column headerText="Observação" styleClass="text-center">
-						<h:outputText value="#{pagamento.observacao}" />
+						<h:outputText value="#{pagamento.observacao}" id="observacao" />
 					</p:column>
 
 					<p:column headerText="Valor Pago" styleClass="text-center">
-						<h:outputText value="#{pagamento.valorPago}">
+						<h:outputText value="#{pagamento.valorPago}" id="valorPago">
 							<f:convertNumber currencySymbol="R$" groupingUsed="true"
 								maxFractionDigits="2" type="currency" locale="pt_BR" />
 						</h:outputText>

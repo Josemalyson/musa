@@ -6,9 +6,13 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import com.br.musa.constantes.Constantes;
+import com.br.musa.constantes.MsgConstantes;
 import com.br.musa.entidades.Cliente;
 import com.br.musa.entidades.Pagamento;
+import com.br.musa.exeption.MusaExecao;
 import com.br.musa.repositorio.PagamentoRepositorio;
+import com.br.musa.util.JavaScriptUtil;
 
 public class PagamentoServico {
 
@@ -47,6 +51,41 @@ public class PagamentoServico {
 
 	private boolean isDataEClienteValidos(Date dtHoje, Cliente cliente) {
 		return isDataValida(dtHoje) && isClienteValido(cliente);
+	}
+
+	public void salvar(Pagamento pagamento) {
+		validarPagamento(pagamento);
+		pagamentoRepositorio.salvar(pagamento);
+
+	}
+
+	private void validarPagamento(Pagamento pagamento) {
+		camposObrigatorios(pagamento);
+		isPagamentoValido(pagamento);
+	}
+
+	private void camposObrigatorios(Pagamento pagamento) {
+		StringBuilder erro = new StringBuilder();
+		
+		if (pagamento.getValorPago() == null) {
+			erro.append("Preencher campo Valor Pago.").append(Constantes.TAG_BR);
+			JavaScriptUtil.marcarCampoObrigatorio("valorPago");
+		}
+		
+		if (pagamento.getObservacao() == null || pagamento.getObservacao().isEmpty()) {
+			erro.append("Preencher campo Observação.").append(Constantes.TAG_BR);
+			JavaScriptUtil.marcarCampoObrigatorio("observacao");
+		}
+		if (!erro.toString().isEmpty()) {
+			throw new MusaExecao(erro.toString());
+		}
+	}
+
+	private void isPagamentoValido(Pagamento pagamento) {
+		
+		if (pagamento.getValorPago().intValue() < 0) {
+			throw new MusaExecao(MsgConstantes.VALOR_PAGO_DIFERENTE_ZERO);
+		}
 	}
 
 }

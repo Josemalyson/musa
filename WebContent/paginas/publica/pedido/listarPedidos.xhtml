@@ -62,7 +62,8 @@
 						<h:outputText value="#{pedidoVO.pedido.id}" />
 					</p:column>
 
-					<p:column headerText="Cliente" styleClass="text-center" sortBy="#{pedidoVO.cliente.nome}">
+					<p:column headerText="Cliente" styleClass="text-center"
+						sortBy="#{pedidoVO.cliente.nome}">
 						<h:outputText value="#{pedidoVO.cliente.nome}" />
 					</p:column>
 
@@ -81,28 +82,124 @@
 						<h:outputText value="#{pedidoVO.pedido.statusPedido.descricao}" />
 					</p:column>
 
-					<p:column headerText="Data do Pedido" styleClass="text-center" sortBy="#{pedidoVO.pedido.dtPedido}">
+					<p:column headerText="Data do Pedido" styleClass="text-center"
+						sortBy="#{pedidoVO.pedido.dtPedido}">
 						<h:outputText value="#{pedidoVO.pedido.dtPedido}">
 							<f:convertDateTime locale="pt_br" />
 						</h:outputText>
 					</p:column>
 
-					<p:column headerText="Último Pagamento" styleClass="text-center" sortBy="#">
+					<p:column headerText="Último Pagamento" styleClass="text-center"
+						sortBy="#">
 						<h:outputText value="MOCADO 10/01/2015 - Juliana Mesquita" />
 					</p:column>
 
 					<p:column headerText="Opções" styleClass="text-center">
 						<div class="form-inline">
-							<p:commandButton icon="ui-icon-pencil" title="Editar" action="#{manterPedidoControlador.editarPedido(pedidoVO.pedido)}" />
-							<p:commandButton icon="ui-icon-trash" title="Excluir" actionListener="#{manterPedidoControlador.excluir(pedidoVO.pedido)}" update="tabelaPedido" />
-							<p:commandButton icon="ui-icon-check" title="Efetuar Pagamento" />
+							<p:commandButton icon="ui-icon-pencil" title="Editar"
+								action="#{manterPedidoControlador.editarPedido(pedidoVO.pedido)}" />
+							<p:commandButton icon="ui-icon-trash" title="Excluir"
+								actionListener="#{manterPedidoControlador.excluir(pedidoVO.pedido)}"
+								update="tabelaPedido" />
+							<p:commandButton icon="ui-icon-check" title="Efetuar Pagamento"
+								actionListener="#{manterPedidoControlador.selecionarPedidoVO(pedidoVO)}"
+								oncomplete="PF('efetuarPagamento').show();"
+								update="efetuarPagamentoId" />
 						</div>
 					</p:column>
 				</p:dataTable>
 			</div>
 
 			<div class="espacamento20Px" />
-
 		</h:form>
+
+
+		<!-- MODAL EFETUAR PAGAMENTO  -->
+
+		<p:dialog modal="true" widgetVar="efetuarPagamento"
+			id="efetuarPagamentoId" closable="true" draggable="false" width="700"
+			header="Efetuar Pagamento" resizable="false">
+
+			<h:form id="formModalPagamento" prependId="false">
+
+				<div class="form-group row ">
+					<label class="col-sm-3 control-label obrigatorio"> Dados do
+						Cliente </label>
+					<div class="col-sm-9">
+						<h:outputText
+							value="#{manterPedidoControlador.pedidoVOSelecionado.cliente.nome}" />
+					</div>
+				</div>
+
+				<div class="form-group row ">
+					<label class="col-sm-3 control-label obrigatorio">Valor
+						Pago:</label>
+					<div class="col-sm-4">
+						<p:inputText
+							value="#{manterPedidoControlador.pedidoVOSelecionado.pagamento.valorPago}" />
+					</div>
+				</div>
+
+				<div class="form-group row ">
+					<label class="col-sm-3 control-label obrigatorio">Valor
+						Restante:</label>
+					<div class="col-sm-4">
+						<h:outputText
+							value="#{manterPedidoControlador.pedidoVOSelecionado.pagamento.valorRestante}">
+							<f:convertNumber currencySymbol="R$" groupingUsed="true"
+								maxFractionDigits="2" type="currency" locale="pt_BR" />
+						</h:outputText>
+					</div>
+				</div>
+
+				<div class="form-group row ">
+					<label class="col-sm-3 control-label obrigatorio">Valor
+						Total do Pedido:</label>
+					<div class="col-sm-4">
+						<h:outputText
+							value="#{manterPedidoControlador.pedidoVOSelecionado.pedido.valorTotal}">
+							<f:convertNumber currencySymbol="R$" groupingUsed="true"
+								maxFractionDigits="2" type="currency" locale="pt_BR" />
+						</h:outputText>
+					</div>
+				</div>
+
+				<div class="form-group row ">
+					<label class="col-sm-3 control-label obrigatorio">Data do
+						pagamento</label>
+					<h:outputText
+						value="#{manterPedidoControlador.pedidoVOSelecionado.pagamento.dtPagamento}">
+						<f:convertDateTime pattern="dd/MM/yyyy" />
+					</h:outputText>
+				</div>
+
+				<div class="form-group row ">
+					<label class="col-sm-3 control-label obrigatorio">Observação</label>
+					<div class="col-sm-4">
+						<p:inputTextarea
+							value="#{manterPedidoControlador.pedidoVOSelecionado.pagamento.observacao}" />
+					</div>
+				</div>
+
+				<div class="espacamento20Px" />
+
+				<div class="form-group text-center">
+					<p:commandButton id="btnConfirma" value="Confirmar"
+						styleClass="btn btn-success"
+						actionListener="#{manterPedidoControlador.efetuarPagamento()}" />
+
+					<p:commandButton id="btnCancela" value="Cancelar"
+						styleClass="btn btn-danger"
+						oncomplete="PF('efetuarPagamento').hide();" />
+				</div>
+
+				<div class="espacamento20Px" />
+
+				<p class="obrigatorio">Campos Obrigatórios</p>
+			</h:form>
+		</p:dialog>
+
+
+
 	</ui:define>
 </ui:composition>

@@ -23,4 +23,5 @@ public abstract class MsgConstantes {
 	/* MENSSAGEM  DA CLASSE CALCULADORA */
 	public static final String VALOR_ZERO_NAO_PODE_SER_DESCONTADO = "Total com valor zero (0) não pode ser calculado.";
 	public static final String NAO_PODE_EXCLUIR_PEDIDO_NAO_PAGO = "Você não pode excluir um pedido com status Não Pago.";
+	public static final String VALOR_PAGO_DIFERENTE_ZERO = "Valor do pagamento não pode ter valor zero (0)";
 }

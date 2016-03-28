@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.List;
 
 import com.br.musa.entidades.Cliente;
+import com.br.musa.entidades.Pagamento;
 import com.br.musa.entidades.Pedido;
 
 public class PedidoVO implements Serializable {
@@ -14,6 +15,7 @@ public class PedidoVO implements Serializable {
 	private Cliente cliente;
 	private List<ProdutoVO> produtoVOList;
 	private String numeroPedido;
+	private Pagamento pagamento;
 
 	public List<ProdutoVO> getProdutoVOList() {
 		return produtoVOList;
@@ -47,6 +49,14 @@ public class PedidoVO implements Serializable {
 		this.numeroPedido = numeroPedido;
 	}
 
+	public Pagamento getPagamento() {
+		return pagamento;
+	}
+
+	public void setPagamento(Pagamento pagamento) {
+		this.pagamento = pagamento;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -71,5 +81,4 @@ public class PedidoVO implements Serializable {
 			return false;
 		return true;
 	}
-
 }

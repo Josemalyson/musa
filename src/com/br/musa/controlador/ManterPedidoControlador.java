@@ -1,6 +1,7 @@
 package com.br.musa.controlador;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -9,14 +10,17 @@ import javax.faces.bean.ViewScoped;
 import javax.inject.Inject;
 
 import org.jboss.logging.Logger;
+import org.primefaces.context.RequestContext;
 
 import com.br.musa.constantes.Constantes;
 import com.br.musa.constantes.MsgConstantes;
 import com.br.musa.entidades.Cliente;
+import com.br.musa.entidades.Pagamento;
 import com.br.musa.entidades.Pedido;
 import com.br.musa.entidades.Vo.PedidoVO;
 import com.br.musa.exeption.MusaExecao;
 import com.br.musa.servicos.ClienteServico;
+import com.br.musa.servicos.PagamentoServico;
 import com.br.musa.servicos.PedidoServico;
 
 @ManagedBean
@@ -32,8 +36,11 @@ public class ManterPedidoControlador extends CoreControlador {
 	private PedidoServico pedidoServico;
 	@Inject
 	private ClienteServico clienteServico;
+	@Inject
+	private PagamentoServico pagamentoServico;
 	// OBJETOS
 	private Cliente cliente;
+	private PedidoVO pedidoVOSelecionado;
 	// LISTAS
 	private List<PedidoVO> pedidoVOlist;
 	private List<Pedido> pedidolist;
@@ -85,8 +92,8 @@ public class ManterPedidoControlador extends CoreControlador {
 		adicionarAtributoFlash("pedido", pedido);
 		return sendRedirect(Constantes.PAGINA_PEDIDO);
 	}
-	
-	public void excluir(Pedido pedido){
+
+	public void excluir(Pedido pedido) {
 		try {
 			pedidoServico.excluir(pedido);
 			listarPedido();
@@ -96,7 +103,30 @@ public class ManterPedidoControlador extends CoreControlador {
 			logger.error(e.getMessage(), e);
 			adicionarErro(e.getMessage());
 		}
+
+	}
+
+	public void selecionarPedidoVO(PedidoVO pedidoVO) {
+		this.pedidoVOSelecionado = new PedidoVO();
+		this.pedidoVOSelecionado = pedidoVO;
+		Pagamento pagamento = new Pagamento();
+		pagamento.setDtPagamento(new Date());
+		pagamento.setPedido(pedidoVO.getPedido());
+		pagamento.setValorRestante(pedidoVO.getPedido().getValorTotal());
+		this.pedidoVOSelecionado.setPagamento(pagamento);
 		
+	}
+
+	public void efetuarPagamento() {
+		try {
+			pagamentoServico.salvar(this.pedidoVOSelecionado.getPagamento());
+			adicionarMensagem(MsgConstantes.MSG_SUCESSO);
+			RequestContext.getCurrentInstance().update("tabelaPedido");
+			RequestContext.getCurrentInstance().execute("PF('efetuarPagamento').hide();");
+		} catch (MusaExecao e) {
+			logger.error(e.getMessage(), e);
+			adicionarErro(e.getMessage());
+		}
 	}
 
 	public List<PedidoVO> getPedidoVOlist() {
@@ -121,6 +151,14 @@ public class ManterPedidoControlador extends CoreControlador {
 
 	public void setCliente(Cliente cliente) {
 		this.cliente = cliente;
+	}
+
+	public PedidoVO getPedidoVOSelecionado() {
+		return pedidoVOSelecionado;
+	}
+
+	public void setPedidoVOSelecionado(PedidoVO pedidoVOSelecionado) {
+		this.pedidoVOSelecionado = pedidoVOSelecionado;
 	}
 
 }
