@@ -89,9 +89,8 @@
 						</h:outputText>
 					</p:column>
 
-					<p:column headerText="Último Pagamento" styleClass="text-center"
-						sortBy="#">
-						<h:outputText value="MOCADO 10/01/2015 - Juliana Mesquita" />
+					<p:column headerText="Último Pagamento" styleClass="text-center">
+						<h:outputText value="#{pedidoVO.pagamento.observacao}" />
 					</p:column>
 
 					<p:column headerText="Opções" styleClass="text-center">
@@ -137,8 +136,7 @@
 					<div class="col-sm-4">
 						<p:inputText
 							value="#{manterPedidoControlador.pedidoVOSelecionado.pagamento.valorPago}">
-							<p:ajax
-								event="blur" 
+							<p:ajax event="blur"
 								listener="#{manterPedidoControlador.calcularValorRestante()}"
 								update="valorRestante" />
 						</p:inputText>

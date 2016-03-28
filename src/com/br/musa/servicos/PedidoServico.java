@@ -14,6 +14,7 @@ import org.jboss.logging.Logger;
 import com.br.musa.constantes.Constantes;
 import com.br.musa.constantes.MsgConstantes;
 import com.br.musa.entidades.Cliente;
+import com.br.musa.entidades.Pagamento;
 import com.br.musa.entidades.Pedido;
 import com.br.musa.entidades.Produto;
 import com.br.musa.entidades.ProdutoPedido;
@@ -45,6 +46,8 @@ public class PedidoServico {
 	private TipoPedidoServico tipoPedidoServico;
 	@Inject
 	private StatusPedidoServico statusPedidoServico;
+	@Inject
+	private PagamentoServico pagamentoServico;
 
 	private static final Logger logger = Logger.getLogger(PedidoServico.class);
 
@@ -242,10 +245,25 @@ public class PedidoServico {
 			pedidoVO.setCliente(pedido.getCliente());
 			pedidoVO.setNumeroPedido(pedido.getId().toString());
 			pedidoVO.setProdutoVOList(new ArrayList<ProdutoVO>());
+			pedidoVO.setPagamento(montarUltimoPagamento(pedido));
 			pedidoVOlist.add(pedidoVO);
 		}
 
 		return pedidoVOlist;
+	}
+
+	private Pagamento montarUltimoPagamento(Pedido pedido) {
+		List<Pagamento> pagamentosBDList = pagamentoServico.listarPagamentoPorPedido(pedido.getId());
+
+		Pagamento pagamento = new Pagamento();
+		
+		if (pagamentosBDList != null && !pagamentosBDList.isEmpty()) {
+			pagamento = pagamentosBDList.get(pagamentosBDList.size()-1); 
+			return pagamento;
+		}
+
+		pagamento.setObservacao(Constantes.STRING_VAZIA);
+		return pagamento;
 	}
 
 	public List<Pedido> listarPedidosSemCliente() {

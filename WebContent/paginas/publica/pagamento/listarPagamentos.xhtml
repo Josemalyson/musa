@@ -26,20 +26,22 @@
 
 			<div class="panel panel-default">
 				<div class="panel-body row">
-				
+
 					<div class="col-sm-4">
 						<label class="control-label espacamento10PxDireita ">Filtros
 							de Data:</label>
-						<p:calendar pattern="dd/MM/yyyy" readonlyInput="true" id="dtHojeId"
-							navigator="true" value="#{pagamentoControlador.dtHoje}" maxdate="#{pagamentoControlador.dtMax}" />
+						<p:calendar pattern="dd/MM/yyyy" readonlyInput="true"
+							id="dtHojeId" navigator="true"
+							value="#{pagamentoControlador.dtHoje}"
+							maxdate="#{pagamentoControlador.dtMax}" />
 					</div>
-					
+
 					<div class="col-sm-4">
 						<label class="control-label espacamento10PxDireita ">Filtros
 							Por Cliente:</label>
-							<p:autoComplete id="clienteId" 
+						<p:autoComplete id="clienteId"
 							completeMethod="#{pagamentoControlador.autoCompleteCliente}"
-							converter="entityConverter" 
+							converter="entityConverter"
 							value="#{pagamentoControlador.cliente}" dropdown="true"
 							forceSelection="true" var="cliente" itemValue="#{cliente}"
 							itemLabel="#{cliente.nome}">
@@ -52,9 +54,12 @@
 
 			<div class="text-right">
 				<p:commandButton value="Consultar" update="tabelaPagamento"
-					styleClass="btn btn-success btn-sm" actionListener="#{pagamentoControlador.listarPagamentos()}" />
-				<p:commandButton value="Limpar Filtros" update="dtHojeId clienteId tabelaPagamento"
-					styleClass="btn btn-primary btn-sm" actionListener="#{pagamentoControlador.limparFiltros()}" />
+					styleClass="btn btn-success btn-sm"
+					actionListener="#{pagamentoControlador.listarPagamentos()}" />
+				<p:commandButton value="Limpar Filtros"
+					update="dtHojeId clienteId tabelaPagamento"
+					styleClass="btn btn-primary btn-sm"
+					actionListener="#{pagamentoControlador.limparFiltros()}" />
 			</div>
 
 			<div class="espacamento20Px" />
@@ -69,8 +74,8 @@
 
 
 					<p:column headerText="Data do Pagamento" styleClass="text-center">
-						<h:outputText value="#{pagamento.dtPagamento}" >
-							<f:convertDateTime />
+						<h:outputText value="#{pagamento.dtPagamento}">
+							<f:convertDateTime dateStyle="full" type="both" locale="pt_BR" timeZone="Brazil/East"/>
 						</h:outputText>
 					</p:column>
 

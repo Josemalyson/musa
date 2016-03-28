@@ -109,18 +109,39 @@ public class ManterPedidoControlador extends CoreControlador {
 	public void selecionarPedidoVO(PedidoVO pedidoVO) {
 		this.pedidoVOSelecionado = new PedidoVO();
 		this.pedidoVOSelecionado = pedidoVO;
+
+		List<Pagamento> pagamentoList = pagamentoServico.listarPagamentoPorPedido(pedidoVO.getPedido().getId());
+
 		Pagamento pagamento = new Pagamento();
 		pagamento.setDtPagamento(new Date());
 		pagamento.setPedido(pedidoVO.getPedido());
-		pagamento.setValorTotalPedido(pedidoVO.getPedido().getValorTotal());
 		this.pedidoVOSelecionado.setPagamento(pagamento);
-		
+
+		if (pagamentoList == null || pagamentoList.isEmpty()) {
+			pagamento.setValorTotalPedido(pedidoVO.getPedido().getValorTotal());
+
+		} else {
+			Pagamento ultimoPagamento = pagamentoList.get(pagamentoList.size() - 1); 
+			pagamento.setValorRestante(ultimoPagamento.getValorRestante());
+			pagamento.setValorTotalPedido(ultimoPagamento.getValorTotalPedido());
+		}
+
 	}
 
-	public void calcularValorRestante(){
-		pedidoVOSelecionado.getPagamento().setValorRestante(pedidoVOSelecionado.getPedido().getValorTotal().subtract(pedidoVOSelecionado.getPagamento().getValorPago()));
+	public void calcularValorRestante() {
+		if (pedidoVOSelecionado.getPagamento().getValorPago() != null) {
+
+			if (pedidoVOSelecionado.getPagamento().getValorRestante() != null) {
+				pedidoVOSelecionado.getPagamento().setValorRestante(pedidoVOSelecionado.getPagamento().getValorRestante()
+						.subtract(pedidoVOSelecionado.getPagamento().getValorPago()));
+			}else {
+				pedidoVOSelecionado.getPagamento().setValorRestante(pedidoVOSelecionado.getPagamento().getValorTotalPedido()
+						.subtract(pedidoVOSelecionado.getPagamento().getValorPago()));
+			}
+			
+		}
 	}
-	
+
 	public void efetuarPagamento() {
 		try {
 			pagamentoServico.salvar(this.pedidoVOSelecionado.getPagamento());
