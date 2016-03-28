@@ -56,7 +56,6 @@ public class PagamentoServico {
 	public void salvar(Pagamento pagamento) {
 		validarPagamento(pagamento);
 		pagamentoRepositorio.salvar(pagamento);
-
 	}
 
 	private void validarPagamento(Pagamento pagamento) {

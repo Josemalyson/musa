@@ -74,7 +74,7 @@ public class ManterPedidoControlador extends CoreControlador {
 
 	public void buscarPedidosPorCliente() {
 		try {
-			pedidolist = new ArrayList<Pedido>();
+			pedidolist = new ArrayList<>();
 
 			if (cliente != null) {
 				pedidolist = pedidoServico.listarPedidosPorCliente(cliente.getId());
@@ -112,11 +112,15 @@ public class ManterPedidoControlador extends CoreControlador {
 		Pagamento pagamento = new Pagamento();
 		pagamento.setDtPagamento(new Date());
 		pagamento.setPedido(pedidoVO.getPedido());
-		pagamento.setValorRestante(pedidoVO.getPedido().getValorTotal());
+		pagamento.setValorTotalPedido(pedidoVO.getPedido().getValorTotal());
 		this.pedidoVOSelecionado.setPagamento(pagamento);
 		
 	}
 
+	public void calcularValorRestante(){
+		pedidoVOSelecionado.getPagamento().setValorRestante(pedidoVOSelecionado.getPedido().getValorTotal().subtract(pedidoVOSelecionado.getPagamento().getValorPago()));
+	}
+	
 	public void efetuarPagamento() {
 		try {
 			pagamentoServico.salvar(this.pedidoVOSelecionado.getPagamento());

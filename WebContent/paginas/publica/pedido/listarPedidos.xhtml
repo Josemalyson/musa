@@ -136,7 +136,12 @@
 						Pago:</label>
 					<div class="col-sm-4">
 						<p:inputText
-							value="#{manterPedidoControlador.pedidoVOSelecionado.pagamento.valorPago}" />
+							value="#{manterPedidoControlador.pedidoVOSelecionado.pagamento.valorPago}">
+							<p:ajax
+								event="blur" 
+								listener="#{manterPedidoControlador.calcularValorRestante()}"
+								update="valorRestante" />
+						</p:inputText>
 					</div>
 				</div>
 
@@ -144,7 +149,7 @@
 					<label class="col-sm-3 control-label obrigatorio">Valor
 						Restante:</label>
 					<div class="col-sm-4">
-						<h:outputText
+						<h:outputText id="valorRestante"
 							value="#{manterPedidoControlador.pedidoVOSelecionado.pagamento.valorRestante}">
 							<f:convertNumber currencySymbol="R$" groupingUsed="true"
 								maxFractionDigits="2" type="currency" locale="pt_BR" />
@@ -157,7 +162,7 @@
 						Total do Pedido:</label>
 					<div class="col-sm-4">
 						<h:outputText
-							value="#{manterPedidoControlador.pedidoVOSelecionado.pedido.valorTotal}">
+							value="#{manterPedidoControlador.pedidoVOSelecionado.pagamento.valorTotalPedido}">
 							<f:convertNumber currencySymbol="R$" groupingUsed="true"
 								maxFractionDigits="2" type="currency" locale="pt_BR" />
 						</h:outputText>

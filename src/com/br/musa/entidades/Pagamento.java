@@ -41,6 +41,9 @@ public class Pagamento extends GenericEntity {
 
 	@Column(name = "NU_VALOR_RESTANTE")
 	private BigDecimal valorRestante;
+	
+	@Column(name = "NU_VALOR_TOTAL_PEDIDO")
+	private BigDecimal valorTotalPedido;
 
 	@Column(name = "DS_OBSERVACAO")
 	private String observacao;
@@ -145,6 +148,14 @@ public class Pagamento extends GenericEntity {
 		} else if (!id.equals(other.id))
 			return false;
 		return true;
+	}
+
+	public BigDecimal getValorTotalPedido() {
+		return valorTotalPedido;
+	}
+
+	public void setValorTotalPedido(BigDecimal valorTotalPedido) {
+		this.valorTotalPedido = valorTotalPedido;
 	}
 
 }
