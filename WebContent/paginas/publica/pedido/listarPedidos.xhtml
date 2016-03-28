@@ -103,7 +103,7 @@
 							<p:commandButton icon="ui-icon-check" title="Efetuar Pagamento"
 								actionListener="#{manterPedidoControlador.selecionarPedidoVO(pedidoVO)}"
 								oncomplete="PF('efetuarPagamento').show();"
-								update="efetuarPagamentoId" />
+								update="efetuarPagamentoId" rendered="#{pedidoVO.pedido.statusPedido.id != 1}" />
 						</div>
 					</p:column>
 				</p:dataTable>

@@ -5,11 +5,15 @@ import java.util.Date;
 import java.util.List;
 
 import javax.inject.Inject;
+import javax.transaction.Transactional;
 
 import com.br.musa.constantes.Constantes;
 import com.br.musa.constantes.MsgConstantes;
 import com.br.musa.entidades.Cliente;
 import com.br.musa.entidades.Pagamento;
+import com.br.musa.entidades.Pedido;
+import com.br.musa.entidades.StatusPedido;
+import com.br.musa.enums.StatusPedidoEnum;
 import com.br.musa.exeption.MusaExecao;
 import com.br.musa.repositorio.PagamentoRepositorio;
 import com.br.musa.util.JavaScriptUtil;
@@ -18,6 +22,10 @@ public class PagamentoServico {
 
 	@Inject
 	private PagamentoRepositorio pagamentoRepositorio;
+	@Inject
+	private PedidoServico pedidoServico;
+	@Inject
+	private StatusPedidoServico statusPedidoServico;
 
 	public List<Pagamento> listarPagamentoPorPedido(Long idPedido) {
 		return pagamentoRepositorio.listarPagamentoPorPedido(idPedido);
@@ -53,9 +61,25 @@ public class PagamentoServico {
 		return isDataValida(dtHoje) && isClienteValido(cliente);
 	}
 
+	@Transactional
 	public void salvar(Pagamento pagamento) {
 		validarPagamento(pagamento);
-		pagamentoRepositorio.salvar(pagamento);
+		Pagamento pagamentoBD = pagamentoRepositorio.salvar(pagamento);
+		verificarSePossivelFinalizarPagamento(pagamentoBD);
+	}
+
+	private void verificarSePossivelFinalizarPagamento(Pagamento pagamentoBD) {
+	
+		if (pagamentoBD.getValorRestante().intValue() == 0) {
+			Pedido pedidoBD = pedidoServico.consultarPorId(pagamentoBD.getPedido());
+			if (pedidoBD != null) {
+				StatusPedido statusPedido = statusPedidoServico.buscarPorCodigo(StatusPedidoEnum.PAGO);
+				pedidoBD.setStatusPedido(statusPedido);
+				pedidoServico.salvar(pedidoBD);
+			}
+			
+		}
+		
 	}
 
 	private void validarPagamento(Pagamento pagamento) {

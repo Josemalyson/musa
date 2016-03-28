@@ -343,4 +343,14 @@ public class PedidoServico {
 	private boolean isPedidoComStatusNaoPago(Pedido pedido) {
 		return pedido.getStatusPedido().getId().equals(StatusPedidoEnum.NAO_PAGO.getCodigo());
 	}
+
+	public Pedido consultarPorId(Pedido pedido) {
+		return pedidoRepositorio.consultarPorId(pedido);
+	}
+
+	@Transactional
+	public void salvar(Pedido pedidoBD) {
+		pedidoRepositorio.salvar(pedidoBD);
+		
+	}
 }
