@@ -16,13 +16,12 @@
 		</ol>
 
 		<h:form prependId="false" id="cliente">
-			<fieldset>
-				<legend>Dados Cadastrais</legend>
-				<div class="panel panel-default">
-					<div class="panel-body">
-
+			<div class="panel panel-default">
+				<fieldset>
+					<legend class="espacamento10PxEsquerda">Dados Cadastrais</legend>
+					<div class="panel-body ">
 						<div class="form-group row ">
-							<label class="col-sm-2 control-label obrigatorio">Nome:</label>
+							<label class="col-sm-2 obrigatorio">Nome:</label>
 							<div class="col-sm-10">
 								<p:inputText id="nome" styleClass="form-control"
 									value="#{clienteControlador.cliente.nome}"></p:inputText>
@@ -57,16 +56,16 @@
 						</div>
 
 						<br />
-
 					</div>
-				</div>
-			</fieldset>
+				</fieldset>
+			</div>
 
-			<br />
 
-			<fieldset>
-				<legend class="obrigatorio">Dados de Contatos</legend>
-				<div class="panel panel-default">
+			<div class="espacamento20Px" />
+
+			<div class="panel panel-default">
+				<fieldset>
+					<legend class="obrigatorio espacamento10PxEsquerda">Dados de Contatos</legend>
 					<div class="panel-body ">
 
 						<p:dataTable widgetVar="tabelaContato" id="contatosCliente"
@@ -109,17 +108,16 @@
 							style="margin-top: 15px;" />
 
 					</div>
-				</div>
 
-			</fieldset>
+				</fieldset>
+			</div>
 
-			<br />
+			<div class="espacamento20Px" />
 
-			<fieldset>
-				<legend>Dados do Endereço</legend>
+			<div class="panel panel-default">
+				<fieldset>
+					<legend class="espacamento10PxEsquerda">Dados do Endereço</legend>
 
-				<div class="panel panel-default">
-					<br />
 					<div class="panel-body">
 
 						<div class="form-group row ">
@@ -180,10 +178,10 @@
 						</div>
 
 					</div>
-				</div>
-			</fieldset>
+				</fieldset>
+			</div>
 
-			<br />
+			<div class="espacamento20Px" />
 
 			<div class="form-inline text-left row">
 				<div class="form-group">
@@ -267,6 +265,7 @@
 
 		</p:confirmDialog>
 
+		<div class="espacamento20Px" />
 
 		<p class="obrigatorio">Campos Obrigatórios</p>
 
