@@ -52,14 +52,16 @@ public class PedidoServico {
 	private static final Logger logger = Logger.getLogger(PedidoServico.class);
 
 	public void validarQuantidadeDoProduto(ProdutoVO produtoVO) {
-		if (produtoVO == null) {
-			produtoVO = new ProdutoVO();
+		ProdutoVO produtoVOTemp = produtoVO;
+		
+		if (produtoVOTemp == null) {
+			produtoVOTemp = new ProdutoVO();
 			Produto produto = new Produto();
-			produtoVO.setProduto(produto);
+			produtoVOTemp.setProduto(produto);
 		}
 		
-		isQuantidadeNula(produtoVO);
-		isQuantidadeZero(produtoVO);
+		isQuantidadeNula(produtoVOTemp);
+		isQuantidadeZero(produtoVOTemp);
 	}
 
 	private void isQuantidadeZero(ProdutoVO produtoVO) {
@@ -352,5 +354,29 @@ public class PedidoServico {
 	public void salvar(Pedido pedidoBD) {
 		pedidoRepositorio.salvar(pedidoBD);
 		
+	}
+
+	public void verificarcalculoDoValorRestante(PedidoVO pedidoVOSelecionado) {
+		
+		if (pedidoVOSelecionado.getPagamento().getValorPago().intValue() > pedidoVOSelecionado.getPagamento().getValorRestante().intValue()) {
+			throw new MusaExecao(MsgConstantes.PAGAMENTO_MAIOR_QUE_VALOR_RESTANTE);
+		}
+		
+		if (pedidoVOSelecionado.getPagamento().getValorPago().intValue() <= 0) {
+			throw new MusaExecao(MsgConstantes.PAGAMENTO_COM_VALOR_IGUAL_OU_MENOR_QUE_ZERO);
+		}
+		
+		calcularValorRestanteDoPedidoAposValidacoes(pedidoVOSelecionado);
+		
+	}
+
+	private void calcularValorRestanteDoPedidoAposValidacoes(PedidoVO pedidoVOSelecionado) {
+		if (pedidoVOSelecionado.getPagamento().getValorRestante() != null) {
+			pedidoVOSelecionado.getPagamento().setValorRestante(pedidoVOSelecionado.getPagamento()
+					.getValorRestante().subtract(pedidoVOSelecionado.getPagamento().getValorPago()));
+		} else {
+			pedidoVOSelecionado.getPagamento().setValorRestante(pedidoVOSelecionado.getPagamento()
+					.getValorTotalPedido().subtract(pedidoVOSelecionado.getPagamento().getValorPago()));
+		}
 	}
 }

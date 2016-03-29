@@ -45,6 +45,9 @@ public class ManterPedidoControlador extends CoreControlador {
 	private List<PedidoVO> pedidoVOlist;
 	private List<Pedido> pedidolist;
 	private List<Cliente> clienteList;
+	private List<Pagamento> pagamentoList;
+	// FLAGS
+	private boolean flValorPago;
 
 	@PostConstruct
 	public void init() {
@@ -52,6 +55,8 @@ public class ManterPedidoControlador extends CoreControlador {
 		listarClientes();
 		montarPedidosVO();
 		cliente = new Cliente();
+		flValorPago = false;
+		pagamentoList = new ArrayList<>();
 
 	}
 
@@ -110,7 +115,7 @@ public class ManterPedidoControlador extends CoreControlador {
 		this.pedidoVOSelecionado = new PedidoVO();
 		this.pedidoVOSelecionado = pedidoVO;
 
-		List<Pagamento> pagamentoList = pagamentoServico.listarPagamentoPorPedido(pedidoVO.getPedido().getId());
+		listarPagamentosPorPedido(pedidoVO);
 
 		Pagamento pagamento = new Pagamento();
 		pagamento.setDtPagamento(new Date());
@@ -121,24 +126,30 @@ public class ManterPedidoControlador extends CoreControlador {
 			pagamento.setValorTotalPedido(pedidoVO.getPedido().getValorTotal());
 
 		} else {
-			Pagamento ultimoPagamento = pagamentoList.get(pagamentoList.size() - 1); 
+			Pagamento ultimoPagamento = pagamentoList.get(pagamentoList.size() - 1);
 			pagamento.setValorRestante(ultimoPagamento.getValorRestante());
 			pagamento.setValorTotalPedido(ultimoPagamento.getValorTotalPedido());
 		}
 
+		flValorPago = false;
+	}
+
+	private void listarPagamentosPorPedido(PedidoVO pedidoVO) {
+		pagamentoList = pagamentoServico.listarPagamentoPorPedido(pedidoVO.getPedido().getId());
 	}
 
 	public void calcularValorRestante() {
 		if (pedidoVOSelecionado.getPagamento().getValorPago() != null) {
-
-			if (pedidoVOSelecionado.getPagamento().getValorRestante() != null) {
-				pedidoVOSelecionado.getPagamento().setValorRestante(pedidoVOSelecionado.getPagamento().getValorRestante()
-						.subtract(pedidoVOSelecionado.getPagamento().getValorPago()));
-			}else {
-				pedidoVOSelecionado.getPagamento().setValorRestante(pedidoVOSelecionado.getPagamento().getValorTotalPedido()
-						.subtract(pedidoVOSelecionado.getPagamento().getValorPago()));
+			try {
+				pedidoServico.verificarcalculoDoValorRestante(pedidoVOSelecionado);
+				flValorPago = true;
+			} catch (MusaExecao e) {
+				logger.error(e.getMessage(), e);
+				adicionarErro(e.getMessage());
+				flValorPago = false;
+				return;
 			}
-			
+
 		}
 	}
 
@@ -154,6 +165,14 @@ public class ManterPedidoControlador extends CoreControlador {
 			logger.error(e.getMessage(), e);
 			adicionarErro(e.getMessage());
 		}
+	}
+
+	public void limparValorPago() {
+		pedidoVOSelecionado.setPagamento(pagamentoList.get(pagamentoList.size()-1));
+		pedidoVOSelecionado.getPagamento().setDtPagamento(new Date());
+		pedidoVOSelecionado.getPagamento().setObservacao(Constantes.STRING_VAZIA);
+		pedidoVOSelecionado.getPagamento().setValorPago(null);
+		flValorPago = false;
 	}
 
 	public List<PedidoVO> getPedidoVOlist() {
@@ -186,6 +205,22 @@ public class ManterPedidoControlador extends CoreControlador {
 
 	public void setPedidoVOSelecionado(PedidoVO pedidoVOSelecionado) {
 		this.pedidoVOSelecionado = pedidoVOSelecionado;
+	}
+
+	public boolean isFlValorPago() {
+		return flValorPago;
+	}
+
+	public void setFlValorPago(boolean flValorPago) {
+		this.flValorPago = flValorPago;
+	}
+
+	public List<Pagamento> getPagamentoList() {
+		return pagamentoList;
+	}
+
+	public void setPagamentoList(List<Pagamento> pagamentoList) {
+		this.pagamentoList = pagamentoList;
 	}
 
 }

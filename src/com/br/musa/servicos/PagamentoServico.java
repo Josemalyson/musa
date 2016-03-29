@@ -119,4 +119,8 @@ public class PagamentoServico {
 		}
 	}
 
+	public Pagamento consultarPagamentoPorID(Pagamento pagamento) {
+		return pagamentoRepositorio.consultarPorId(pagamento);
+	}
+
 }

@@ -121,7 +121,7 @@
 			<h:form id="formModalPagamento" prependId="false">
 
 				<div class="form-group row ">
-					<label class="col-sm-3 control-label obrigatorio"> Dados do
+					<label class="col-sm-3 control-label"> Dados do
 						Cliente </label>
 					<div class="col-sm-9">
 						<h:outputText
@@ -133,17 +133,22 @@
 					<label class="col-sm-3 control-label obrigatorio">Valor
 						Pago:</label>
 					<div class="col-sm-4">
-						<p:inputText
-							value="#{manterPedidoControlador.pedidoVOSelecionado.pagamento.valorPago}">
+						<p:inputText id="valorPagoID"
+							value="#{manterPedidoControlador.pedidoVOSelecionado.pagamento.valorPago}"
+							disabled="#{manterPedidoControlador.flValorPago}">
 							<p:ajax event="blur"
 								listener="#{manterPedidoControlador.calcularValorRestante()}"
-								update="valorRestante" />
+								update="formModalPagamento" global="false" />
 						</p:inputText>
+						<p:commandButton id="botaoLimparValorPago" icon="ui-icon-pencil"
+							update="valorRestante valorPagoID" title="Limpar Valor Pago"
+							styleClass="btn btn-success btn-sm" global="false"
+							actionListener="#{manterPedidoControlador.limparValorPago()}" />
 					</div>
 				</div>
 
 				<div class="form-group row ">
-					<label class="col-sm-3 control-label obrigatorio">Valor
+					<label class="col-sm-3 control-label">Valor
 						Restante:</label>
 					<div class="col-sm-4">
 						<h:outputText id="valorRestante"
@@ -155,7 +160,7 @@
 				</div>
 
 				<div class="form-group row ">
-					<label class="col-sm-3 control-label obrigatorio">Valor
+					<label class="col-sm-3 control-label">Valor
 						Total do Pedido:</label>
 					<div class="col-sm-4">
 						<h:outputText
@@ -167,7 +172,7 @@
 				</div>
 
 				<div class="form-group row ">
-					<label class="col-sm-3 control-label obrigatorio">Data do
+					<label class="col-sm-3 control-label">Data do
 						pagamento</label>
 					<h:outputText
 						value="#{manterPedidoControlador.pedidoVOSelecionado.pagamento.dtPagamento}">
