@@ -105,104 +105,11 @@
 						</h:outputText>
 					</p:column>
 
-					<p:column headerText="Opções" styleClass="text-center">
-						<div class="form-inline">
-							<span class="btn-group"> <p:commandButton
-									icon="ui-icon-pencil" title="Editar"
-									oncomplete="PF('incluirProduto').show();"
-									actionListener="#{manterProdutoControlador.selecionarProduto(produto)}"
-									update="incluirProduto" /> <p:commandButton
-									icon="ui-icon-trash" title="Excluir"
-									actionListener="#{manterProdutoControlador.selecionarProduto(produto)}"
-									oncomplete="PF('confirmarExclusaoProduto').show();" />
-							</span>
-						</div>
-					</p:column>
 				</p:dataTable>
 			</div>
 
 			<div class="espacamento20Px" />
 
 		</h:form>
-
-
-		<!-- MODAL PRODUTO  -->
-
-		<p:dialog modal="true" widgetVar="incluirProduto" id="incluirProduto"
-			closable="true" draggable="false" width="700"
-			header="Incluir Novo Produto" resizable="false">
-			<h:form id="formModalIncluirProduto" prependId="false">
-
-				<div class="form-group row ">
-					<label class="col-sm-3 control-label obrigatorio">Descrição
-						Produto:</label>
-					<div class="col-sm-9">
-						<p:inputText id="produto" styleClass="form-control"
-							value="#{manterProdutoControlador.produto.descricaoProduto}" />
-					</div>
-				</div>
-
-				<div class="form-group row ">
-					<label class="col-sm-3 control-label obrigatorio">Preço de
-						Custo:</label>
-					<div class="col-sm-4">
-						<p:inputText id="precoCusto" placeholder="1200.00"
-							value="#{manterProdutoControlador.produto.precoCusto}" />
-					</div>
-				</div>
-
-				<div class="form-group row ">
-					<label class="col-sm-3 control-label obrigatorio">Preço de
-						Venda:</label>
-					<div class="col-sm-4">
-						<p:inputText id="precoVenda" placeholder="1200.00"
-							value="#{manterProdutoControlador.produto.precoVenda}" />
-					</div>
-				</div>
-
-
-				<div class="espacamento20Px" />
-
-				<div class="form-group text-center">
-					<p:commandButton id="btnConfirma" value="Confirmar"
-						styleClass="btn btn-success"
-						actionListener="#{manterProdutoControlador.salvarProduto()}"
-						update="tabelaPagamento" />
-
-					<p:commandButton id="btnCancela" value="Cancelar"
-						styleClass="btn btn-danger"
-						oncomplete="PF('incluirProduto').hide();" />
-				</div>
-
-				<div class="espacamento20Px" />
-
-				<p class="obrigatorio">Campos Obrigatórios</p>
-			</h:form>
-		</p:dialog>
-
-
-		<!-- DIALOG EXCLUSAO PRODUTO -->
-
-		<h:form id="confirmExclusaoForm" prependId="false">
-			<p:confirmDialog widgetVar="confirmarExclusaoProduto"
-				header="Excluir Produto" icon="ui-icon-alert"
-				id="confirmarExclusaoProduto"
-				message="Confirmar Exclusão deste item?" closable="false">
-				<div class="form-inline botoesSalvarCancelar">
-					<p:commandButton id="btnConfirmaExclusaoProduto" value="Confirmar"
-						styleClass="btn btn-success"
-						actionListener="#{manterProdutoControlador.excluirProduto()}"
-						update="tabelaPagamento" ajax="false"
-						oncomplete="PF('confirmarExclusaoProduto').hide();" />
-
-					<p:commandButton id="btnCancelaExclusaoProduto" value="Cancelar"
-						styleClass="btn btn-danger"
-						oncomplete="PF('confirmarExclusaoProduto').hide();" />
-
-				</div>
-			</p:confirmDialog>
-		</h:form>
-
-
 	</ui:define>
 </ui:composition>
