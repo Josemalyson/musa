@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.List;
 
 import javax.inject.Inject;
+import javax.inject.Provider;
 import javax.transaction.Transactional;
 
 import com.br.musa.constantes.Constantes;
@@ -22,8 +23,15 @@ public class PagamentoServico {
 
 	@Inject
 	private PagamentoRepositorio pagamentoRepositorio;
+
+	/**
+	 * Provider é utilizado para corrigir o erro de Injeções circulares quando
+	 * existe beans que injentam um ao outro.
+	 */
+
 	@Inject
-	private PedidoServico pedidoServico;
+	private Provider<PedidoServico> pedidoServico;
+
 	@Inject
 	private StatusPedidoServico statusPedidoServico;
 
@@ -69,17 +77,17 @@ public class PagamentoServico {
 	}
 
 	private void verificarSePossivelFinalizarPagamento(Pagamento pagamentoBD) {
-	
+
 		if (pagamentoBD.getValorRestante().intValue() == 0) {
-			Pedido pedidoBD = pedidoServico.consultarPorId(pagamentoBD.getPedido());
+			Pedido pedidoBD = pedidoServico.get().consultarPorId(pagamentoBD.getPedido());
 			if (pedidoBD != null) {
 				StatusPedido statusPedido = statusPedidoServico.buscarPorCodigo(StatusPedidoEnum.PAGO);
 				pedidoBD.setStatusPedido(statusPedido);
-				pedidoServico.salvar(pedidoBD);
+				pedidoServico.get().salvar(pedidoBD);
 			}
-			
+
 		}
-		
+
 	}
 
 	private void validarPagamento(Pagamento pagamento) {
@@ -89,12 +97,12 @@ public class PagamentoServico {
 
 	private void camposObrigatorios(Pagamento pagamento) {
 		StringBuilder erro = new StringBuilder();
-		
+
 		if (pagamento.getValorPago() == null) {
 			erro.append("Preencher campo Valor Pago.").append(Constantes.TAG_BR);
 			JavaScriptUtil.marcarCampoObrigatorio("valorPago");
 		}
-		
+
 		if (pagamento.getObservacao() == null || pagamento.getObservacao().isEmpty()) {
 			erro.append("Preencher campo Observação.").append(Constantes.TAG_BR);
 			JavaScriptUtil.marcarCampoObrigatorio("observacao");
@@ -105,7 +113,7 @@ public class PagamentoServico {
 	}
 
 	private void isPagamentoValido(Pagamento pagamento) {
-		
+
 		if (pagamento.getValorPago().intValue() < 0) {
 			throw new MusaExecao(MsgConstantes.VALOR_PAGO_DIFERENTE_ZERO);
 		}

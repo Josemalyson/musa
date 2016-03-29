@@ -146,6 +146,8 @@ public class ManterPedidoControlador extends CoreControlador {
 		try {
 			pagamentoServico.salvar(this.pedidoVOSelecionado.getPagamento());
 			adicionarMensagem(MsgConstantes.MSG_SUCESSO);
+			listarPedido();
+			montarPedidosVO();
 			RequestContext.getCurrentInstance().update("tabelaPedido");
 			RequestContext.getCurrentInstance().execute("PF('efetuarPagamento').hide();");
 		} catch (MusaExecao e) {
