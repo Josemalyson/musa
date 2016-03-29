@@ -10,6 +10,7 @@ import javax.inject.Inject;
 
 import org.jboss.logging.Logger;
 
+import com.br.musa.constantes.MsgConstantes;
 import com.br.musa.entidades.Cliente;
 import com.br.musa.entidades.Pagamento;
 import com.br.musa.servicos.ClienteServico;
@@ -56,6 +57,9 @@ public class PagamentoControlador extends CoreControlador {
 
 	public void listarPagamentos() {
 		pagamentoList = pagamentoServico.filtarPagamentos(dtHoje, cliente);
+		if (pagamentoList == null || pagamentoList.isEmpty() ) {
+			adicionarAviso(MsgConstantes.NAO_HA_PEDIDOS_PESQUISADOS);
+		}
 	}
 
 	public void limparFiltros(){
