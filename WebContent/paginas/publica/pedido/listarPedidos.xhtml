@@ -94,7 +94,7 @@
 					<h:outputText value="#{pedidoVO.pagamento.observacao}" />
 				</p:column>
 
-				<p:column headerText="Opções" styleClass="text-center">
+				<p:column headerText="Opções" styleClass="text-center" exportable="false">
 					<div class="form-inline">
 						<p:commandButton icon="ui-icon-pencil" title="Editar"
 							action="#{manterPedidoControlador.editarPedido(pedidoVO.pedido)}" />
@@ -111,6 +111,28 @@
 			</p:dataTable>
 
 			<div class="espacamento20Px" />
+
+			<p>Exportar Dados</p>
+			<h:commandLink>
+				<p:graphicImage value="/imagens/excel.png" style="width: 30px;" />
+				<p:dataExporter type="xls" target="tabelaPedido"
+					fileName="Tabela Pedido" pageOnly="true" encoding="ISO-8859-1" />
+			</h:commandLink>
+
+			<h:commandLink>
+				<p:graphicImage value="/imagens/pdf.png" style="width: 30px;" />
+				<p:dataExporter type="pdf" target="tabelaPedido"
+					fileName="Tabela Pedido" pageOnly="true" encoding="ISO-8859-1" />
+			</h:commandLink>
+
+			<h:commandLink>
+				<p:graphicImage value="/imagens/csv.png" style="width: 30px;" />
+				<p:dataExporter type="csv" target="tabelaPedido"
+					fileName="Tabela Pedido" pageOnly="true" encoding="ISO-8859-1" />
+			</h:commandLink>
+
+			<div class="espacamento20Px" />
+
 		</h:form>
 
 
@@ -204,8 +226,6 @@
 				<p class="obrigatorio">Campos Obrigatórios</p>
 			</h:form>
 		</p:dialog>
-
-
 
 	</ui:define>
 </ui:composition>

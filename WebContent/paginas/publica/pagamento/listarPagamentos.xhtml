@@ -110,6 +110,27 @@
 
 			<div class="espacamento20Px" />
 
+			<p>Exportar Dados</p>
+			<h:commandLink>
+				<p:graphicImage value="/imagens/excel.png" style="width: 30px;" />
+				<p:dataExporter type="xls" target="tabelaPagamento"
+					fileName="Tabela Pagamento" pageOnly="true" encoding="ISO-8859-1" />
+			</h:commandLink>
+
+			<h:commandLink>
+				<p:graphicImage value="/imagens/pdf.png" style="width: 30px;" />
+				<p:dataExporter type="pdf" target="tabelaPagamento"
+					fileName="Tabela Pagamento" pageOnly="true" encoding="ISO-8859-1" />
+			</h:commandLink>
+
+			<h:commandLink>
+				<p:graphicImage value="/imagens/csv.png" style="width: 30px;" />
+				<p:dataExporter type="csv" target="tabelaPagamento"
+					fileName="Tabela Pagamento" pageOnly="true" encoding="ISO-8859-1" />
+			</h:commandLink>
 		</h:form>
+		
+		<div class="espacamento20Px" />
+		
 	</ui:define>
 </ui:composition>

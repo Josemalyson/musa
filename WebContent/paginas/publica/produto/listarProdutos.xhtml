@@ -63,7 +63,7 @@
 						</h:outputText>
 					</p:column>
 
-					<p:column headerText="Opções" styleClass="text-center">
+					<p:column headerText="Opções" styleClass="text-center" exportable="false">
 						<div class="form-inline">
 							<span class="btn-group"> <p:commandButton
 									icon="ui-icon-pencil" title="Editar"
@@ -78,6 +78,27 @@
 					</p:column>
 				</p:dataTable>
 			</div>
+
+			<div class="espacamento20Px" />
+
+			<p>Exportar Dados</p>
+			<h:commandLink>
+				<p:graphicImage value="/imagens/excel.png" style="width: 30px;" />
+				<p:dataExporter type="xls" target="tabelaProduto"
+					fileName="Tabela Produto" pageOnly="true" encoding="ISO-8859-1" />
+			</h:commandLink>
+
+			<h:commandLink>
+				<p:graphicImage value="/imagens/pdf.png" style="width: 30px;" />
+				<p:dataExporter type="pdf" target="tabelaProduto"
+					fileName="Tabela Produto" pageOnly="true" encoding="ISO-8859-1" />
+			</h:commandLink>
+
+			<h:commandLink>
+				<p:graphicImage value="/imagens/csv.png" style="width: 30px;" />
+				<p:dataExporter type="csv" target="tabelaProduto"
+					fileName="Tabela Produto" pageOnly="true" encoding="ISO-8859-1" />
+			</h:commandLink>
 
 			<div class="espacamento20Px" />
 
