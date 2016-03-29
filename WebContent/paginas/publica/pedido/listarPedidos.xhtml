@@ -138,7 +138,7 @@
 							disabled="#{manterPedidoControlador.flValorPago}">
 							<p:ajax event="blur"
 								listener="#{manterPedidoControlador.calcularValorRestante()}"
-								update="formModalPagamento" global="false" />
+								update="formModalPagamento" global="false" process="valorPagoID"/>
 						</p:inputText>
 						<p:commandButton id="botaoLimparValorPago" icon="ui-icon-pencil"
 							update="valorRestante valorPagoID" title="Limpar Valor Pago"

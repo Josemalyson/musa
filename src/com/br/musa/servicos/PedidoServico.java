@@ -53,19 +53,19 @@ public class PedidoServico {
 
 	public void validarQuantidadeDoProduto(ProdutoVO produtoVO) {
 		ProdutoVO produtoVOTemp = produtoVO;
-		
+
 		if (produtoVOTemp == null) {
 			produtoVOTemp = new ProdutoVO();
 			Produto produto = new Produto();
 			produtoVOTemp.setProduto(produto);
 		}
-		
+
 		isQuantidadeNula(produtoVOTemp);
 		isQuantidadeZero(produtoVOTemp);
 	}
 
 	private void isQuantidadeZero(ProdutoVO produtoVO) {
-		if (produtoVO.getQuantidadeProduto() <= 0 ) {
+		if (produtoVO.getQuantidadeProduto() <= 0) {
 			throw new MusaExecao(MsgConstantes.ERRO_QUANTIDADE_ZERO);
 		}
 	}
@@ -258,9 +258,9 @@ public class PedidoServico {
 		List<Pagamento> pagamentosBDList = pagamentoServico.listarPagamentoPorPedido(pedido.getId());
 
 		Pagamento pagamento = new Pagamento();
-		
+
 		if (pagamentosBDList != null && !pagamentosBDList.isEmpty()) {
-			pagamento = pagamentosBDList.get(pagamentosBDList.size()-1); 
+			pagamento = pagamentosBDList.get(pagamentosBDList.size() - 1);
 			return pagamento;
 		}
 
@@ -333,11 +333,11 @@ public class PedidoServico {
 
 	@Transactional
 	public void excluir(Pedido pedido) {
-		
+
 		if (isPedidoComStatusNaoPago(pedido)) {
 			throw new MusaExecao(MsgConstantes.NAO_PODE_EXCLUIR_PEDIDO_NAO_PAGO);
 		}
-		
+
 		pedido.setFlExcluido(true);
 		pedidoRepositorio.salvar(pedido);
 	}
@@ -353,30 +353,45 @@ public class PedidoServico {
 	@Transactional
 	public void salvar(Pedido pedidoBD) {
 		pedidoRepositorio.salvar(pedidoBD);
-		
+
 	}
 
 	public void verificarcalculoDoValorRestante(PedidoVO pedidoVOSelecionado) {
-		
-		if (pedidoVOSelecionado.getPagamento().getValorPago().intValue() > pedidoVOSelecionado.getPagamento().getValorRestante().intValue()) {
-			throw new MusaExecao(MsgConstantes.PAGAMENTO_MAIOR_QUE_VALOR_RESTANTE);
-		}
-		
+
 		if (pedidoVOSelecionado.getPagamento().getValorPago().intValue() <= 0) {
 			throw new MusaExecao(MsgConstantes.PAGAMENTO_COM_VALOR_IGUAL_OU_MENOR_QUE_ZERO);
 		}
-		
+
+		if (pedidoVOSelecionado.getPagamento().getValorRestante() != null) {
+			if (pedidoVOSelecionado.getPagamento().getValorPago().intValue() > pedidoVOSelecionado.getPagamento()
+					.getValorRestante().intValue()) {
+				throw new MusaExecao(MsgConstantes.PAGAMENTO_MAIOR_QUE_VALOR_RESTANTE);
+			}
+
+		}else if(pedidoVOSelecionado.getPagamento().getValorPago().intValue() > pedidoVOSelecionado.getPedido().getValorTotal().intValue()) {
+			throw new MusaExecao(MsgConstantes.PAGAMENTO_MAIOR_QUE_VALOR_TOTAL);
+		}
+
 		calcularValorRestanteDoPedidoAposValidacoes(pedidoVOSelecionado);
-		
 	}
 
 	private void calcularValorRestanteDoPedidoAposValidacoes(PedidoVO pedidoVOSelecionado) {
-		if (pedidoVOSelecionado.getPagamento().getValorRestante() != null) {
-			pedidoVOSelecionado.getPagamento().setValorRestante(pedidoVOSelecionado.getPagamento()
-					.getValorRestante().subtract(pedidoVOSelecionado.getPagamento().getValorPago()));
+
+		List<Pagamento> listPagamento = pagamentoServico
+				.listarPagamentoPorPedido(pedidoVOSelecionado.getPedido().getId());
+
+		if (listPagamento != null && !listPagamento.isEmpty()) {
+			Pagamento ultimoPagamento = listPagamento.get(0);
+			pedidoVOSelecionado.getPagamento().setValorRestante(
+					ultimoPagamento.getValorRestante().subtract(pedidoVOSelecionado.getPagamento().getValorPago()));
 		} else {
-			pedidoVOSelecionado.getPagamento().setValorRestante(pedidoVOSelecionado.getPagamento()
-					.getValorTotalPedido().subtract(pedidoVOSelecionado.getPagamento().getValorPago()));
+			Pedido pedidoBD = pedidoRepositorio.consultarPorId(pedidoVOSelecionado.getPedido());
+
+			pedidoVOSelecionado.getPagamento().setValorRestante(null);
+			pedidoVOSelecionado.getPagamento().setValorTotalPedido(pedidoBD.getValorTotal());
+
+			pedidoVOSelecionado.getPagamento().setValorRestante(
+					pedidoBD.getValorTotal().subtract(pedidoVOSelecionado.getPagamento().getValorPago()));
 		}
 	}
 }

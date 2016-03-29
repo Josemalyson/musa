@@ -24,7 +24,7 @@ public class PagamentoRepositorio extends CustomGenericDAOImpl<Pagamento> {
 
 	public List<Pagamento> listarPagamentoPorPedido(Long idPedido) {
 		StringBuilder consulta = new StringBuilder();
-		consulta.append(" SELECT P.* FROM MUSA.TB_MUSA_PAGAMENTO P WHERE P.FK_PEDIDO = :idPedido ");
+		consulta.append(" SELECT P.* FROM MUSA.TB_MUSA_PAGAMENTO P WHERE P.FK_PEDIDO = :idPedido ORDER BY P.DT_PAGAMENTO DESC");
 		Query query = obterEntityManager().createNativeQuery(consulta.toString(), Pagamento.class);
 		query.setParameter("idPedido", idPedido);
 		return query.getResultList();

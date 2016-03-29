@@ -115,7 +115,7 @@ public class ManterPedidoControlador extends CoreControlador {
 		this.pedidoVOSelecionado = new PedidoVO();
 		this.pedidoVOSelecionado = pedidoVO;
 
-		listarPagamentosPorPedido(pedidoVO);
+		listarPagamentosPorPedido(pedidoVO.getPedido().getId());
 
 		Pagamento pagamento = new Pagamento();
 		pagamento.setDtPagamento(new Date());
@@ -126,7 +126,7 @@ public class ManterPedidoControlador extends CoreControlador {
 			pagamento.setValorTotalPedido(pedidoVO.getPedido().getValorTotal());
 
 		} else {
-			Pagamento ultimoPagamento = pagamentoList.get(pagamentoList.size() - 1);
+			Pagamento ultimoPagamento = pagamentoList.get(0);
 			pagamento.setValorRestante(ultimoPagamento.getValorRestante());
 			pagamento.setValorTotalPedido(ultimoPagamento.getValorTotalPedido());
 		}
@@ -134,8 +134,8 @@ public class ManterPedidoControlador extends CoreControlador {
 		flValorPago = false;
 	}
 
-	private void listarPagamentosPorPedido(PedidoVO pedidoVO) {
-		pagamentoList = pagamentoServico.listarPagamentoPorPedido(pedidoVO.getPedido().getId());
+	private void listarPagamentosPorPedido(Long id) {
+		pagamentoList = pagamentoServico.listarPagamentoPorPedido(id);
 	}
 
 	public void calcularValorRestante() {
@@ -147,9 +147,7 @@ public class ManterPedidoControlador extends CoreControlador {
 				logger.error(e.getMessage(), e);
 				adicionarErro(e.getMessage());
 				flValorPago = false;
-				return;
 			}
-
 		}
 	}
 
@@ -168,7 +166,17 @@ public class ManterPedidoControlador extends CoreControlador {
 	}
 
 	public void limparValorPago() {
-		pedidoVOSelecionado.setPagamento(pagamentoList.get(pagamentoList.size()-1));
+		
+		listarPagamentosPorPedido(pedidoVOSelecionado.getPedido().getId());
+		
+		if (pagamentoList != null && !pagamentoList.isEmpty()) {
+			pedidoVOSelecionado.setPagamento(pagamentoList.get(0));
+		}else {
+			pedidoVOSelecionado.getPagamento().setValorRestante(null);
+			pedidoVOSelecionado.getPagamento().setValorTotalPedido(pedidoVOSelecionado.getPedido().getValorTotal());
+			
+		}
+		
 		pedidoVOSelecionado.getPagamento().setDtPagamento(new Date());
 		pedidoVOSelecionado.getPagamento().setObservacao(Constantes.STRING_VAZIA);
 		pedidoVOSelecionado.getPagamento().setValorPago(null);
