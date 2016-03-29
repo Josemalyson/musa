@@ -1,5 +1,7 @@
 package com.br.musa.repositorio;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -44,18 +46,20 @@ public class PagamentoRepositorio extends CustomGenericDAOImpl<Pagamento> {
 		StringBuilder consulta = new StringBuilder();
 		consulta.append(" SELECT PA.*  FROM MUSA.TB_MUSA_PAGAMENTO PA INNER JOIN MUSA.tb_musa_pedido PE")
 				.append(" INNER JOIN MUSA.tb_musa_cliente C WHERE PA.FK_PEDIDO=PE.ID_PEDIDO ")
-				.append(" AND C.ID_CLIENTE=PE.FK_CLIENTE AND PA.DT_PAGAMENTO = :data AND C.ID_CLIENTE = :cliente");
+				.append(" AND C.ID_CLIENTE=PE.FK_CLIENTE AND DATE_FORMAT(PA.DT_PAGAMENTO,'%d/%m/%Y') = :data AND C.ID_CLIENTE = :cliente");
 		Query query = obterEntityManager().createNativeQuery(consulta.toString(), Pagamento.class);
-		query.setParameter("data", data);
+		SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+		query.setParameter("data", dateFormat.format(data));
 		query.setParameter("cliente", cliente.getId());
 		return query.getResultList();
 	}
 
 	public List<Pagamento> obterPagamentosPorData(Date data) {
 		StringBuilder consulta = new StringBuilder();
-		consulta.append(" SELECT PA.* FROM MUSA.TB_MUSA_PAGAMENTO PA WHERE PA.DT_PAGAMENTO =:data ");
+		consulta.append(" SELECT PA.* FROM MUSA.TB_MUSA_PAGAMENTO PA WHERE DATE_FORMAT(PA.DT_PAGAMENTO,'%d/%m/%Y') = :data ");
 		Query query = obterEntityManager().createNativeQuery(consulta.toString(), Pagamento.class);
-		query.setParameter("data", data);
+		SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+		query.setParameter("data", dateFormat.format(data));
 		return query.getResultList();
 	}
 }

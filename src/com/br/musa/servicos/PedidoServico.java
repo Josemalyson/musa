@@ -260,7 +260,7 @@ public class PedidoServico {
 		Pagamento pagamento = new Pagamento();
 
 		if (pagamentosBDList != null && !pagamentosBDList.isEmpty()) {
-			pagamento = pagamentosBDList.get(pagamentosBDList.size() - 1);
+			pagamento = pagamentosBDList.get(0);
 			return pagamento;
 		}
 
