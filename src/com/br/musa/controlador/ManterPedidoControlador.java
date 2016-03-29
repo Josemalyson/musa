@@ -43,6 +43,7 @@ public class ManterPedidoControlador extends CoreControlador {
 	private PedidoVO pedidoVOSelecionado;
 	// LISTAS
 	private List<PedidoVO> pedidoVOlist;
+	private List<PedidoVO> pedidoVOlistFiltrados;
 	private List<Pedido> pedidolist;
 	private List<Cliente> clienteList;
 	private List<Pagamento> pagamentoList;
@@ -229,6 +230,14 @@ public class ManterPedidoControlador extends CoreControlador {
 
 	public void setPagamentoList(List<Pagamento> pagamentoList) {
 		this.pagamentoList = pagamentoList;
+	}
+
+	public List<PedidoVO> getPedidoVOlistFiltrados() {
+		return pedidoVOlistFiltrados;
+	}
+
+	public void setPedidoVOlistFiltrados(List<PedidoVO> pedidoVOlistFiltrados) {
+		this.pedidoVOlistFiltrados = pedidoVOlistFiltrados;
 	}
 
 }

@@ -56,8 +56,7 @@
 				<p:commandButton value="Consultar" update="tabelaPagamento"
 					styleClass="btn btn-success btn-sm"
 					actionListener="#{pagamentoControlador.listarPagamentos()}" />
-				<p:commandButton value="Limpar Filtros"
-					update="dtHojeId clienteId tabelaPagamento"
+				<p:commandButton value="Limpar Filtros" update="@form"
 					styleClass="btn btn-primary btn-sm"
 					actionListener="#{pagamentoControlador.limparFiltros()}" />
 			</div>
@@ -67,15 +66,24 @@
 			<div class="table-responsive">
 				<p:dataTable widgetVar="tabelaPagamento" id="tabelaPagamento"
 					var="pagamento" tableStyleClass="table table-hover table-bordered"
-					value="#{pagamentoControlador.pagamentoList}"
+					value="#{pagamentoControlador.pagamentoList}" reflow="true"
+					filteredValue="#{pagamentoControlador.pagamentoListFiltrados}"
+					filterMatchMode="contains" reflow="true"
 					emptyMessage="Nenhum Pagamento encontrado." paginator="true"
 					paginatorAlwaysVisible="true" pageLinks="10" rows="10"
 					rowsPerPageTemplate="10,30,50" paginatorPosition="bottom">
 
 
-					<p:column headerText="Data do Pagamento" styleClass="text-center">
+					<p:column headerText="Código do Pedido" styleClass="text-center"
+						filterBy="#{pagamento.pedido.id}">
+						<h:outputText value="#{pagamento.pedido.id}" />
+					</p:column>
+
+					<p:column headerText="Data do Pagamento" styleClass="text-center"
+						sortBy="#{pagamento.dtPagamento}">
 						<h:outputText value="#{pagamento.dtPagamento}">
-							<f:convertDateTime dateStyle="full" type="both" locale="pt_BR" timeZone="Brazil/East"/>
+							<f:convertDateTime dateStyle="full" type="both" locale="pt_BR"
+								timeZone="Brazil/East" />
 						</h:outputText>
 					</p:column>
 

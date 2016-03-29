@@ -33,7 +33,7 @@
 
 			<p:dataTable widgetVar="tabelaCliente" id="tabelaCliente"
 				var="clienteVO" tableStyleClass="table table-hover table-bordered"
-				value="#{manterClienteControlador.clienteVOlist}"
+				value="#{manterClienteControlador.clienteVOlist}" reflow="true"
 				emptyMessage="Nenhum cliente encontrado." paginator="true"
 				paginatorAlwaysVisible="true" pageLinks="10" rows="10"
 				rowsPerPageTemplate="10,30,50" paginatorPosition="bottom"

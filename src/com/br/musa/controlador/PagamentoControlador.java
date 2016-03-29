@@ -37,6 +37,7 @@ public class PagamentoControlador extends CoreControlador {
 
 	// LISTA
 	private List<Pagamento> pagamentoList;
+	private List<Pagamento> pagamentoListFiltrados;
 	private List<Cliente> clienteList;
 
 	private static final Logger logger = Logger.getLogger(PagamentoControlador.class);
@@ -49,7 +50,7 @@ public class PagamentoControlador extends CoreControlador {
 		dtMax = new Date();
 
 	}
-	
+
 	public List<Cliente> autoCompleteCliente(String query) {
 		clienteList = clienteServico.listarTodosClientes();
 		return clienteServico.autoCompleteClienteServico(query, clienteList);
@@ -57,17 +58,18 @@ public class PagamentoControlador extends CoreControlador {
 
 	public void listarPagamentos() {
 		pagamentoList = pagamentoServico.filtarPagamentos(dtHoje, cliente);
-		if (pagamentoList == null || pagamentoList.isEmpty() ) {
+		if (pagamentoList == null || pagamentoList.isEmpty()) {
 			adicionarAviso(MsgConstantes.NAO_HA_PEDIDOS_PESQUISADOS);
 		}
 	}
 
-	public void limparFiltros(){
+	public void limparFiltros() {
 		dtHoje = null;
 		cliente = null;
 		pagamentoList = null;
+		pagamentoListFiltrados = null;
 	}
-	
+
 	public List<Pagamento> getPagamentoList() {
 		return pagamentoList;
 	}
@@ -106,6 +108,14 @@ public class PagamentoControlador extends CoreControlador {
 
 	public void setDtMax(Date dtMax) {
 		this.dtMax = dtMax;
+	}
+
+	public List<Pagamento> getPagamentoListFiltrados() {
+		return pagamentoListFiltrados;
+	}
+
+	public void setPagamentoListFiltrados(List<Pagamento> pagamentoListFiltrados) {
+		this.pagamentoListFiltrados = pagamentoListFiltrados;
 	}
 
 }
