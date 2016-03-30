@@ -41,7 +41,7 @@ public class Pagamento extends GenericEntity {
 
 	@Column(name = "NU_VALOR_RESTANTE")
 	private BigDecimal valorRestante;
-	
+
 	@Column(name = "NU_VALOR_TOTAL_PEDIDO")
 	private BigDecimal valorTotalPedido;
 
@@ -49,10 +49,15 @@ public class Pagamento extends GenericEntity {
 	private String observacao;
 
 	// RELACIONAMENTOS
-
-	@ManyToOne(cascade=CascadeType.ALL, fetch=FetchType.EAGER)
-	@JoinColumn(name="FK_PEDIDO", referencedColumnName="ID_PEDIDO")
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	@JoinColumn(name = "FK_PEDIDO", referencedColumnName = "ID_PEDIDO")
 	private Pedido pedido;
+
+	public Pagamento() {
+		super();
+	}
+
+
 
 	public Long getId() {
 		return id;
@@ -109,20 +114,6 @@ public class Pagamento extends GenericEntity {
 	@Override
 	public Serializable obterIdentificador() {
 		return id;
-	}
-
-	public Pagamento(Long id, Date dtPagamento, BigDecimal valorPago,
-			BigDecimal valorRestante, String observacao, Pedido pedido) {
-		super();
-		this.id = id;
-		this.dtPagamento = dtPagamento;
-		this.valorPago = valorPago;
-		this.valorRestante = valorRestante;
-		this.observacao = observacao;
-		this.pedido = pedido;
-	}
-
-	public Pagamento() {
 	}
 
 	@Override

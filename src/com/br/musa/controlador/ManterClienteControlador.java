@@ -14,7 +14,7 @@ import org.primefaces.context.RequestContext;
 import com.br.musa.constantes.Constantes;
 import com.br.musa.constantes.MsgConstantes;
 import com.br.musa.entidades.Cliente;
-import com.br.musa.entidades.Vo.ClienteVO;
+import com.br.musa.entidades.vo.ClienteVO;
 import com.br.musa.servicos.ClienteServico;
 
 

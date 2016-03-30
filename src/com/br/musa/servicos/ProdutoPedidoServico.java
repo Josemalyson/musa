@@ -1,5 +1,6 @@
 package com.br.musa.servicos;
 
+import java.io.Serializable;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -8,9 +9,13 @@ import javax.transaction.Transactional;
 import com.br.musa.entidades.ProdutoPedido;
 import com.br.musa.repositorio.ProdutoPedidoRepositorio;
 
-public class ProdutoPedidoServico {
+public class ProdutoPedidoServico implements Serializable {
 
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -1130196879582890093L;
 	@Inject
 	private ProdutoPedidoRepositorio produtoPedidoRepositorio;
 	

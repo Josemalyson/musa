@@ -1,5 +1,6 @@
 package com.br.musa.servicos;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -19,7 +20,12 @@ import com.br.musa.exeption.MusaExecao;
 import com.br.musa.repositorio.PagamentoRepositorio;
 import com.br.musa.util.JavaScriptUtil;
 
-public class PagamentoServico {
+public class PagamentoServico implements Serializable  {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -2087468224478538322L;
 
 	@Inject
 	private PagamentoRepositorio pagamentoRepositorio;

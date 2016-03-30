@@ -1,5 +1,6 @@
 package com.br.musa.servicos;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.ArrayList;
@@ -21,8 +22,8 @@ import com.br.musa.entidades.ProdutoPedido;
 import com.br.musa.entidades.ProdutoPedidoPK;
 import com.br.musa.entidades.StatusPedido;
 import com.br.musa.entidades.TipoPedido;
-import com.br.musa.entidades.Vo.PedidoVO;
-import com.br.musa.entidades.Vo.ProdutoVO;
+import com.br.musa.entidades.vo.PedidoVO;
+import com.br.musa.entidades.vo.ProdutoVO;
 import com.br.musa.enums.DescontoEnum;
 import com.br.musa.enums.StatusPedidoEnum;
 import com.br.musa.enums.TipoPedidoEnum;
@@ -32,8 +33,12 @@ import com.br.musa.repositorio.PedidoRepositorio;
 import com.br.musa.util.CalcularUtil;
 import com.br.musa.util.JavaScriptUtil;
 
-public class PedidoServico {
+public class PedidoServico implements Serializable  {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -2926719468007590581L;
 	@Inject
 	private PedidoRepositorio pedidoRepositorio;
 	@Inject

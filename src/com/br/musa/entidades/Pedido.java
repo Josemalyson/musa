@@ -73,6 +73,7 @@ public class Pedido extends GenericEntity {
 	// CONSTRUTORES
 
 	public Pedido() {
+		super();
 	}
 
 	@Override

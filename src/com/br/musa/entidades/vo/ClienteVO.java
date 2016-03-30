@@ -1,9 +1,15 @@
-package com.br.musa.entidades.Vo;
+package com.br.musa.entidades.vo;
+
+import java.io.Serializable;
 
 import com.br.musa.entidades.Cliente;
 
-public class ClienteVO {
+public class ClienteVO implements Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -3363662681263237640L;
 	private String codigo;
 	private String nome;
 	private String cpf;

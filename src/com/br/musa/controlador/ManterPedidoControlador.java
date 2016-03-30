@@ -17,7 +17,7 @@ import com.br.musa.constantes.MsgConstantes;
 import com.br.musa.entidades.Cliente;
 import com.br.musa.entidades.Pagamento;
 import com.br.musa.entidades.Pedido;
-import com.br.musa.entidades.Vo.PedidoVO;
+import com.br.musa.entidades.vo.PedidoVO;
 import com.br.musa.exeption.MusaExecao;
 import com.br.musa.servicos.ClienteServico;
 import com.br.musa.servicos.PagamentoServico;
