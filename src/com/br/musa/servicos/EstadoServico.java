@@ -1,5 +1,6 @@
 package com.br.musa.servicos;
 
+import java.io.Serializable;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -7,8 +8,12 @@ import javax.inject.Inject;
 import com.br.musa.entidades.Estado;
 import com.br.musa.repositorio.EstadosRepositorio;
 
-public class EstadoServico {
+public class EstadoServico implements Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -6626545302188048032L;
 	@Inject
 	private EstadosRepositorio estadosRepositorio;
 

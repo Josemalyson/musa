@@ -1,5 +1,6 @@
 package com.br.musa.servicos;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -10,7 +11,12 @@ import com.br.musa.entidades.Cidade;
 import com.br.musa.entidades.Estado;
 import com.br.musa.repositorio.CidadeRepositorio;
 
-public class CidadeServico {
+public class CidadeServico implements Serializable {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -6092771814292287130L;
 
 	@Inject
 	private CidadeRepositorio cidadeRepositorio;

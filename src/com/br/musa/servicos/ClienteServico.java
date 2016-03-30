@@ -1,11 +1,15 @@
 package com.br.musa.servicos;
 
+import java.io.Serializable;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
 import javax.transaction.Transactional;
+
+import org.jboss.logging.Logger;
 
 import com.br.musa.constantes.Constantes;
 import com.br.musa.constantes.MsgConstantes;
@@ -13,18 +17,22 @@ import com.br.musa.entidades.Cliente;
 import com.br.musa.entidades.Contato;
 import com.br.musa.entidades.Endereco;
 import com.br.musa.entidades.Estado;
-import com.br.musa.entidades.Vo.ClienteVO;
+import com.br.musa.entidades.vo.ClienteVO;
 import com.br.musa.enums.EstadoEnum;
 import com.br.musa.exeption.MusaExecao;
 import com.br.musa.repositorio.ClienteRepositorio;
 import com.br.musa.util.CpfUtil;
-import com.br.musa.util.Data;
 import com.br.musa.util.JavaScriptUtil;
 import com.br.musa.util.MascaraUtil;
-import com.br.musa.util.ObjetoUtil;
 
-public class ClienteServico {
+public class ClienteServico implements Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 4806862435948739858L;
+	private static final Logger logger = Logger.getLogger(ClienteServico.class);
+	
 	@Inject
 	private ClienteRepositorio clienteRepositorio;
 	@Inject
@@ -52,7 +60,8 @@ public class ClienteServico {
 		clienteRepositorio.salvar(cliente);
 	}
 
-	//TODO SÓ SERA POSSIVEL EXCLUIR UM CLIENTE QUANDO O MESMO NÃO POSSUIR CONTAS PENDENTES.
+	// TODO SÓ SERA POSSIVEL EXCLUIR UM CLIENTE QUANDO O MESMO NÃO POSSUIR
+	// CONTAS PENDENTES.
 	@Transactional
 	public void excluir(Cliente cliente) {
 		if (cliente != null) {
@@ -165,8 +174,9 @@ public class ClienteServico {
 
 	private String montarDataNascimento(Cliente cliente) {
 
-		if (ObjetoUtil.notBlank(cliente.getDtNascimento())) {
-			return Data.getDataFormatada(cliente.getDtNascimento());
+		if (cliente.getDtNascimento() != null) {
+			SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+			return dateFormat.format(cliente.getDtNascimento());
 		}
 		return Constantes.STRING_VAZIA;
 	}
@@ -175,7 +185,7 @@ public class ClienteServico {
 		try {
 			return MascaraUtil.adicionarMascara(cliente.getCpf(), MascaraUtil.CPF);
 		} catch (ParseException e) {
-			e.printStackTrace();
+			logger.error(e.getMessage());
 			return new String();
 		}
 	}
@@ -184,7 +194,7 @@ public class ClienteServico {
 		try {
 			return MascaraUtil.adicionarMascara(cliente.getRg(), "###.###-#");
 		} catch (ParseException e) {
-			e.printStackTrace();
+			logger.error(e.getMessage());
 			return new String();
 		}
 	}

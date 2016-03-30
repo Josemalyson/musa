@@ -1,5 +1,6 @@
 package com.br.musa.servicos;
 
+import java.io.Serializable;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -11,21 +12,25 @@ import com.br.musa.exeption.MusaExecao;
 import com.br.musa.repositorio.ProdutoRepositorio;
 import com.br.musa.util.JavaScriptUtil;
 
-public class ProdutoServico {
+public class ProdutoServico implements Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 2296788064359833138L;
 	@Inject
 	private ProdutoRepositorio produtoRepositorio;
 	@Inject
 	private ProdutoPedidoServico produtoPedidoServico;
-	
+
 	@Transactional
-	public void salvarProduto(Produto produto){
+	public void salvarProduto(Produto produto) {
 		validarProdutoParaSalvar(produto);
 		produtoRepositorio.salvar(produto);
 	}
 
 	private void validarProdutoParaSalvar(Produto produto) {
-		
+
 		if (produto != null) {
 			StringBuilder erro = new StringBuilder();
 
@@ -33,7 +38,7 @@ public class ProdutoServico {
 				erro.append("Preencha o campo Descrição do Produto.").append(Constantes.TAG_BR);
 				JavaScriptUtil.marcarCampoObrigatorio("produto");
 			}
-			
+
 			if (produto.getPrecoCusto() == null) {
 				erro.append("Preencha o campo Preço de Custo.").append(Constantes.TAG_BR);
 				JavaScriptUtil.marcarCampoObrigatorio("precoCusto");
@@ -43,12 +48,12 @@ public class ProdutoServico {
 				erro.append("Preencha o campo Preço de Venda.").append(Constantes.TAG_BR);
 				JavaScriptUtil.marcarCampoObrigatorio("precoVenda");
 			}
-			
+
 			if (!erro.toString().isEmpty()) {
 				throw new MusaExecao(erro.toString());
 			}
 		}
-		
+
 	}
 
 	public List<Produto> listar() {
@@ -59,11 +64,11 @@ public class ProdutoServico {
 
 	@Transactional
 	public void excluirProduto(Produto produto) {
-		
+
 		if (produtoPedidoServico.buscarPedidoPorProduto(produto.getId()) == null) {
 			produtoRepositorio.excluir(produto);
-		}else {
-			produto.setFlExcluido(true); 
+		} else {
+			produto.setFlExcluido(true);
 			salvarProduto(produto);
 		}
 	}
@@ -75,11 +80,11 @@ public class ProdutoServico {
 	}
 
 	private void ordenarListaProdutos(List<Produto> produtoList) {
-		produtoList.sort((p1,p2) -> p1.getDescricaoProduto().compareToIgnoreCase(p2.getDescricaoProduto()));
+		produtoList.sort((p1, p2) -> p1.getDescricaoProduto().compareToIgnoreCase(p2.getDescricaoProduto()));
 	}
 
 	public List<Produto> listarProdutosPorPedido(Long id) {
 		return produtoRepositorio.listarProdutosPorPededido(id);
 	}
-	
+
 }

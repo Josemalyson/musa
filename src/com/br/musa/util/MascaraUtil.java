@@ -12,19 +12,24 @@ public abstract class MascaraUtil {
 	public static final String TELEFONE = "(##) ####-####";
 	public static final String CEP = "#####-###";
 
+	private MascaraUtil() {
+		super();
+	}
+	
 	public static String adicionarMascara(String valor, String mascara)	throws ParseException {
-		if (!(ObjetoUtil.isBlank(valor).booleanValue())) {
+		String valorTemp = valor;
+		if (valorTemp != null) {
 			MaskFormatter mf = new MaskFormatter(mascara);
 			mf.setValueContainsLiteralCharacters(false);
-			valor = mf.valueToString(valor);
+			valorTemp = mf.valueToString(valorTemp);
 		}
-		return valor;
+		return valorTemp;
 	}
 
 	public static String removerMascara(String valor) {
 		Pattern numericos = Pattern.compile("([0-9])");
 		Matcher encaixe = numericos.matcher(valor);
-		StringBuffer saida = new StringBuffer();
+		StringBuilder saida = new StringBuilder();
 		while (encaixe.find()) {
 			saida.append(encaixe.group());
 		}

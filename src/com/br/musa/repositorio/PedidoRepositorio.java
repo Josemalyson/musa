@@ -8,6 +8,8 @@ import javax.persistence.NoResultException;
 import javax.persistence.NonUniqueResultException;
 import javax.persistence.Query;
 
+import org.jboss.logging.Logger;
+
 import com.br.musa.dao.CustomGenericDAOImpl;
 import com.br.musa.entidades.Pedido;
 import com.br.musa.generics.GenericEntity;
@@ -17,7 +19,8 @@ import com.br.musa.generics.GenericEntity;
 public class PedidoRepositorio extends CustomGenericDAOImpl<Pedido> {
 
 	private static final long serialVersionUID = 1L;
-
+	private static final Logger logger = Logger.getLogger(PedidoRepositorio.class);
+	
 	@Override
 	public Class<? extends GenericEntity> obterClasse() {
 		return Pedido.class;
@@ -31,6 +34,7 @@ public class PedidoRepositorio extends CustomGenericDAOImpl<Pedido> {
 		try {
 			return (BigInteger) query.getSingleResult();
 		} catch (NoResultException | NonUniqueResultException e) {
+			logger.warn(e.getMessage(),e);
 			return null;
 		}
 		

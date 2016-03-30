@@ -5,12 +5,9 @@ package com.br.musa.util;
 import java.io.File;
 import java.text.MessageFormat;
 
-import javax.faces.FactoryFinder;
-import javax.faces.application.ApplicationFactory;
 import javax.faces.application.FacesMessage;
 import javax.faces.application.NavigationHandler;
 import javax.faces.context.FacesContext;
-import javax.faces.el.ValueBinding;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -18,20 +15,8 @@ import javax.servlet.http.HttpServletResponse;
 public final class FacesUtil {
 
 	public static ServletContext getServletContext() {
-		return ((ServletContext) FacesContext.getCurrentInstance()
-				.getExternalContext().getContext());
-	}
-
-	public static Object getManagedBean(String beanName) {
-		Object o = getValueBinding(getJsfEl(beanName)).getValue(
-				FacesContext.getCurrentInstance());
-
-		return o;
-	}
-
-	public static void resetManagedBean(String beanName) {
-		getValueBinding(getJsfEl(beanName)).setValue(
-				FacesContext.getCurrentInstance(), null);
+		return (ServletContext) FacesContext.getCurrentInstance()
+				.getExternalContext().getContext();
 	}
 
 	public static void setManagedBeanInSession(String beanName,
@@ -61,32 +46,14 @@ public final class FacesUtil {
 				.getSessionMap().get(key);
 	}
 
-	private static javax.faces.application.Application getApplication() {
-		ApplicationFactory appFactory = (ApplicationFactory) FactoryFinder
-				.getFactory("javax.faces.application.ApplicationFactory");
-		return appFactory.getApplication();
-	}
-
-	private static ValueBinding getValueBinding(String el) {
-		return getApplication().createValueBinding(el);
-	}
-
 	public static HttpServletRequest getServletRequest() {
-		return ((HttpServletRequest) FacesContext.getCurrentInstance()
-				.getExternalContext().getRequest());
+		return (HttpServletRequest) FacesContext.getCurrentInstance()
+				.getExternalContext().getRequest();
 	}
 
 	public static HttpServletResponse getServletResponse() {
-		return ((HttpServletResponse) FacesContext.getCurrentInstance()
-				.getExternalContext().getResponse());
-	}
-
-	private static Object getElValue(String el) {
-		return getValueBinding(el).getValue(FacesContext.getCurrentInstance());
-	}
-
-	private static String getJsfEl(String value) {
-		return "#{" + value + "}";
+		return (HttpServletResponse) FacesContext.getCurrentInstance()
+				.getExternalContext().getResponse();
 	}
 
 	public static String getRealPath(String pasta) {
@@ -109,23 +76,11 @@ public final class FacesUtil {
 		registrarFacesMessage(texto, FacesMessage.SEVERITY_INFO);
 	}
 
-	public static void adicionarMensagem(String texto, Object[] params) {
-		registrarFacesMessage(texto, FacesMessage.SEVERITY_INFO);
-	}
-
 	public static void adicionarAviso(String texto) {
 		registrarFacesMessage(texto, FacesMessage.SEVERITY_WARN);
 	}
 
-	public static void adicionarAviso(String texto, Object[] params) {
-		registrarFacesMessage(texto, FacesMessage.SEVERITY_WARN);
-	}
-
 	public static void adicionarErro(String texto) {
-		registrarFacesMessage(texto, FacesMessage.SEVERITY_ERROR);
-	}
-
-	public static void adicionarErro(String texto, Object[] params) {
 		registrarFacesMessage(texto, FacesMessage.SEVERITY_ERROR);
 	}
 
@@ -135,7 +90,7 @@ public final class FacesUtil {
 
 	public static String obterTexto(String chave, Object[] params) {
 
-		if (ObjetoUtil.isBlank(chave).booleanValue()) {
+		if (chave == null) {
 			return chave;
 		}
 
@@ -161,7 +116,7 @@ public final class FacesUtil {
 	}
 
 	public static String obterTextoMensagem(String chave, Object[] params) {
-		if (ObjetoUtil.isBlank(chave).booleanValue()) {
+		if (chave == null) {
 			return chave;
 		}
 

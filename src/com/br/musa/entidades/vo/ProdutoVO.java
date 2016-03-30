@@ -1,4 +1,4 @@
-package com.br.musa.entidades.Vo;
+package com.br.musa.entidades.vo;
 
 import java.io.Serializable;
 

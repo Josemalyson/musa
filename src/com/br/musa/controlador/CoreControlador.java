@@ -17,24 +17,16 @@ public abstract class CoreControlador implements Serializable {
 	protected static final String INCLUDE_VIEW_PARAMETERS = "includeViewParams=true";
 
 	public String sendRedirect(String redirect) {
-		return redirect + "?" + "faces-redirect=true";
+		return redirect + "?" + REDIRECT_URL;
 	}
 
 	public String sendRedirectWithParameter(String redirect) {
-		return redirect + "?" + "faces-redirect=true" + "&"
+		return redirect + "?" + REDIRECT_URL + "&"
 				+ "includeViewParams=true";
 	}
 
 	public ServletContext getServletContext() {
 		return FacesUtil.getServletContext();
-	}
-
-	public Object getManagedBean(String beanName) {
-		return FacesUtil.getManagedBean(beanName);
-	}
-
-	public void resetManagedBean(String beanName) {
-		FacesUtil.resetManagedBean(beanName);
 	}
 
 	public void setManagedBeanInSession(String beanName, Object managedBean) {
@@ -89,24 +81,12 @@ public abstract class CoreControlador implements Serializable {
 		FacesUtil.adicionarMensagem(texto);
 	}
 
-	public void adicionarMensagem(String texto, Object[] params) {
-		FacesUtil.adicionarMensagem(texto, params);
-	}
-
 	public void adicionarAviso(String texto) {
 		FacesUtil.adicionarAviso(texto);
 	}
 
-	public void adicionarAviso(String texto, Object[] params) {
-		FacesUtil.adicionarAviso(texto, params);
-	}
-
 	public void adicionarErro(String texto) {
 		FacesUtil.adicionarErro(texto);
-	}
-
-	public void adicionarErro(String texto, Object[] params) {
-		FacesUtil.adicionarErro(texto, params);
 	}
 
 	public void manterMensagensNoFlash() {

@@ -8,8 +8,6 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.inject.Inject;
 
-import org.jboss.logging.Logger;
-
 import com.br.musa.constantes.MsgConstantes;
 import com.br.musa.entidades.Cliente;
 import com.br.musa.entidades.Pagamento;
@@ -39,8 +37,6 @@ public class PagamentoControlador extends CoreControlador {
 	private List<Pagamento> pagamentoList;
 	private List<Pagamento> pagamentoListFiltrados;
 	private List<Cliente> clienteList;
-
-	private static final Logger logger = Logger.getLogger(PagamentoControlador.class);
 
 	@PostConstruct
 	public void init() {
