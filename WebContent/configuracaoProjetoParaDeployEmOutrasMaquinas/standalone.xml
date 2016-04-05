@@ -159,6 +159,14 @@
 					</driver>
 				</drivers>
 
+				<datasource jta="true" jndi-name="java:jboss/datasources/sirio" pool-name="sirio"
+					enabled="true" use-java-context="true" use-ccm="true">
+					<connection-url>jdbc:mysql://localhost:3306/sirio</connection-url>
+					<driver>mysql</driver>
+					<security>
+						<user-name>root</user-name>
+					</security>
+				</datasource>
 				<datasource jta="true" jndi-name="java:/MUSA" pool-name="MUSA"
 					enabled="true" use-java-context="true" use-ccm="true">
 					<connection-url>jdbc:mysql://localhost:3306/musa</connection-url>
