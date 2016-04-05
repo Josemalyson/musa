@@ -3,3 +3,8 @@ WILDFLY 10
 mysql-connector-java-5.1.34-bin
 mysql 5.5
 eclipse mars
+
+1	josemalyson	$shiro1$SHA-256$500000$QmLtx8PaCMe72i+yVuqH+A==$P5ohK5uWi30u38ujuTnmmeUK2gPwqhxTnke2wd9fZXw=	1
+129	juliana	$shiro1$SHA-256$500000$Sm3sRqHqensJNng5TjY1MQ==$OczWUpQdDnu9KZboOPSg1mCHkJ9mbOFqZKpXe+Hi9YM=	1
+131	Marcell	$shiro1$SHA-256$500000$H2tpV5h30RMCPNm4pfik9w==$H3H7VSN9Z1INxlZ/GZJXCy1yExa5MkcqAbXcMoF3Ko4=	1
+			

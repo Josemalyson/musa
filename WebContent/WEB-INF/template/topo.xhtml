@@ -10,7 +10,8 @@
 	<p:graphicImage id="logo" value="/imagens/logo.png" />
 </p:commandLink>
 <div class="text-right">
-	<p:commandButton value="Sair" action="#{loginController.logout()}" icon="ui-icon-person" styleClass="btn btn-danger btn-xs" />
+	<p:commandButton value="Sair" action="#{loginController.logout()}"
+		icon="ui-icon-person" styleClass="btn btn-danger btn-xs" />
 </div>
 
 <div class="espacamento20Px" />
@@ -68,24 +69,21 @@
 
 
 				<li class="dropdown"><a href="#" class="dropdown-toggle"
-					data-toggle="dropdown" role="button" aria-expanded="false">Relatório
+					data-toggle="dropdown" role="button" aria-expanded="false">Usuário
 						<span class="caret"></span>
 				</a>
 					<ul class="dropdown-menu" role="menu">
-						<li><a href="#">#</a></li>
-						<li><a href="#">#</a></li>
-						<li><a href="#">#</a></li>
-						<li class="divider"></li>
-						<li><a href="#">Separated link</a></li>
-						<li class="divider"></li>
-						<li><a href="#">One more separated link</a></li>
+						<li><a
+							href="#{request.contextPath}/paginas/publica/usuario/usuario.jsf">Gerenciar
+								Usuário</a></li>
 					</ul></li>
+
+				<h:form class="navbar-form navbar-right" role="search">
+					<div class="form-group">
+						<input type="text" class="form-control" placeholder="Pesquisar" />
+					</div>
+				</h:form>
 			</ul>
-			<h:form class="navbar-form navbar-right" role="search">
-				<div class="form-group">
-					<input type="text" class="form-control" placeholder="Pesquisar" />
-				</div>
-			</h:form>
 		</div>
 		<!-- /.navbar-collapse -->
 	</div>

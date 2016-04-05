@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE HTML>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	template="/WEB-INF/template/template.xhtml">
+
+	<ui:define name="conteudo">
+
+		<ol class="breadcrumb">
+			<li><a href="#">Inicio</a></li>
+			<li><a href="#">Usuario</a></li>
+			<li class="active">Gerenciar Usuarios</li>
+		</ol>
+
+		<h:form prependId="false" id="listarProdutos">
+			<div class="panel panel-default">
+				<fieldset>
+					<legend class="espacamento10PxEsquerda">Cadastrar
+						Credenciais do Usuário</legend>
+					<div class="panel-body ">
+						<div class="form-group row ">
+							<label class="col-sm-2 obrigatorio">Nome:</label>
+							<div class="col-sm-10">
+								<h:inputText value="#{usuarioControlador.usuario.nome}" />
+							</div>
+						</div>
+
+						<div class="form-group row">
+							<label class="col-sm-2 control-label obrigatorio">Senha:</label>
+							<div class="col-sm-4">
+								<h:inputSecret value="#{usuarioControlador.usuario.senha}" />
+							</div>
+						</div>
+
+						<div class="form-group row">
+							<label class="col-sm-2 control-label obrigatorio">Regra:</label>
+							<div class="col-sm-4">
+								<h:selectOneMenu id="console"
+									value="#{usuarioControlador.usuario.regrasUsuario}"
+									style="width:125px" converter="genericConverter">
+									<f:selectItems value="#{usuarioControlador.regrasUsuarioList}"
+										var="regrasUsuarrio" itemLabel="#{regrasUsuarrio.descricao}"
+										itemValue="#{regrasUsuarrio}" />
+								</h:selectOneMenu>
+							</div>
+						</div>
+						<br />
+					</div>
+				</fieldset>
+			</div>
+			<p:commandButton actionListener="#{usuarioControlador.salvar()}" value="Salvar" styleClass="btn btn-success btn-xs"/>
+		</h:form>
+	</ui:define>
+</ui:composition>
