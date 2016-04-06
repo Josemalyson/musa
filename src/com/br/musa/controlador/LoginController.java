@@ -22,6 +22,7 @@ public class LoginController extends CoreControlador{
 
 	private String username;
 	private String password;
+	private Subject currentUser;
 
 	JdbcRealm realm = new JdbcRealm();
     DefaultSecurityManager sm = new DefaultSecurityManager(realm);
@@ -33,6 +34,7 @@ public class LoginController extends CoreControlador{
 	public void init() {
 		username = new String();
 		password = new String();
+		currentUser = SecurityUtils.getSubject();
 	}
 
 	public String login() {
@@ -76,6 +78,10 @@ public class LoginController extends CoreControlador{
         return "/login.jsf?faces-redirect=true";
 	}
 
+	public String nomeUsuarioLogado(){
+		return " Bem vindo (a), "+ currentUser.getPrincipal().toString().toUpperCase();
+	}
+	
 	public String getUsername() {
 		return username;
 	}

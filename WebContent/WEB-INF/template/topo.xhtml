@@ -9,13 +9,12 @@
 <p:commandLink action="/index.jsf?faces-redirect=true">
 	<p:graphicImage id="logo" value="/imagens/logo.png" />
 </p:commandLink>
-<div class="text-right">
-	<p:commandButton value="Sair" action="#{loginController.logout()}"
-		icon="ui-icon-person" styleClass="btn btn-danger btn-xs" />
+
+<div class="text-right loginUsuario ">
+	<span class="glyphicon glyphicon-user"></span>
+	<h:outputText value="#{loginController.nomeUsuarioLogado()} - " />
+	<p:commandLink value="Sair" action="#{loginController.logout()}" />
 </div>
-
-<div class="espacamento20Px" />
-
 <nav class="navbar navbar-default">
 	<div class="container-fluid">
 		<!-- Collect the nav links, forms, and other content for toggling -->

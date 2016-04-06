@@ -72,3 +72,8 @@ h2 {
 	background-color: #f2dede !important;
 	border-color: #ebccd1 !important;
 }
+
+.loginUsuario {
+	float: right;
+	margin-top: 15px;
+}
