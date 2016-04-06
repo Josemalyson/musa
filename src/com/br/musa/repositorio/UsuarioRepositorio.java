@@ -1,6 +1,9 @@
 package com.br.musa.repositorio;
 
 import javax.ejb.Stateless;
+import javax.persistence.NoResultException;
+import javax.persistence.NonUniqueResultException;
+import javax.persistence.Query;
 
 import com.br.musa.dao.CustomGenericDAOImpl;
 import com.br.musa.entidades.Usuario;
@@ -14,6 +17,20 @@ public class UsuarioRepositorio extends CustomGenericDAOImpl<Usuario> {
 	@Override
 	public Class<? extends GenericEntity> obterClasse() {
 		return Usuario.class;
+	}
+
+	public Usuario consultarUsuarioPorNome(String nome) {
+		StringBuilder consulta = new StringBuilder();
+		consulta.append("SELECT * FROM tb_musa_usuario where nome = :nome ");
+		Query query = obterEntityManager().createNativeQuery(consulta.toString(), Usuario.class);
+		query.setParameter("nome", nome);
+		
+		try {
+			return (Usuario) query.getSingleResult();
+		} catch (NoResultException | NonUniqueResultException e) {
+			return null;
+		}
+		
 	}
 
 

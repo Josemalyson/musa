@@ -24,6 +24,7 @@ public abstract class MsgConstantes {
 	public static final String PAGAMENTO_MAIOR_QUE_VALOR_TOTAL = "VocÃª nÃ£o pode aplicar um pagamento maior que o valor Total do Pedido.";
 	public static final String NAO_HA_PEDIDOS_PESQUISADOS = "NÃ£o existe pagamentos para o filtro aplicado.";
 	public static final String USUARIO_OU_SENHA_INVALIDO = "Usuário ou senha inválidos";
+	public static final String LOGIN_DUPLICADO = "Campo login não dísponovel, por favor tente outro nome.";
 
 	private MsgConstantes() {
 	}

@@ -11,9 +11,11 @@
 </p:commandLink>
 
 <div class="text-right loginUsuario ">
+	<h:form>
 	<span class="glyphicon glyphicon-user"></span>
 	<h:outputText value="#{loginController.nomeUsuarioLogado()} - " />
 	<p:commandLink value="Sair" action="#{loginController.logout()}" />
+	</h:form>
 </div>
 <nav class="navbar navbar-default">
 	<div class="container-fluid">

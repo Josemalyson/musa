@@ -8,6 +8,7 @@ import javax.inject.Inject;
 import org.apache.shiro.authc.credential.DefaultPasswordService;
 
 import com.br.musa.constantes.Constantes;
+import com.br.musa.constantes.MsgConstantes;
 import com.br.musa.entidades.Usuario;
 import com.br.musa.exeption.MusaExecao;
 import com.br.musa.repositorio.UsuarioRepositorio;
@@ -31,9 +32,26 @@ public class UsuarioServico implements Serializable {
 
 	private void validarSalvar(Usuario usuario) {
 		camposObrigatorios(usuario);
+		usuario.setNome(removerEspacosDuplicados(usuario.getNome()));
+		verifiacarSeLoginDuplicado(usuario);
 		criptografarSenhar(usuario);
 	}
 
+	private void verifiacarSeLoginDuplicado(Usuario usuario) {
+		Usuario usuarioBD = usuarioRepositorio.consultarUsuarioPorNome(usuario.getNome());
+		if (usuarioBD != null) {
+			throw new MusaExecao(MsgConstantes.LOGIN_DUPLICADO);
+		}
+	}
+
+	private String removerEspacosDuplicados(String palavra) {
+		if (palavra != null && !palavra.isEmpty()) {
+			return palavra.trim().toLowerCase().replaceAll("\\s+ ", " ");
+		}
+		return palavra;
+
+	}
+	
 	private void criptografarSenhar(Usuario usuario) {
 		usuario.setSenha(new DefaultPasswordService().encryptPassword(usuario.getSenha()));
 	}
