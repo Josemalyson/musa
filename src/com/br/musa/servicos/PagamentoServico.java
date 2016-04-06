@@ -110,7 +110,7 @@ public class PagamentoServico implements Serializable  {
 		}
 
 		if (pagamento.getObservacao() == null || pagamento.getObservacao().isEmpty()) {
-			erro.append("Preencher campo ObservaÃ§Ã£o.").append(Constantes.TAG_BR);
+			erro.append("Preencher campo Observação.").append(Constantes.TAG_BR);
 			JavaScriptUtil.marcarCampoObrigatorio("observacao");
 		}
 		if (!erro.toString().isEmpty()) {

@@ -35,17 +35,17 @@ public class ProdutoServico implements Serializable {
 			StringBuilder erro = new StringBuilder();
 
 			if (produto.getDescricaoProduto() == null || produto.getDescricaoProduto().isEmpty()) {
-				erro.append("Preencha o campo DescriÃ§Ã£o do Produto.").append(Constantes.TAG_BR);
+				erro.append("Preencha o campo Descrição do Produto.").append(Constantes.TAG_BR);
 				JavaScriptUtil.marcarCampoObrigatorio("produto");
 			}
 
 			if (produto.getPrecoCusto() == null) {
-				erro.append("Preencha o campo PreÃ§o de Custo.").append(Constantes.TAG_BR);
+				erro.append("Preencha o campo Preço de Custo.").append(Constantes.TAG_BR);
 				JavaScriptUtil.marcarCampoObrigatorio("precoCusto");
 			}
 
 			if (produto.getPrecoVenda() == null) {
-				erro.append("Preencha o campo PreÃ§o de Venda.").append(Constantes.TAG_BR);
+				erro.append("Preencha o campo Preço de Venda.").append(Constantes.TAG_BR);
 				JavaScriptUtil.marcarCampoObrigatorio("precoVenda");
 			}
 
