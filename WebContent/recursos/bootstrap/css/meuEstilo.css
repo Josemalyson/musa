@@ -66,3 +66,9 @@ h2 {
 	height: 30px;
 	margin-bottom: 2px;
 }
+
+#dialogo, #panel {
+	color: #a94442 !important;
+	background-color: #f2dede !important;
+	border-color: #ebccd1 !important;
+}

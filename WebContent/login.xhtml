@@ -126,11 +126,14 @@ body {
 	border-color: #ebccd1;
 }
 </style>
+<link rel="stylesheet"
+	href="#{request.contextPath}/recursos/bootstrap/css/bootstrap.css" />
 </head>
 <h:body>
 	<div class="login-page">
 		<div class="form">
-			<h1>Musa Acessórios</h1>
+			<span class="glyphicon glyphicon-user"></span>
+			<h1 style="font-family: 'Helvetica Neue' " >Musa Acessórios</h1>
 			<h:messages styleClass="alert" />
 			<h:form class="login-form">
 				<h:inputText name="username" value="#{loginController.username}"
