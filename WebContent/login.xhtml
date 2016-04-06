@@ -132,28 +132,12 @@ body {
 		<div class="form">
 			<h1>Musa Acessórios</h1>
 			<h:messages styleClass="alert" />
-			<h:form class="register-form">
-				<h:inputText name="username" value="#{loginController.username}"
-					a:placeholder="Login" />
-				<h:inputSecret name="password" value="#{loginController.password}"
-					a:placeholder="Senha" />
-				<h:inputText name="email" a:placeholder="email address" />
-
-				<h:commandButton value="Enviar" />
-				<p class="message">
-					Já é cadastrado? <a href="#">Faça o Login</a>
-				</p>
-			</h:form>
-
 			<h:form class="login-form">
 				<h:inputText name="username" value="#{loginController.username}"
 					a:placeholder="Login" />
 				<h:inputSecret name="password" value="#{loginController.password}"
 					a:placeholder="Senha" />
 				<h:commandButton value="Enviar" action="#{loginController.login()}" />
-				<p class="message">
-					Não possui Login? <a href="#">Criar Conta</a>
-				</p>
 			</h:form>
 		</div>
 	</div>
