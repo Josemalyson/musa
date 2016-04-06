@@ -23,6 +23,7 @@ public abstract class MsgConstantes {
 	public static final String PAGAMENTO_COM_VALOR_IGUAL_OU_MENOR_QUE_ZERO = "Você não pode aplicar um valor igual ou menor que zero (0) ao pagamento.";
 	public static final String PAGAMENTO_MAIOR_QUE_VALOR_TOTAL = "Você não pode aplicar um pagamento maior que o valor Total do Pedido.";
 	public static final String NAO_HA_PEDIDOS_PESQUISADOS = "Não existe pagamentos para o filtro aplicado.";
+	public static final String USUARIO_OU_SENHA_INVALIDO = "Usu�rio ou senha inv�lidos";
 
 	private MsgConstantes() {
 	}

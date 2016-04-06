@@ -56,7 +56,8 @@
 	cursor: pointer;
 }
 
-.form input[type="submit"]:hover, .form input[type="submit"]:active, .form input[type="submit"]:focus {
+.form input[type="submit"]:hover, .form input[type="submit"]:active,
+	.form input[type="submit"]:focus {
 	background: #43A047;
 }
 
@@ -118,26 +119,37 @@
 body {
 	background: white; /* fallback for old browsers */
 }
+
+.alert {
+	color: #a94442;
+	background-color: #f2dede;
+	border-color: #ebccd1;
+}
 </style>
 </head>
 <h:body>
 	<div class="login-page">
 		<div class="form">
+			<h1>Musa Acessórios</h1>
+			<h:messages styleClass="alert" />
 			<h:form class="register-form">
-				<h:messages />
-				<h:inputText name="username" value="#{loginController.username}" a:placeholder="Login"/>
-				<h:inputSecret name="password" value="#{loginController.password}" a:placeholder="Senha"/>
-				<h:inputText name="email"  a:placeholder="email address"/>
-				
+				<h:inputText name="username" value="#{loginController.username}"
+					a:placeholder="Login" />
+				<h:inputSecret name="password" value="#{loginController.password}"
+					a:placeholder="Senha" />
+				<h:inputText name="email" a:placeholder="email address" />
+
 				<h:commandButton value="Enviar" />
 				<p class="message">
 					Já é cadastrado? <a href="#">Faça o Login</a>
 				</p>
 			</h:form>
-			
+
 			<h:form class="login-form">
-				<h:inputText name="username" value="#{loginController.username}" a:placeholder="Login" />
-				<h:inputSecret name="password" value="#{loginController.password}" a:placeholder="Senha"/>
+				<h:inputText name="username" value="#{loginController.username}"
+					a:placeholder="Login" />
+				<h:inputSecret name="password" value="#{loginController.password}"
+					a:placeholder="Senha" />
 				<h:commandButton value="Enviar" action="#{loginController.login()}" />
 				<p class="message">
 					Não possui Login? <a href="#">Criar Conta</a>
@@ -145,10 +157,10 @@ body {
 			</h:form>
 		</div>
 	</div>
-	
+
 	<script type="text/javascript"
-	src="#{request.contextPath}/recursos/js/jquery.js"></script>
-	
+		src="#{request.contextPath}/recursos/js/jquery.js"></script>
+
 	<script>
 	$('.message a').click(function(){
 		   $('form').animate({height: "toggle", opacity: "toggle"}, "slow");

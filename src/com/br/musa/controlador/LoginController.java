@@ -5,18 +5,29 @@ import javax.faces.bean.ManagedBean;
 
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
+import org.apache.shiro.authc.ExcessiveAttemptsException;
+import org.apache.shiro.authc.IncorrectCredentialsException;
+import org.apache.shiro.authc.LockedAccountException;
+import org.apache.shiro.authc.UnknownAccountException;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.mgt.DefaultSecurityManager;
 import org.apache.shiro.realm.jdbc.JdbcRealm;
 import org.apache.shiro.subject.Subject;
+import org.jboss.logging.Logger;
+
+import com.br.musa.constantes.MsgConstantes;
 
 @ManagedBean
-public class LoginController {
+public class LoginController extends CoreControlador{
 
 	private String username;
 	private String password;
+
 	JdbcRealm realm = new JdbcRealm();
     DefaultSecurityManager sm = new DefaultSecurityManager(realm);
+    
+    private static final long serialVersionUID = 7412780138266810968L;
+    private static final Logger logger = Logger.getLogger(LoginController.class);
 
 	@PostConstruct
 	public void init() {
@@ -41,11 +52,23 @@ public class LoginController {
 			
 			return retorno; 
 			
-		} catch (AuthenticationException e) {
-			System.out.println("Erro");
-			e.printStackTrace();
-			return retorno;
+		} catch ( UnknownAccountException uae ) { 
+			 logger.info(uae.getMessage(), uae);
+				adicionarErro(MsgConstantes.USUARIO_OU_SENHA_INVALIDO);
+		} catch ( IncorrectCredentialsException ice ) {
+			 logger.info(ice.getMessage(), ice);
+			 adicionarErro(MsgConstantes.USUARIO_OU_SENHA_INVALIDO);
+		} catch ( LockedAccountException lae ) {
+			 logger.info(lae.getMessage(), lae);
+			 adicionarErro(MsgConstantes.USUARIO_OU_SENHA_INVALIDO);
+		} catch ( ExcessiveAttemptsException eae ) {
+			 logger.info(eae.getMessage(), eae);
+			 adicionarErro(MsgConstantes.USUARIO_OU_SENHA_INVALIDO);
+		} catch ( AuthenticationException ae ) {
+		    logger.info(ae.getMessage(), ae);
+		    adicionarErro(MsgConstantes.USUARIO_OU_SENHA_INVALIDO);
 		}
+		return retorno;
 	}
 	
 	public String logout(){
