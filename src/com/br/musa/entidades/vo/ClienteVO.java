@@ -15,6 +15,7 @@ public class ClienteVO implements Serializable {
 	private String cpf;
 	private String rg;
 	private String dataNascimento;
+	private String numeroTelefone;
 	private Cliente cliente;
 
 	public String getCodigo() {
@@ -63,6 +64,14 @@ public class ClienteVO implements Serializable {
 
 	public void setCliente(Cliente cliente) {
 		this.cliente = cliente;
+	}
+
+	public String getNumeroTelefone() {
+		return numeroTelefone;
+	}
+
+	public void setNumeroTelefone(String numeroTelefone) {
+		this.numeroTelefone = numeroTelefone;
 	}
 
 }

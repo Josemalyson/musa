@@ -41,7 +41,7 @@ public class LoginController extends CoreControlador{
 		UsernamePasswordToken token = new UsernamePasswordToken(username, password);
 		token.setRememberMe(true);
 		 SecurityUtils.setSecurityManager(sm);
-		Subject currentUser = SecurityUtils.getSubject();
+		currentUser = SecurityUtils.getSubject();
 		String retorno = null;
 		try {
 			currentUser.login(token);

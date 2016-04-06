@@ -19,15 +19,15 @@ public class UsuarioServico implements Serializable {
 
 	@Inject
 	private UsuarioRepositorio usuarioRepositorio;
-	
-	public List<Usuario> listar(){
+
+	public List<Usuario> listar() {
 		return usuarioRepositorio.listar();
 	}
 
 	public void salvar(Usuario usuario) {
 		validarSalvar(usuario);
 		usuarioRepositorio.salvar(usuario);
-		
+
 	}
 
 	private void validarSalvar(Usuario usuario) {
@@ -39,7 +39,7 @@ public class UsuarioServico implements Serializable {
 
 	private void verifiacarSeLoginDuplicado(Usuario usuario) {
 		Usuario usuarioBD = usuarioRepositorio.consultarUsuarioPorNome(usuario.getNome());
-		if (usuarioBD != null) {
+		if (isUsuarioValido(usuarioBD)) {
 			throw new MusaExecao(MsgConstantes.LOGIN_DUPLICADO);
 		}
 	}
@@ -51,7 +51,7 @@ public class UsuarioServico implements Serializable {
 		return palavra;
 
 	}
-	
+
 	private void criptografarSenhar(Usuario usuario) {
 		usuario.setSenha(new DefaultPasswordService().encryptPassword(usuario.getSenha()));
 	}
@@ -59,23 +59,29 @@ public class UsuarioServico implements Serializable {
 	private void camposObrigatorios(Usuario usuario) {
 
 		StringBuilder erro = new StringBuilder();
-		
-		if (usuario != null && usuario.getNome() == null || usuario.getNome().isEmpty()) {
-			erro.append("Preencher o campo Nome").append(Constantes.TAG_BR);
+
+		if (isUsuarioValido(usuario)) {
+
+			if (usuario.getNome() == null || usuario.getNome().isEmpty()) {
+				erro.append("Preencher o campo Nome").append(Constantes.TAG_BR);
+			}
+
+			if (usuario.getSenha() == null || usuario.getSenha().isEmpty()) {
+				erro.append("Preencher o campo Senha").append(Constantes.TAG_BR);
+			}
+
+			if (usuario.getRegrasUsuario() == null) {
+				erro.append("Preencher o campo Perfil do usuário").append(Constantes.TAG_BR);
+			}
 		}
-		
-		if (usuario != null && usuario.getSenha() == null || usuario.getSenha().isEmpty()) {
-			erro.append("Preencher o campo Senha").append(Constantes.TAG_BR);
-		}
-		
-		if (usuario != null && usuario.getRegrasUsuario() == null) {
-			erro.append("Preencher o campo Perfil do usuário").append(Constantes.TAG_BR);
-		}
-		
+
 		if (!erro.toString().isEmpty()) {
 			throw new MusaExecao(erro.toString());
 		}
 	}
-	
-	
+
+	private boolean isUsuarioValido(Usuario usuario) {
+		return usuario != null;
+	}
+
 }

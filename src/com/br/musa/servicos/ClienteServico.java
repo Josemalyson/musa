@@ -32,7 +32,7 @@ public class ClienteServico implements Serializable {
 	 */
 	private static final long serialVersionUID = 4806862435948739858L;
 	private static final Logger logger = Logger.getLogger(ClienteServico.class);
-	
+
 	@Inject
 	private ClienteRepositorio clienteRepositorio;
 	@Inject
@@ -168,8 +168,19 @@ public class ClienteServico implements Serializable {
 			clienteVO.setDataNascimento(montarDataNascimento(cliente));
 			clienteVO.setNome(cliente.getNome());
 			clienteVO.setRg(adiconarMascaraRg(cliente));
+			clienteVO.setNumeroTelefone(montarNumeroTelefone(cliente));
 			clienteVOList.add(clienteVO);
 		}
+	}
+
+	private String montarNumeroTelefone(Cliente cliente) {
+		List<String> telefoneFormatado = new ArrayList<>();
+		if (cliente.getContatoList() != null || cliente.getContatoList().isEmpty()) {
+			for (Contato contato : cliente.getContatoList()) {
+				telefoneFormatado.add(contato.getTelefone());
+			}
+		}
+		return telefoneFormatado.toString().replace("[", "").replace("]", "").concat(".");
 	}
 
 	private String montarDataNascimento(Cliente cliente) {

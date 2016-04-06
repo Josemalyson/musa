@@ -59,6 +59,10 @@ public class Cliente extends GenericEntity {
 	@OneToOne(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "cliente", fetch = FetchType.EAGER)
 	private Endereco endereco;
 
+	public Cliente() {
+		super();
+	}
+
 	// GET E SET
 
 	@Override
@@ -136,10 +140,6 @@ public class Cliente extends GenericEntity {
 
 	public void setEndereco(Endereco endereco) {
 		this.endereco = endereco;
-	}
-
-	public Cliente() {
-		super();
 	}
 
 	@Override

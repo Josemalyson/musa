@@ -67,7 +67,12 @@
 					<h:outputText value="#{clienteVO.dataNascimento}" />
 				</p:column>
 
-				<p:column headerText="Opções" styleClass="text-center" exportable="false">
+				<p:column headerText="Telefone" styleClass="text-center">
+					<h:outputText value="#{clienteVO.numeroTelefone}" />
+				</p:column>
+
+				<p:column headerText="Opções" styleClass="text-center"
+					exportable="false">
 					<div class="form-inline">
 						<span class="btn-group"> <p:commandButton
 								icon="ui-icon-pencil" title="Editar"
@@ -79,8 +84,6 @@
 						</span>
 					</div>
 				</p:column>
-
-
 			</p:dataTable>
 
 
