@@ -23,7 +23,7 @@
 						<div class="form-group row ">
 							<label class="col-sm-2 obrigatorio">Nome:</label>
 							<div class="col-sm-10">
-								<p:inputText id="nome" styleClass="form-control"
+								<p:inputText id="nome" styleClass="form-control" maxlength="255"
 									value="#{clienteControlador.cliente.nome}"></p:inputText>
 							</div>
 						</div>
@@ -123,7 +123,7 @@
 						<div class="form-group row ">
 							<label class="col-sm-1 control-label">Rua:</label>
 							<div class="col-sm-6">
-								<p:inputText id="rua" styleClass="form-control"
+								<p:inputText id="rua" styleClass="form-control" maxlength="255"
 									value="#{clienteControlador.cliente.endereco.rua}"></p:inputText>
 							</div>
 
@@ -131,7 +131,7 @@
 							<label class="col-sm-1 control-label">CEP:</label>
 							<div class="col-sm-2">
 								<p:inputMask mask="99.999-999" id="cep"
-									styleClass="form-control"
+									styleClass="form-control" maxlength="10"
 									value="#{clienteControlador.cliente.endereco.cep}" />
 							</div>
 						</div>
@@ -166,13 +166,13 @@
 
 							<label class="col-sm-1 control-label">Bairro:</label>
 							<div class="col-sm-2">
-								<p:inputText id="bairro" styleClass="form-control"
+								<p:inputText id="bairro" styleClass="form-control" maxlength="100"
 									value="#{clienteControlador.cliente.endereco.bairro}"></p:inputText>
 							</div>
 
 							<label class="col-sm-1 control-label">Numero:</label>
 							<div class="col-sm-1">
-								<p:inputText id="numero" styleClass="form-control"
+								<p:inputText id="numero" styleClass="form-control" maxlength="10"
 									value="#{clienteControlador.cliente.endereco.numero}"></p:inputText>
 							</div>
 						</div>
@@ -210,7 +210,7 @@
 				<div class="form-group row ">
 					<label class="col-sm-2 control-label">Email:</label>
 					<div class="col-sm-10">
-						<p:inputText id="email" styleClass="form-control"
+						<p:inputText id="email" styleClass="form-control" maxlength="100"
 							value="#{clienteControlador.contato.email}" />
 					</div>
 				</div>
@@ -218,14 +218,14 @@
 					<label class="col-sm-2 control-label obrigatorio">DDD:</label>
 					<div class="col-sm-10">
 						<p:inputMask id="ddd" mask="(99)" styleClass="form-control"
-							value="#{clienteControlador.contato.ddd}" />
+							value="#{clienteControlador.contato.ddd}" maxlength="4" />
 					</div>
 				</div>
 				<div class="form-group row ">
 					<label class="col-sm-2 control-label obrigatorio">Telefone:</label>
 					<div class="col-sm-10">
 						<p:inputMask mask="99999-9999" id="telefone"
-							styleClass="form-control"
+							styleClass="form-control" maxlength="10"
 							value="#{clienteControlador.contato.telefone}" />
 					</div>
 				</div>

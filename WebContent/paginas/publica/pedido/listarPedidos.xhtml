@@ -94,7 +94,8 @@
 					<h:outputText value="#{pedidoVO.pagamento.observacao}" />
 				</p:column>
 
-				<p:column headerText="Opções" styleClass="text-center" exportable="false">
+				<p:column headerText="Opções" styleClass="text-center"
+					exportable="false">
 					<div class="form-inline">
 						<p:commandButton icon="ui-icon-pencil" title="Editar"
 							action="#{manterPedidoControlador.editarPedido(pedidoVO.pedido)}" />
@@ -156,13 +157,15 @@
 					<label class="col-sm-3 control-label obrigatorio">Valor
 						Pago:</label>
 					<div class="col-sm-4">
-						<p:inputText id="valorPagoID"
+						<p:inputText id="valorPagoID" maxlength="99999"
 							value="#{manterPedidoControlador.pedidoVOSelecionado.pagamento.valorPago}"
 							disabled="#{manterPedidoControlador.flValorPago}">
 							<p:ajax event="blur"
 								listener="#{manterPedidoControlador.calcularValorRestante()}"
 								update="formModalPagamento" global="false" process="valorPagoID" />
 						</p:inputText>
+					</div>
+					<div class="col-sm-5">
 						<p:commandButton id="botaoLimparValorPago" icon="ui-icon-pencil"
 							update="valorRestante valorPagoID" title="Limpar Valor Pago"
 							styleClass="btn btn-success btn-sm" global="false"
@@ -204,8 +207,11 @@
 				<div class="form-group row ">
 					<label class="col-sm-3 control-label obrigatorio">Observação</label>
 					<div class="col-sm-4">
-						<p:inputTextarea
+						<p:inputTextarea maxlength="500" autoResize="true"
+							placeholder="Digite a observação aqui!" counter="display"
+							counterTemplate="{0} Letras restantes." rows="10" cols="50"
 							value="#{manterPedidoControlador.pedidoVOSelecionado.pagamento.observacao}" />
+						<h:outputText id="display" />
 					</div>
 				</div>
 

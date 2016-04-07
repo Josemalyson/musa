@@ -116,7 +116,7 @@
 					<label class="col-sm-3 control-label obrigatorio">Descrição
 						Produto:</label>
 					<div class="col-sm-9">
-						<p:inputText id="produto" styleClass="form-control"
+						<p:inputText id="produto" styleClass="form-control" maxlength="255"
 							value="#{manterProdutoControlador.produto.descricaoProduto}" />
 					</div>
 				</div>
@@ -125,7 +125,7 @@
 					<label class="col-sm-3 control-label obrigatorio">Preço de
 						Custo:</label>
 					<div class="col-sm-4">
-						<p:inputText id="precoCusto" placeholder="1200.00"
+						<p:inputText id="precoCusto" placeholder="1200.00" maxlength="99999"
 							value="#{manterProdutoControlador.produto.precoCusto}" />
 					</div>
 				</div>
@@ -134,7 +134,7 @@
 					<label class="col-sm-3 control-label obrigatorio">Preço de
 						Venda:</label>
 					<div class="col-sm-4">
-						<p:inputText id="precoVenda" placeholder="1200.00"
+						<p:inputText id="precoVenda" placeholder="1200.00" maxlength="99999"
 							value="#{manterProdutoControlador.produto.precoVenda}" />
 					</div>
 				</div>

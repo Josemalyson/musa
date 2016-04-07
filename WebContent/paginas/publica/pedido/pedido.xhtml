@@ -110,7 +110,7 @@
 							<div class="col-sm-4">
 								<label class="control-label espacamento10PxDireita ">CPF:
 								</label>
-								<p:inputText id="cpf" disabled="true"
+								<p:outputLabel id="cpf" disabled="true"
 									value="#{pedidoControlador.pedidoVO.cliente.cpf}" />
 							</div>
 						</div>
@@ -148,7 +148,7 @@
 
 						<p:column headerText="Quantidade">
 							<h:inputText id="quantidadeId" styleClass="text-center"
-								style="margin-left: 62px;"
+								style="margin-left: 62px;" maxlength="999"
 								value="#{produtoVO.quantidadeProduto}"
 								converterMessage="Digite um número válido." size="2"
 								disabled="#{pedidoControlador.fltabelaPedido}">
@@ -278,10 +278,9 @@
 
 			<div id="desconto" class="clearfix">
 				<label class="espacamento10PxDireita">Desconto:</label>
-
 				<h:selectOneMenu
 					value="#{pedidoControlador.pedidoVO.pedido.desconto}"
-					disabled="#{pedidoControlador.flDesconto}">
+					disabled="#{pedidoControlador.flDesconto}" styleClass="form-control" style="width: 10%;">
 					<f:selectItems value="#{pedidoControlador.listDesconto}"
 						var="desconto" itemValue="#{desconto}" itemLabel="#{desconto} % " />
 					<p:ajax listener="#{pedidoControlador.calcularDesconto()}"
