@@ -114,6 +114,7 @@ public class ClienteControlador extends CoreControlador {
 		} catch (MusaExecao e) {
 			logger.error(e.getMessage(),e);
 			adicionarErro(e.getMessage());
+			return;
 		}
 	}
 

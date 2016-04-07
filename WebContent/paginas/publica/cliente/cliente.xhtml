@@ -225,7 +225,7 @@
 					<label class="col-sm-2 control-label obrigatorio">Telefone:</label>
 					<div class="col-sm-10">
 						<p:inputMask mask="99999-9999" id="telefone"
-							styleClass="form-control" maxlength="10"
+							styleClass="form-control" maxlength="10" 
 							value="#{clienteControlador.contato.telefone}" />
 					</div>
 				</div>
@@ -234,10 +234,10 @@
 					<div class="form-inline text-center row">
 						<p:commandButton id="btnConfirma" value="Confirmar"
 							styleClass="btn btn-success"
-							actionListener="#{clienteControlador.adiconarContato()}" />
+							actionListener="#{clienteControlador.adiconarContato()}"/>
 						<p:commandButton id="btnCancela" value="Cancelar"
 							styleClass="btn btn-danger"
-							oncomplete="PF('incluirContato').hide();" />
+							oncomplete="PF('incluirContato').hide();"/>
 					</div>
 				</div>
 				<p class="obrigatorio">Campos Obrigatórios</p>

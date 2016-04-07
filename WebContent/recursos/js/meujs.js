@@ -2,6 +2,6 @@
 
 //MARCANDO CAMPOS OBRIGATORIOS COM A COR VERMELHA
 function marcarCampoObrigatorio(id) {
-	$(id).addClass("focus").focus();
+	$(id).addClass("focus");
 };
 
