@@ -152,12 +152,17 @@ public class PedidoControlador extends CoreControlador {
 
 	private void montarPedido() {
 		pedidoVO = pedidoServico.montarPedidoNovoEdicao(pedido, cliente);
-
 	}
 
 	private void listarProdutosAtivos() {
 		produtoList = new ArrayList<>();
-		produtoList = produtoServico.listarProdutosAtivos();
+
+		if (pedido.getId() == null) {
+			produtoList = produtoServico.listarProdutosAtivos();
+		}else {
+			produtoList = produtoServico.listar();
+		}
+		
 	}
 
 	private void listarCliente() {
