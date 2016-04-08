@@ -50,7 +50,7 @@ public class ClienteControlador extends CoreControlador {
 
 	@PostConstruct
 	public void init() {
-
+		
 		cliente = (Cliente) obterAtributoFlash("cliente");
 
 		if (cliente == null) {
@@ -66,7 +66,7 @@ public class ClienteControlador extends CoreControlador {
 
 	private void listarContatosdoCliente() {
 
-		if (cliente.getContatoList() == null || cliente.getContatoList().size() == 0) {
+		if (cliente.getContatoList() == null || cliente.getContatoList().isEmpty()) {
 			cliente.setContatoList(new ArrayList<Contato>());
 		}
 

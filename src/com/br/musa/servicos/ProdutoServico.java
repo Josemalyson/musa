@@ -14,9 +14,6 @@ import com.br.musa.util.JavaScriptUtil;
 
 public class ProdutoServico implements Serializable {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 2296788064359833138L;
 	@Inject
 	private ProdutoRepositorio produtoRepositorio;
@@ -74,9 +71,7 @@ public class ProdutoServico implements Serializable {
 	}
 
 	public List<Produto> listarProdutosAtivos() {
-		List<Produto> produtoList = produtoRepositorio.listarProdutosAtivos();
-		ordenarListaProdutos(produtoList);
-		return produtoList;
+		return produtoRepositorio.listarProdutosAtivos();
 	}
 
 	private void ordenarListaProdutos(List<Produto> produtoList) {

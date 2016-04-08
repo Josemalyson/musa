@@ -6,7 +6,12 @@ import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Future;
 
+import javax.ejb.AsyncResult;
+import javax.ejb.Asynchronous;
+import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.transaction.Transactional;
 
@@ -33,6 +38,7 @@ import com.br.musa.repositorio.PedidoRepositorio;
 import com.br.musa.util.CalcularUtil;
 import com.br.musa.util.JavaScriptUtil;
 
+@Stateless
 public class PedidoServico implements Serializable  {
 
 	/**
@@ -86,8 +92,9 @@ public class PedidoServico implements Serializable  {
 				: pedidoRepositorio.obterNumeroDoProximoPedido().add(new BigInteger("1"));
 	}
 
-	public List<Pedido> listarNaoExcluidos() {
-		return pedidoRepositorio.listarNaoExcluidos();
+	@Asynchronous
+	public Future<List<Pedido>> listarNaoExcluidos() {
+		return new AsyncResult<>(pedidoRepositorio.listarNaoExcluidos());
 	}
 
 	public List<Pedido> listarPedidosPorCliente(Long id) {
@@ -169,6 +176,7 @@ public class PedidoServico implements Serializable  {
 		return pedidoVO != null && pedidoVO.getProdutoVOList() != null;
 	}
 
+	@Asynchronous
 	public void calcularTotal(PedidoVO pedidoVO) {
 		calcularTotalCusto(pedidoVO);
 		calcularTotalVenda(pedidoVO);
@@ -243,7 +251,8 @@ public class PedidoServico implements Serializable  {
 		}
 	}
 
-	public List<PedidoVO> montartPedidosVO(List<Pedido> pedidolist) {
+	@Asynchronous
+	public Future<List<PedidoVO>> montartPedidosVO(List<Pedido> pedidolist) {
 		List<PedidoVO> pedidoVOlist = new ArrayList<>();
 		for (Pedido pedido : pedidolist) {
 			PedidoVO pedidoVO = new PedidoVO();
@@ -252,25 +261,31 @@ public class PedidoServico implements Serializable  {
 			pedidoVO.setCliente(pedido.getCliente());
 			pedidoVO.setNumeroPedido(pedido.getId().toString());
 			pedidoVO.setProdutoVOList(new ArrayList<ProdutoVO>());
-			pedidoVO.setPagamento(montarUltimoPagamento(pedido));
+			try {
+				pedidoVO.setPagamento(montarUltimoPagamento(pedido).get());
+			} catch (InterruptedException | ExecutionException e) {
+				logger.info(Constantes.ERRO_NA_EXECUÇÃO_DO_MÉTODO_ASSÍCRONO +e.getMessage(),e);
+				throw new MusaExecao(MsgConstantes.ERRO_NO_PROCESSAMENTO);
+			}
 			pedidoVOlist.add(pedidoVO);
 		}
 
-		return pedidoVOlist;
+		return new AsyncResult<>(pedidoVOlist);
 	}
 
-	private Pagamento montarUltimoPagamento(Pedido pedido) {
+	@Asynchronous
+	private Future<Pagamento> montarUltimoPagamento(Pedido pedido) {
 		List<Pagamento> pagamentosBDList = pagamentoServico.listarPagamentoPorPedido(pedido.getId());
 
 		Pagamento pagamento = new Pagamento();
 
 		if (pagamentosBDList != null && !pagamentosBDList.isEmpty()) {
 			pagamento = pagamentosBDList.get(0);
-			return pagamento;
+			return new AsyncResult<>(pagamento);
 		}
 
 		pagamento.setObservacao(Constantes.STRING_VAZIA);
-		return pagamento;
+		return new AsyncResult<>(pagamento);
 	}
 
 	public List<Pedido> listarPedidosSemCliente() {

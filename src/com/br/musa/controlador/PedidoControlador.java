@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
@@ -92,16 +93,16 @@ public class PedidoControlador extends CoreControlador {
 		montarPedido();
 		montarListaDesconto();
 		isPedidoNovoOuEditado();
-		
+
 	}
 
 	private void isPedidoNovoOuEditado() {
 		if (pedido.getId() == null) {
 			habilitarTodosOsCamposParaEdicao();
-		}else {
+		} else {
 			desabilitarTodosOsCampos();
 		}
-		
+
 	}
 
 	private void montarListaDesconto() {
@@ -141,7 +142,6 @@ public class PedidoControlador extends CoreControlador {
 		}
 	}
 
-
 	private void listarTipoPedido() {
 		tipoPedidoList = tipoPedidoServico.listar();
 	}
@@ -162,7 +162,12 @@ public class PedidoControlador extends CoreControlador {
 
 	private void listarCliente() {
 		clienteList = new ArrayList<>();
-		clienteList = clienteServico.listarTodosClientes();
+		try {
+			clienteList = clienteServico.listarTodosClientes().get();
+		} catch (InterruptedException | ExecutionException e) {
+			logger.info(" Erro na execução do método assícrono " + e.getMessage(), e);
+			adicionarErro(MsgConstantes.ERRO_NO_PROCESSAMENTO);
+		}
 
 	}
 
@@ -173,11 +178,17 @@ public class PedidoControlador extends CoreControlador {
 	public void atualizarCliente() {
 		if (this.pedidoVO.getCliente().getId() != null) {
 			this.pedidoVO.setCliente(clienteServico.buscarPorCodigo(this.pedidoVO.getCliente()));
-			this.pedidoVO.getCliente().setCpf(clienteServico.adicionarMascaraCpf(this.pedidoVO.getCliente()));
+			try {
+				this.pedidoVO.getCliente().setCpf(clienteServico.adicionarMascaraCpf(this.pedidoVO.getCliente()).get());
+			} catch (InterruptedException | ExecutionException e) {
+				logger.info(" Erro na execução do método assícrono " + e.getMessage(), e);
+				adicionarErro(MsgConstantes.ERRO_NO_PROCESSAMENTO);
+				return;
+			}
 		} else {
 			this.pedidoVO.setCliente(new Cliente());
 		}
-		
+
 		RequestContext.getCurrentInstance().update("cpf");
 	}
 
@@ -228,14 +239,14 @@ public class PedidoControlador extends CoreControlador {
 		}
 	}
 
-	public boolean isTipoPedidoAtacado(){
+	public boolean isTipoPedidoAtacado() {
 		return !pedidoServico.isTipoPedidoAtacado(pedidoVO);
 	}
-	
+
 	public void limparCliente() {
 		pedidoVO.setCliente(new Cliente());
 	}
-	
+
 	public List<Cliente> getClienteList() {
 		return clienteList;
 	}

@@ -25,6 +25,7 @@ public abstract class MsgConstantes {
 	public static final String NAO_HA_PEDIDOS_PESQUISADOS = "Não existe pagamentos para o filtro aplicado.";
 	public static final String USUARIO_OU_SENHA_INVALIDO = "Usuário ou senha inválidos";
 	public static final String LOGIN_DUPLICADO = "Campo login não dísponovel, por favor tente outro nome.";
+	public static final String ERRO_NO_PROCESSAMENTO = "Erro no processamento da requisição, tente novamente!";
 
 	private MsgConstantes() {
 	}

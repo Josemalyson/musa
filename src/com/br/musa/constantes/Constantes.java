@@ -4,7 +4,8 @@ import java.math.BigDecimal;
 
 public abstract class Constantes {
 
-	public Constantes() {
+	private Constantes() {
+		
 	}
 
 	public static final String PONTO_E_VIRGULA = ";";
@@ -25,5 +26,5 @@ public abstract class Constantes {
 	public static final String PAGINA_LISTAR_PEDIDOS = "listarPedidos";
 	public static final String PAGINA_PEDIDO = "pedido";
 	public static final BigDecimal ZERO = new BigDecimal(0);
-
+	public static final String ERRO_NA_EXECUÇÃO_DO_MÉTODO_ASSÍCRONO = " Erro na execução do método assícrono ";
 }

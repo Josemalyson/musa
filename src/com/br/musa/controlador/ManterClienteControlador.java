@@ -3,12 +3,14 @@ package com.br.musa.controlador;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.inject.Inject;
 
+import org.jboss.logging.Logger;
 import org.primefaces.context.RequestContext;
 
 import com.br.musa.constantes.Constantes;
@@ -36,18 +38,25 @@ public class ManterClienteControlador extends CoreControlador {
 
 	private Cliente clienteSelecioando;
 	private Date dataMax;
+	
+	private static final Logger logger = Logger.getLogger(ManterClienteControlador.class);
 
 	@PostConstruct
 	public void init() {
 		clienteSelecioando = new Cliente();
 		listarTodosOsClientes();
 		dataMax = new Date();
-
 	}
 
 	public void listarTodosOsClientes() {
 		clienteVOlist = new ArrayList<>();
-		clienteServico.montarClienteVO(clienteVOlist);
+		try {
+			clienteVOlist = clienteServico.montarClienteVO().get();
+		} catch (InterruptedException | ExecutionException e) {
+			logger.info(" Erro na execução do método assícrono " +e.getMessage(),e);
+			adicionarErro(MsgConstantes.ERRO_NO_PROCESSAMENTO);
+			return;
+		}
 		clienteVOlist.sort((c1,c2) -> c1.getCliente().getNome().compareToIgnoreCase(c2.getCliente().getNome()));
 	}
 

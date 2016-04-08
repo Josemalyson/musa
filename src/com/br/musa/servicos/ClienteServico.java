@@ -5,7 +5,12 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Future;
 
+import javax.ejb.AsyncResult;
+import javax.ejb.Asynchronous;
+import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.transaction.Transactional;
 
@@ -25,11 +30,9 @@ import com.br.musa.util.CpfUtil;
 import com.br.musa.util.JavaScriptUtil;
 import com.br.musa.util.MascaraUtil;
 
+@Stateless
 public class ClienteServico implements Serializable {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 4806862435948739858L;
 	private static final Logger logger = Logger.getLogger(ClienteServico.class);
 
@@ -40,8 +43,9 @@ public class ClienteServico implements Serializable {
 	@Inject
 	private CidadeServico cidadeServico;
 
-	public List<Cliente> listarTodosClientes() {
-		return clienteRepositorio.listar();
+	@Asynchronous
+	public Future<List<Cliente>> listarTodosClientes() {
+		return new javax.ejb.AsyncResult<>(clienteRepositorio.listar());
 	}
 
 	@Transactional
@@ -157,56 +161,70 @@ public class ClienteServico implements Serializable {
 		}
 	}
 
-	public void montarClienteVO(List<ClienteVO> clienteVOList) {
+	@Asynchronous
+	public Future<List<ClienteVO>> montarClienteVO() {
 		List<Cliente> clienteList = clienteRepositorio.listar();
 
+		List<ClienteVO> clienteVOList = new ArrayList<>();
 		for (Cliente cliente : clienteList) {
 			ClienteVO clienteVO = new ClienteVO();
 			clienteVO.setCliente(cliente);
 			clienteVO.setCodigo(cliente.getId().toString());
-			clienteVO.setCpf(adicionarMascaraCpf(cliente));
-			clienteVO.setDataNascimento(montarDataNascimento(cliente));
 			clienteVO.setNome(cliente.getNome());
-			clienteVO.setRg(adiconarMascaraRg(cliente));
-			clienteVO.setNumeroTelefone(montarNumeroTelefone(cliente));
+			try {
+				clienteVO.setCpf(adicionarMascaraCpf(cliente).get());
+				clienteVO.setDataNascimento(montarDataNascimento(cliente).get());
+				clienteVO.setNumeroTelefone(montarNumeroTelefone(cliente).get());
+				clienteVO.setRg(adiconarMascaraRg(cliente).get());
+
+			} catch (InterruptedException | ExecutionException e) {
+				logger.info(" Erro na execução do método assícrono " +e.getMessage(),e);
+				throw new MusaExecao(MsgConstantes.ERRO_NO_PROCESSAMENTO);
+			}
+
 			clienteVOList.add(clienteVO);
 		}
+		return new AsyncResult<>(clienteVOList);
 	}
 
-	private String montarNumeroTelefone(Cliente cliente) {
+	@Asynchronous
+	private Future<String> montarNumeroTelefone(Cliente cliente) {
 		List<String> telefoneFormatado = new ArrayList<>();
 		if (cliente.getContatoList() != null || cliente.getContatoList().isEmpty()) {
 			for (Contato contato : cliente.getContatoList()) {
 				telefoneFormatado.add(contato.getTelefone());
 			}
 		}
-		return telefoneFormatado.toString().replace("[", "").replace("]", "").concat(".");
+		return new javax.ejb.AsyncResult<>(
+				telefoneFormatado.toString().replace("[", "").replace("]", "").concat("."));
 	}
 
-	private String montarDataNascimento(Cliente cliente) {
-
+	@Asynchronous
+	private Future<String> montarDataNascimento(Cliente cliente) {
 		if (cliente.getDtNascimento() != null) {
 			SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-			return dateFormat.format(cliente.getDtNascimento());
+			return new AsyncResult<>(dateFormat.format(cliente.getDtNascimento()));
 		}
-		return Constantes.STRING_VAZIA;
+		return new AsyncResult<>(Constantes.STRING_VAZIA);
 	}
 
-	public String adicionarMascaraCpf(Cliente cliente) {
+	@Asynchronous
+	public Future<String> adicionarMascaraCpf(Cliente cliente) {
 		try {
-			return MascaraUtil.adicionarMascara(cliente.getCpf(), MascaraUtil.CPF);
+			return new AsyncResult<>(MascaraUtil.adicionarMascara(cliente.getCpf(), MascaraUtil.CPF));
 		} catch (ParseException e) {
 			logger.error(e.getMessage());
-			return new String();
+			return new AsyncResult<>(Constantes.STRING_VAZIA);
 		}
 	}
 
-	private String adiconarMascaraRg(Cliente cliente) {
+	@Asynchronous
+	private Future<String> adiconarMascaraRg(Cliente cliente) {
 		try {
-			return MascaraUtil.adicionarMascara(cliente.getRg(), "###.###-#");
+			return new AsyncResult<>(MascaraUtil.adicionarMascara(cliente.getRg(), "###.###-#"));
 		} catch (ParseException e) {
 			logger.error(e.getMessage());
-			return new String();
+			return new AsyncResult<>(Constantes.STRING_VAZIA);
 		}
 	}
 

@@ -3,8 +3,10 @@ package com.br.musa.controlador;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 import javax.annotation.PostConstruct;
+import javax.ejb.Asynchronous;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.inject.Inject;
@@ -58,19 +60,36 @@ public class ManterPedidoControlador extends CoreControlador {
 		cliente = new Cliente();
 		flValorPago = false;
 		pagamentoList = new ArrayList<>();
-
 	}
 
+	@Asynchronous
 	private void listarClientes() {
-		clienteList = clienteServico.listarTodosClientes();
+		try {
+			clienteList = clienteServico.listarTodosClientes().get();
+		} catch (InterruptedException | ExecutionException e) {
+			logger.info(Constantes.ERRO_NA_EXECUÇÃO_DO_MÉTODO_ASSÍCRONO +e.getMessage(),e);
+			throw new MusaExecao(MsgConstantes.ERRO_NO_PROCESSAMENTO);
+		}
 	}
 
+	@Asynchronous
 	private void listarPedido() {
-		pedidolist = pedidoServico.listarNaoExcluidos();
+		try {
+			pedidolist = pedidoServico.listarNaoExcluidos().get();
+		} catch (InterruptedException | ExecutionException e) {
+			logger.info(Constantes.ERRO_NA_EXECUÇÃO_DO_MÉTODO_ASSÍCRONO +e.getMessage(),e);
+			throw new MusaExecao(MsgConstantes.ERRO_NO_PROCESSAMENTO);
+		}
 	}
 
+	@Asynchronous
 	private void montarPedidosVO() {
-		pedidoVOlist = pedidoServico.montartPedidosVO(pedidolist);
+		try {
+			pedidoVOlist = pedidoServico.montartPedidosVO(pedidolist).get();
+		} catch (InterruptedException | ExecutionException e) {
+			logger.info(Constantes.ERRO_NA_EXECUÇÃO_DO_MÉTODO_ASSÍCRONO +e.getMessage(),e);
+			throw new MusaExecao(MsgConstantes.ERRO_NO_PROCESSAMENTO);
+		}
 
 	}
 

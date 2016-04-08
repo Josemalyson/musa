@@ -2,11 +2,14 @@ package com.br.musa.controlador;
 
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.inject.Inject;
+
+import org.jboss.logging.Logger;
 
 import com.br.musa.constantes.MsgConstantes;
 import com.br.musa.entidades.Cliente;
@@ -18,7 +21,7 @@ import com.br.musa.servicos.PagamentoServico;
 @ViewScoped
 public class PagamentoControlador extends CoreControlador {
 	private static final long serialVersionUID = 4425238557135997397L;
-
+	private static final Logger logger = Logger.getLogger(PagamentoControlador.class);
 	// SERVICOS
 	@Inject
 	private PagamentoServico pagamentoServico;
@@ -48,7 +51,12 @@ public class PagamentoControlador extends CoreControlador {
 	}
 
 	public List<Cliente> autoCompleteCliente(String query) {
-		clienteList = clienteServico.listarTodosClientes();
+		try {
+			clienteList = clienteServico.listarTodosClientes().get();
+		} catch (InterruptedException | ExecutionException e) {
+			logger.info(" Erro na execução do método assícrono " +e.getMessage(),e);
+			adicionarErro(MsgConstantes.ERRO_NO_PROCESSAMENTO);
+		}
 		return clienteServico.autoCompleteClienteServico(query, clienteList);
 	}
 

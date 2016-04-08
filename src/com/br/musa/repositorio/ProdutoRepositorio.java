@@ -22,7 +22,7 @@ public class ProdutoRepositorio extends CustomGenericDAOImpl<Produto> {
 
 	public List<Produto> listarProdutosAtivos() {
 		StringBuilder consulta = new StringBuilder();
-		consulta.append(" SELECT TP.* FROM TB_MUSA_PRODUTO TP WHERE TP.FL_EXCLUIDO=0 ");
+		consulta.append(" SELECT TP.* FROM TB_MUSA_PRODUTO TP WHERE TP.FL_EXCLUIDO=0 ORDER BY TP.DS_PRODUTO ");
 		Query query = obterEntityManager().createNativeQuery(consulta.toString(), Produto.class);
 		return query.getResultList();
 	}
