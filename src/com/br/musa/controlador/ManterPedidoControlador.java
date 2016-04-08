@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 import javax.annotation.PostConstruct;
-import javax.ejb.Asynchronous;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.inject.Inject;
@@ -62,7 +61,6 @@ public class ManterPedidoControlador extends CoreControlador {
 		pagamentoList = new ArrayList<>();
 	}
 
-	@Asynchronous
 	private void listarClientes() {
 		try {
 			clienteList = clienteServico.listarTodosClientes().get();
@@ -72,7 +70,6 @@ public class ManterPedidoControlador extends CoreControlador {
 		}
 	}
 
-	@Asynchronous
 	private void listarPedido() {
 		try {
 			pedidolist = pedidoServico.listarNaoExcluidos().get();
@@ -82,7 +79,6 @@ public class ManterPedidoControlador extends CoreControlador {
 		}
 	}
 
-	@Asynchronous
 	private void montarPedidosVO() {
 		try {
 			pedidoVOlist = pedidoServico.montartPedidosVO(pedidolist).get();
@@ -163,7 +159,7 @@ public class ManterPedidoControlador extends CoreControlador {
 			try {
 				pedidoServico.verificarcalculoDoValorRestante(pedidoVOSelecionado);
 				flValorPago = true;
-			} catch (MusaExecao e) {
+			} catch (RuntimeException e) {
 				logger.error(e.getMessage(), e);
 				adicionarErro(e.getMessage());
 				flValorPago = false;

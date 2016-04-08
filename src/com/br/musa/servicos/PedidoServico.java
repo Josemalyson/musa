@@ -376,20 +376,20 @@ public class PedidoServico implements Serializable  {
 
 	}
 
+	//TODO VERIDICAR PQ O MUSAEXECAO NAO ESTAVA SENDO CAPTURADO
 	public void verificarcalculoDoValorRestante(PedidoVO pedidoVOSelecionado) {
-
 		if (pedidoVOSelecionado.getPagamento().getValorPago().intValue() <= 0) {
-			throw new MusaExecao(MsgConstantes.PAGAMENTO_COM_VALOR_IGUAL_OU_MENOR_QUE_ZERO);
+			throw new RuntimeException(MsgConstantes.PAGAMENTO_COM_VALOR_IGUAL_OU_MENOR_QUE_ZERO);
 		}
 
 		if (pedidoVOSelecionado.getPagamento().getValorRestante() != null) {
 			if (pedidoVOSelecionado.getPagamento().getValorPago().intValue() > pedidoVOSelecionado.getPagamento()
 					.getValorRestante().intValue()) {
-				throw new MusaExecao(MsgConstantes.PAGAMENTO_MAIOR_QUE_VALOR_RESTANTE);
+				throw new RuntimeException(MsgConstantes.PAGAMENTO_MAIOR_QUE_VALOR_RESTANTE);
 			}
 
 		}else if(pedidoVOSelecionado.getPagamento().getValorPago().intValue() > pedidoVOSelecionado.getPedido().getValorTotal().intValue()) {
-			throw new MusaExecao(MsgConstantes.PAGAMENTO_MAIOR_QUE_VALOR_TOTAL);
+			throw new RuntimeException(MsgConstantes.PAGAMENTO_MAIOR_QUE_VALOR_TOTAL);
 		}
 
 		calcularValorRestanteDoPedidoAposValidacoes(pedidoVOSelecionado);

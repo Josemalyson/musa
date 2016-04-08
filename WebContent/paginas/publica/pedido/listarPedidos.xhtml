@@ -157,10 +157,10 @@
 					<label class="col-sm-3 control-label obrigatorio">Valor
 						Pago:</label>
 					<div class="col-sm-4">
-						<p:inputText id="valorPagoID" maxlength="99999"
+						<p:inputText id="valorPagoID" maxlength="5"
 							value="#{manterPedidoControlador.pedidoVOSelecionado.pagamento.valorPago}"
 							disabled="#{manterPedidoControlador.flValorPago}">
-							<p:ajax event="blur"
+							<p:ajax event="keyup" delay="500"
 								listener="#{manterPedidoControlador.calcularValorRestante()}"
 								update="formModalPagamento" global="false" process="valorPagoID" />
 						</p:inputText>
@@ -209,7 +209,7 @@
 					<div class="col-sm-4">
 						<p:inputTextarea maxlength="500" autoResize="true"
 							placeholder="Digite a observação aqui!" counter="display"
-							counterTemplate="{0} Letras restantes." rows="10" cols="50"
+							counterTemplate="{0} Letras restantes." rows="5" cols="50"
 							value="#{manterPedidoControlador.pedidoVOSelecionado.pagamento.observacao}" />
 						<h:outputText id="display" />
 					</div>
