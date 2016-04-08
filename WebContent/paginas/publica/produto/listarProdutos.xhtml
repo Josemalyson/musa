@@ -26,8 +26,7 @@
 				<p:commandButton title="Novo Produto" value="Novo Produto"
 					styleClass="btn btn-success btn-sm"
 					oncomplete="PF('incluirProduto').show();"
-					actionListener="#{manterProdutoControlador.inicializarObjeto()}"
-					update="incluirProduto" />
+					actionListener="#{manterProdutoControlador.inicializarObjeto()}" />
 			</div>
 
 			<div class="espacamento20Px" />
@@ -63,7 +62,8 @@
 						</h:outputText>
 					</p:column>
 
-					<p:column headerText="Opções" styleClass="text-center" exportable="false">
+					<p:column headerText="Opções" styleClass="text-center"
+						exportable="false">
 						<div class="form-inline">
 							<span class="btn-group"> <p:commandButton
 									icon="ui-icon-pencil" title="Editar"
@@ -116,7 +116,8 @@
 					<label class="col-sm-3 control-label obrigatorio">Descrição
 						Produto:</label>
 					<div class="col-sm-9">
-						<p:inputText id="produto" styleClass="form-control" maxlength="255"
+						<p:inputText id="produto" styleClass="form-control"
+							maxlength="255"
 							value="#{manterProdutoControlador.produto.descricaoProduto}" />
 					</div>
 				</div>
@@ -125,8 +126,10 @@
 					<label class="col-sm-3 control-label obrigatorio">Preço de
 						Custo:</label>
 					<div class="col-sm-4">
-						<p:inputText id="precoCusto" placeholder="1200.00" maxlength="99999"
-							value="#{manterProdutoControlador.produto.precoCusto}" />
+						<p:inputText id="precoCusto" placeholder="1200.00"
+							maxlength="99999"
+							value="#{manterProdutoControlador.produto.precoCusto}"
+							disabled="#{manterProdutoControlador.flPrecoCusto}" />
 					</div>
 				</div>
 
@@ -134,8 +137,10 @@
 					<label class="col-sm-3 control-label obrigatorio">Preço de
 						Venda:</label>
 					<div class="col-sm-4">
-						<p:inputText id="precoVenda" placeholder="1200.00" maxlength="99999"
-							value="#{manterProdutoControlador.produto.precoVenda}" />
+						<p:inputText id="precoVenda" placeholder="1200.00"
+							maxlength="99999"
+							value="#{manterProdutoControlador.produto.precoVenda}"
+							disabled="#{manterProdutoControlador.flPrecoVenda}" />
 					</div>
 				</div>
 

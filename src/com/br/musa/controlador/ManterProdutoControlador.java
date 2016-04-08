@@ -26,6 +26,10 @@ public class ManterProdutoControlador extends CoreControlador {
 	private Produto produto;
 	private List<Produto> produtoList;
 
+	// FLAG
+	private boolean flPrecoCusto;
+	private boolean flPrecoVenda;
+
 	// SERVICOS
 	@Inject
 	private ProdutoServico produtoServico;
@@ -34,7 +38,17 @@ public class ManterProdutoControlador extends CoreControlador {
 	public void init() {
 		produto = new Produto();
 		listarProdutos();
+		habilitarFlags();
+	}
 
+	public void habilitarFlags() {
+		flPrecoCusto = false;
+		flPrecoVenda = false;
+	}
+
+	public void desabilitarFlags() {
+		flPrecoCusto = true;
+		flPrecoVenda = true;
 	}
 
 	private void listarProdutos() {
@@ -43,10 +57,18 @@ public class ManterProdutoControlador extends CoreControlador {
 
 	public void inicializarObjeto() {
 		produto = new Produto();
+		habilitarFlags();
+		RequestContext.getCurrentInstance().update("incluirProduto");
 	}
 
 	public void selecionarProduto(Produto produtoSelecionado) {
 		this.produto = produtoSelecionado;
+		
+		if (produto.getId() == null) {
+			habilitarFlags();
+		}else {
+			desabilitarFlags();
+		}
 	}
 
 	public void salvarProduto() {
@@ -65,7 +87,7 @@ public class ManterProdutoControlador extends CoreControlador {
 		}
 	}
 
-	public void excluirProduto(){
+	public void excluirProduto() {
 		try {
 			produtoServico.excluirProduto(produto);
 			inicializarObjeto();
@@ -77,7 +99,7 @@ public class ManterProdutoControlador extends CoreControlador {
 			return;
 		}
 	}
-	
+
 	public List<Produto> getProdutoList() {
 		return produtoList;
 	}
@@ -92,6 +114,22 @@ public class ManterProdutoControlador extends CoreControlador {
 
 	public void setProduto(Produto produto) {
 		this.produto = produto;
+	}
+
+	public boolean isFlPrecoCusto() {
+		return flPrecoCusto;
+	}
+
+	public void setFlPrecoCusto(boolean flPrecoCusto) {
+		this.flPrecoCusto = flPrecoCusto;
+	}
+
+	public boolean isFlPrecoVenda() {
+		return flPrecoVenda;
+	}
+
+	public void setFlPrecoVenda(boolean flPrecoVenda) {
+		this.flPrecoVenda = flPrecoVenda;
 	}
 
 }
