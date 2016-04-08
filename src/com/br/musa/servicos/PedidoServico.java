@@ -37,11 +37,8 @@ import com.br.musa.repositorio.PedidoRepositorio;
 import com.br.musa.util.CalcularUtil;
 import com.br.musa.util.JavaScriptUtil;
 
-public class PedidoServico implements Serializable  {
+public class PedidoServico implements Serializable {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = -2926719468007590581L;
 	@Inject
 	private PedidoRepositorio pedidoRepositorio;
@@ -176,6 +173,7 @@ public class PedidoServico implements Serializable  {
 
 	@Asynchronous
 	public void calcularTotal(PedidoVO pedidoVO) {
+		verificarSeDescricaoDoProdutoFoiSelecionada(pedidoVO);
 		calcularTotalCusto(pedidoVO);
 		calcularTotalVenda(pedidoVO);
 		calcularTotalPedido(pedidoVO);
@@ -195,8 +193,17 @@ public class PedidoServico implements Serializable  {
 	}
 
 	private void calcularTotalCusto(PedidoVO pedidoVO) {
+
 		pedidoVO.getPedido().setNuTotalCusto(new BigDecimal(pedidoVO.getProdutoVOList().stream()
 				.mapToDouble(p -> p.getQuantidadeProduto() * (p.getProduto().getPrecoCusto()).doubleValue()).sum()));
+	}
+
+	private void verificarSeDescricaoDoProdutoFoiSelecionada(PedidoVO pedidoVO) {
+		for (ProdutoVO produtoVO : pedidoVO.getProdutoVOList()) {
+			if (produtoVO.getProduto() == null) {
+				throw new MusaExecao(MsgConstantes.TIPO_DO_PRODUTO_NÃO_SELECIONADO_POR_FAVOR_SELECIONE);
+			}
+		}
 	}
 
 	private void calcularTotalVenda(PedidoVO pedidoVO) {
@@ -208,6 +215,7 @@ public class PedidoServico implements Serializable  {
 	public void salvar(PedidoVO pedidoVO) {
 
 		verificarCampoObrigatorios(pedidoVO);
+		verificarSeDescricaoDoProdutoFoiSelecionada(pedidoVO);
 
 		if (pedidoVO.getCliente() != null) {
 			pedidoVO.getPedido().setCliente(clienteServico.buscarPorCodigo(pedidoVO.getCliente()));
@@ -261,7 +269,7 @@ public class PedidoServico implements Serializable  {
 			try {
 				pedidoVO.setPagamento(montarUltimoPagamento(pedido).get());
 			} catch (InterruptedException | ExecutionException e) {
-				logger.info(Constantes.ERRO_NA_EXECUÇÃO_DO_MÉTODO_ASSÍCRONO +e.getMessage(),e);
+				logger.info(Constantes.ERRO_NA_EXECUÇÃO_DO_MÉTODO_ASSÍCRONO + e.getMessage(), e);
 				throw new MusaExecao(MsgConstantes.ERRO_NO_PROCESSAMENTO);
 			}
 			pedidoVOlist.add(pedidoVO);
@@ -373,7 +381,7 @@ public class PedidoServico implements Serializable  {
 
 	}
 
-	//TODO VERIDICAR PQ O MUSAEXECAO NAO ESTAVA SENDO CAPTURADO
+	// TODO VERIDICAR PQ O MUSAEXECAO NAO ESTAVA SENDO CAPTURADO
 	public void verificarcalculoDoValorRestante(PedidoVO pedidoVOSelecionado) {
 		if (pedidoVOSelecionado.getPagamento().getValorPago().intValue() <= 0) {
 			throw new MusaExecao(MsgConstantes.PAGAMENTO_COM_VALOR_IGUAL_OU_MENOR_QUE_ZERO);
@@ -385,7 +393,8 @@ public class PedidoServico implements Serializable  {
 				throw new MusaExecao(MsgConstantes.PAGAMENTO_MAIOR_QUE_VALOR_RESTANTE);
 			}
 
-		}else if(pedidoVOSelecionado.getPagamento().getValorPago().intValue() > pedidoVOSelecionado.getPedido().getValorTotal().intValue()) {
+		} else if (pedidoVOSelecionado.getPagamento().getValorPago().intValue() > pedidoVOSelecionado.getPedido()
+				.getValorTotal().intValue()) {
 			throw new MusaExecao(MsgConstantes.PAGAMENTO_MAIOR_QUE_VALOR_TOTAL);
 		}
 

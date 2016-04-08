@@ -26,7 +26,8 @@ public abstract class MsgConstantes {
 	public static final String USUARIO_OU_SENHA_INVALIDO = "Usuário ou senha inválidos";
 	public static final String LOGIN_DUPLICADO = "Campo login não dísponovel, por favor tente outro nome.";
 	public static final String ERRO_NO_PROCESSAMENTO = "Erro no processamento da requisição, tente novamente!";
-
+	public static final String TIPO_DO_PRODUTO_NÃO_SELECIONADO_POR_FAVOR_SELECIONE = "Tipo do Produto não selecionado, por favor selecione.";
+	
 	private MsgConstantes() {
 	}
 }
