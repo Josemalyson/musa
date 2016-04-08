@@ -10,7 +10,6 @@ import java.util.concurrent.Future;
 
 import javax.ejb.AsyncResult;
 import javax.ejb.Asynchronous;
-import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.transaction.Transactional;
 
@@ -30,7 +29,6 @@ import com.br.musa.util.CpfUtil;
 import com.br.musa.util.JavaScriptUtil;
 import com.br.musa.util.MascaraUtil;
 
-@Stateless
 public class ClienteServico implements Serializable {
 
 	private static final long serialVersionUID = 4806862435948739858L;
@@ -172,13 +170,14 @@ public class ClienteServico implements Serializable {
 			clienteVO.setCodigo(cliente.getId().toString());
 			clienteVO.setNome(cliente.getNome());
 			try {
+
 				clienteVO.setCpf(adicionarMascaraCpf(cliente).get());
 				clienteVO.setDataNascimento(montarDataNascimento(cliente).get());
 				clienteVO.setNumeroTelefone(montarNumeroTelefone(cliente).get());
 				clienteVO.setRg(adiconarMascaraRg(cliente).get());
 
 			} catch (InterruptedException | ExecutionException e) {
-				logger.info(" Erro na execução do método assícrono " +e.getMessage(),e);
+				logger.info(" Erro na execução do método assícrono " + e.getMessage(), e);
 				throw new MusaExecao(MsgConstantes.ERRO_NO_PROCESSAMENTO);
 			}
 
@@ -195,8 +194,7 @@ public class ClienteServico implements Serializable {
 				telefoneFormatado.add(contato.getTelefone());
 			}
 		}
-		return new javax.ejb.AsyncResult<>(
-				telefoneFormatado.toString().replace("[", "").replace("]", "").concat("."));
+		return new javax.ejb.AsyncResult<>(telefoneFormatado.toString().replace("[", "").replace("]", "").concat("."));
 	}
 
 	@Asynchronous

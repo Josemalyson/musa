@@ -5,6 +5,7 @@ import java.io.StringWriter;
 import java.util.Iterator;
 import java.util.List;
 
+import javax.faces.FacesException;
 import javax.faces.application.NavigationHandler;
 import javax.faces.context.ExceptionHandler;
 import javax.faces.context.ExceptionHandlerWrapper;
@@ -25,19 +26,17 @@ public class ExceptionHandlerCustom extends ExceptionHandlerWrapper {
 		this.exceptionHandler = exceptionHandler;
 	}
 
-	@Override
 	public ExceptionHandler getWrapped() {
 		return this.exceptionHandler;
 	}
 
-	@Override
-	public void handle()  {
+	public void handle() throws FacesException {
 		for (Iterator<ExceptionQueuedEvent> i = getUnhandledExceptionQueuedEvents().iterator(); i.hasNext();) {
 			ExceptionQueuedEvent exceptionQueuedEvent = i.next();
 			ExceptionQueuedEventContext exceptionQueuedEventContext = (ExceptionQueuedEventContext) exceptionQueuedEvent.getSource();
 			Throwable throwable = exceptionQueuedEventContext.getException();
 
-			if (throwable != null) {
+			if (throwable instanceof Throwable) {
 
 				FacesContext facesContext = FacesContext.getCurrentInstance();
 				NavigationHandler navigationHandler = facesContext
@@ -47,7 +46,20 @@ public class ExceptionHandlerCustom extends ExceptionHandlerWrapper {
 					ExcecaoTratador.tratar(statckTrace);
 					
 					MusaExecao be = getBusinessException(throwable);
-					isParamentroMensagemValida(facesContext, navigationHandler, statckTrace, be);
+					if (be != null) {
+						List<String> msgList = be.getMensagemList(); 
+						if (msgList == null) {
+							FacesUtil.adicionarErro(be.getMessage());
+						} else {
+							for (String msg : msgList) {
+								FacesUtil.adicionarErro(msg);
+							}
+						}
+					} else {
+						FacesUtil.setSessionAttribute(ERRO_MSG, statckTrace);
+						navigationHandler.handleNavigation(facesContext, null, PAGE_500 + FACES_REDIRECT);
+						facesContext.renderResponse();
+					}
 				} finally {
 					i.remove();
 				}
@@ -55,24 +67,6 @@ public class ExceptionHandlerCustom extends ExceptionHandlerWrapper {
 		}
 
 		getWrapped().handle();
-	}
-
-	private void isParamentroMensagemValida(FacesContext facesContext, NavigationHandler navigationHandler,
-			String statckTrace, MusaExecao be) {
-		if (be != null) {
-			List<String> msgList = be.getMensagemList(); 
-			if (msgList == null) {
-				FacesUtil.adicionarErro(be.getMessage());
-			} else {
-				for (String msg : msgList) {
-					FacesUtil.adicionarErro(msg);
-				}
-			}
-		} else {
-			FacesUtil.setSessionAttribute(ERRO_MSG, statckTrace);
-			navigationHandler.handleNavigation(facesContext, null, PAGE_500 + FACES_REDIRECT);
-			facesContext.renderResponse();
-		}
 	}
 	
 	private MusaExecao getBusinessException(Throwable throwable) {

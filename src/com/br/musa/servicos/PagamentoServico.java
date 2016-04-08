@@ -106,7 +106,7 @@ public class PagamentoServico implements Serializable  {
 
 		if (pagamento.getValorPago() == null) {
 			erro.append("Preencher campo Valor Pago.").append(Constantes.TAG_BR);
-			JavaScriptUtil.marcarCampoObrigatorio("valorPago");
+			JavaScriptUtil.marcarCampoObrigatorio("valorPagoID");
 		}
 
 		if (pagamento.getObservacao() == null || pagamento.getObservacao().isEmpty()) {

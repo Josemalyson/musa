@@ -123,7 +123,7 @@
 					styleClass="btn btn-success btn-sm"
 					actionListener="#{pedidoControlador.adicionarProduto()}"
 					disabled="#{pedidoControlador.flBotaoAdicionarPedido}"
-					update="tabelaProdutoVO btAdicionarProduto">
+					update="tabelaProdutoVO btAdicionarProduto descontoID">
 					<f:actionListener
 						binding="#{pedidoControlador.setFlBotaoAdicionarPedido(true)}" />
 				</p:commandButton>
@@ -164,8 +164,7 @@
 								styleClass="width full form-control"
 								value="#{produtoVO.produto}" converter="genericConverter"
 								disabled="#{pedidoControlador.fltabelaPedido}">
-								<f:selectItem itemLabel="Selecione um produto"
-									noSelectionOption="true" itemDisabled="true" />
+								<f:selectItem itemLabel="Selecione ..." />
 								<f:selectItems value="#{pedidoControlador.produtoList}"
 									var="produto"
 									itemLabel="#{produto.descricaoProduto.toUpperCase()}"
@@ -280,7 +279,8 @@
 				<label class="espacamento10PxDireita">Desconto:</label>
 				<h:selectOneMenu
 					value="#{pedidoControlador.pedidoVO.pedido.desconto}"
-					disabled="#{pedidoControlador.flDesconto}" styleClass="form-control" style="width: 10%;">
+					id="descontoID" disabled="#{pedidoControlador.flDesconto}"
+					styleClass="form-control" style="width: 10%;">
 					<f:selectItems value="#{pedidoControlador.listDesconto}"
 						var="desconto" itemValue="#{desconto}" itemLabel="#{desconto} % " />
 					<p:ajax listener="#{pedidoControlador.calcularDesconto()}"

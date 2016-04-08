@@ -11,7 +11,6 @@ import java.util.concurrent.Future;
 
 import javax.ejb.AsyncResult;
 import javax.ejb.Asynchronous;
-import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.transaction.Transactional;
 
@@ -38,7 +37,6 @@ import com.br.musa.repositorio.PedidoRepositorio;
 import com.br.musa.util.CalcularUtil;
 import com.br.musa.util.JavaScriptUtil;
 
-@Stateless
 public class PedidoServico implements Serializable  {
 
 	/**
@@ -242,7 +240,6 @@ public class PedidoServico implements Serializable  {
 		}
 
 		if (pedidoVO.getProdutoVOList() == null || pedidoVO.getProdutoVOList().isEmpty()) {
-			JavaScriptUtil.marcarCampoObrigatorio("statusPedido");
 			erro.append("Preencher campo Produto").append(Constantes.TAG_BR);
 		}
 
@@ -379,17 +376,17 @@ public class PedidoServico implements Serializable  {
 	//TODO VERIDICAR PQ O MUSAEXECAO NAO ESTAVA SENDO CAPTURADO
 	public void verificarcalculoDoValorRestante(PedidoVO pedidoVOSelecionado) {
 		if (pedidoVOSelecionado.getPagamento().getValorPago().intValue() <= 0) {
-			throw new RuntimeException(MsgConstantes.PAGAMENTO_COM_VALOR_IGUAL_OU_MENOR_QUE_ZERO);
+			throw new MusaExecao(MsgConstantes.PAGAMENTO_COM_VALOR_IGUAL_OU_MENOR_QUE_ZERO);
 		}
 
 		if (pedidoVOSelecionado.getPagamento().getValorRestante() != null) {
 			if (pedidoVOSelecionado.getPagamento().getValorPago().intValue() > pedidoVOSelecionado.getPagamento()
 					.getValorRestante().intValue()) {
-				throw new RuntimeException(MsgConstantes.PAGAMENTO_MAIOR_QUE_VALOR_RESTANTE);
+				throw new MusaExecao(MsgConstantes.PAGAMENTO_MAIOR_QUE_VALOR_RESTANTE);
 			}
 
 		}else if(pedidoVOSelecionado.getPagamento().getValorPago().intValue() > pedidoVOSelecionado.getPedido().getValorTotal().intValue()) {
-			throw new RuntimeException(MsgConstantes.PAGAMENTO_MAIOR_QUE_VALOR_TOTAL);
+			throw new MusaExecao(MsgConstantes.PAGAMENTO_MAIOR_QUE_VALOR_TOTAL);
 		}
 
 		calcularValorRestanteDoPedidoAposValidacoes(pedidoVOSelecionado);

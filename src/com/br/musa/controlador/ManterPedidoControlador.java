@@ -159,7 +159,7 @@ public class ManterPedidoControlador extends CoreControlador {
 			try {
 				pedidoServico.verificarcalculoDoValorRestante(pedidoVOSelecionado);
 				flValorPago = true;
-			} catch (RuntimeException e) {
+			} catch (MusaExecao e) {
 				logger.error(e.getMessage(), e);
 				adicionarErro(e.getMessage());
 				flValorPago = false;

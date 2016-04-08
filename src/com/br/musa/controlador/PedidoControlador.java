@@ -99,6 +99,7 @@ public class PedidoControlador extends CoreControlador {
 	private void isPedidoNovoOuEditado() {
 		if (pedido.getId() == null) {
 			habilitarTodosOsCamposParaEdicao();
+			flDesconto = true;
 		} else {
 			desabilitarTodosOsCampos();
 		}
@@ -200,6 +201,7 @@ public class PedidoControlador extends CoreControlador {
 	public void adicionarProduto() {
 		verificarSeExisteProdutosCadastrados();
 		pedidoServico.adicionarProduto(pedidoVO, produto);
+		flDesconto = false;;
 	}
 
 	public void calcularTotal() {
