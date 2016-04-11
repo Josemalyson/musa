@@ -164,7 +164,7 @@ public class ClienteServico implements Serializable {
 		List<Cliente> clienteList = clienteRepositorio.listar();
 
 		List<ClienteVO> clienteVOList = new ArrayList<>();
-		for (Cliente cliente : clienteList) {
+		clienteList.forEach(cliente -> {
 			ClienteVO clienteVO = new ClienteVO();
 			clienteVO.setCliente(cliente);
 			clienteVO.setCodigo(cliente.getId().toString());
@@ -182,7 +182,8 @@ public class ClienteServico implements Serializable {
 			}
 
 			clienteVOList.add(clienteVO);
-		}
+		
+		});
 		return new AsyncResult<>(clienteVOList);
 	}
 
@@ -190,9 +191,7 @@ public class ClienteServico implements Serializable {
 	private Future<String> montarNumeroTelefone(Cliente cliente) {
 		List<String> telefoneFormatado = new ArrayList<>();
 		if (cliente.getContatoList() != null || cliente.getContatoList().isEmpty()) {
-			for (Contato contato : cliente.getContatoList()) {
-				telefoneFormatado.add(contato.getTelefone());
-			}
+			cliente.getContatoList().forEach(contato -> telefoneFormatado.add(contato.getTelefone()));
 		}
 		return new javax.ejb.AsyncResult<>(telefoneFormatado.toString().replace("[", "").replace("]", "").concat("."));
 	}

@@ -120,14 +120,13 @@ public class PedidoServico implements Serializable {
 		List<ProdutoVO> produtoVOList = new ArrayList<>();
 		List<Produto> produtoBDList = produtoServico.listarProdutosPorPedido(pedido.getId());
 
-		for (Produto produto : produtoBDList) {
+		produtoBDList.forEach(produto -> {
 			ProdutoVO produtoVO = new ProdutoVO();
 			produtoVO.setProduto(produto);
 			produtoVO.setQuantidadeProduto(
 					produtoPedidoServico.buscarPedidoPorPedido(pedido.getId(), produto.getId()).getQtdProduto());
 			produtoVOList.add(produtoVO);
-
-		}
+		});
 
 		pedidoVO.setProdutoVOList(produtoVOList);
 	}
@@ -199,11 +198,11 @@ public class PedidoServico implements Serializable {
 	}
 
 	private void verificarSeDescricaoDoProdutoFoiSelecionada(PedidoVO pedidoVO) {
-		for (ProdutoVO produtoVO : pedidoVO.getProdutoVOList()) {
+		pedidoVO.getProdutoVOList().forEach(produtoVO -> {
 			if (produtoVO.getProduto() == null) {
 				throw new MusaExecao(MsgConstantes.TIPO_DO_PRODUTO_NÃO_SELECIONADO_POR_FAVOR_SELECIONE);
 			}
-		}
+		});
 	}
 
 	private void calcularTotalVenda(PedidoVO pedidoVO) {
@@ -259,7 +258,8 @@ public class PedidoServico implements Serializable {
 	@Asynchronous
 	public Future<List<PedidoVO>> montartPedidosVO(List<Pedido> pedidolist) {
 		List<PedidoVO> pedidoVOlist = new ArrayList<>();
-		for (Pedido pedido : pedidolist) {
+		
+		pedidolist.forEach(pedido -> {
 			PedidoVO pedidoVO = new PedidoVO();
 
 			pedidoVO.setPedido(pedido);
@@ -273,7 +273,7 @@ public class PedidoServico implements Serializable {
 				throw new MusaExecao(MsgConstantes.ERRO_NO_PROCESSAMENTO);
 			}
 			pedidoVOlist.add(pedidoVO);
-		}
+		});
 
 		return new AsyncResult<>(pedidoVOlist);
 	}
